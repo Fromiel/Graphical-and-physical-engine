@@ -5,12 +5,15 @@
 #ifndef PROJET_MATHS_PHYSIQUES_JV_VECTEUR3D_H
 #define PROJET_MATHS_PHYSIQUES_JV_VECTEUR3D_H
 
+#include <iostream>
+#include <cmath>
+
 class Vecteur3D{
 
     private :
-        double x;
-        double y;
-        double z;
+        double _x;
+        double _y;
+        double _z;
 
     public:
 
