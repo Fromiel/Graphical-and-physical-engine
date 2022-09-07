@@ -1,189 +1,206 @@
-/**
- * \file Matrice.h
- * \brief Interface des matrices carrées.
- *
- * Header du fichier Matrice.cpp. Définition de la classe Matrice, de ses membres, de ses constructeurs,
- * de ses opérateurs internes et externes, et d'autres fonctions.
- */
+#ifndef MATRIX_FULL_H
+#define MATRIX_FULL_H
 
-#ifndef _MATRICE_H
-#define _MATRICE_H
-
-#include <iostream>
-#include "Point3D.h"
-#include "Point2D.h"
+#include <vector>
+#include <ostream>
 
 /**
- * \class Matrice
- * \brief Création de la classe Matrice.
- *
- * Contient deux membres correspondant à la dimension de la matrice et à ses données.
- * Contient également d'autres fonctions permettant de réaliser les opérations de base sur les matrices.
+ * @brief Classe représentant des matrices
  */
-class Matrice {
-private: /*!< La taille de la matrice et ses données */
-    int n_;
-    float *data_;
+class Matrix_Full
+{
+    private: 
+        /*tableau de double où l'on stocke les éléments de la matrice*/
+        double * data_;
+        /**nombre de lignes de la matrice*/
+        int nl_;
+        /**nombre de colonnes de la matrice*/
+        int nc_;
 
-public:
+    public:
+        /**
+         * @brief Constructeur de Matrix_Full avec les attributs à initialiser
+         * 
+         * @param nl nombre de lignes
+         * @param nc nombre de colonnes
+         */
+        Matrix_Full(int nl, int nc);
+
+        /**
+         * @brief Constructeur de copie de Matrix_Full
+         * 
+         * @param m 
+         */
+        Matrix_Full(const Matrix_Full & m);
+        /**
+         * @brief Destructeur de Matrix_Full
+         * 
+         */
+        ~Matrix_Full();
+
+        /**
+         * @brief Obtenir le nombre de lignes de la matrice
+         * 
+         * @return int 
+         */
+        int get_nl() const {return nl_;}
+
+        /**
+         * @brief Obtenir le nombre de colonnes de la matrice
+         * 
+         * @return int 
+         */
+        int get_nc() const {return nc_;}
+
+        /**
+         * @brief operator= de Matrix_Full
+         * 
+         * @param m 
+         * @return Matrix_Full& 
+         */
+        Matrix_Full & operator=(const Matrix_Full m);
+
+        /**
+         * @brief renvoie l'élément à la ligne l et la colonne c
+         * 
+         * @param l 
+         * @param c 
+         * @return double 
+         */
+        double operator()(int l, int c) const;
+
+        /**
+         * @brief renvoie l'élément à la ligne l et la colonne c
+         * 
+         * @param l 
+         * @param c 
+         * @return double 
+         */
+        double & operator()(int l, int c);
+
+        /**
+         * @brief operator+= pour Matrix_Full
+         * 
+         * @param m 
+         * @return Matrix_Full& 
+         */
+        Matrix_Full & operator+=(const Matrix_Full & m);
+
+        /**
+         * @brief operator-= pour Matrix_Full
+         * 
+         * @param m 
+         * @return Matrix_Full& 
+         */
+        Matrix_Full & operator-=(const Matrix_Full & m);
+
+        /**
+         * @brief calcule la tansposée de la matrice
+         * 
+         * @return Matrix_Full 
+         */
+        Matrix_Full transp() const;
+
     /**
-     * \brief Constructeur valué / par défaut de la classe Matrice.
-     * \param n Taille de la matrice.
-     *
-     * Construit une matrice à partir de la taille donnée en paramètre.
+     * @brief retourne la matrice de rotation d'une rotation d'angle theta selon l'axe x (en coordonnées homogènes)
+     * 
+     * @param theta angle de rotation
+     * @return Matrix_Full matrice de rotation
      */
-    Matrice(int n = 3);
+    static Matrix_Full rotation_matrix_x(float theta);
 
     /**
-     * \brief Constructeur de copie de la classe Matrice.
-     * \param mat Une référence de la matrice à copier.
-     *
-     * Construit une matrice qui aura les mêmes membres de classe que la matrice donnée en paramètre.
+     * @brief retourne la matrice de rotation d'une rotation d'angle theta selon l'axe y (en coordonnées homogènes)
+     * 
+     * @param theta angle de rotation
+     * @return Matrix_Full matrice de rotation
      */
-    Matrice(const Matrice &mat);
+    static Matrix_Full rotation_matrix_y(float theta);
 
     /**
-     * \brief Destructeur de la classe Matrice.
-     *
-     * Supprime proprement les données de la matrice.
+     * @brief retourne la matrice de rotation d'une rotation d'angle theta selon l'axe z (en coordonnées homogènes)
+     * 
+     * @param theta angle de rotation
+     * @return Matrix_Full matrice de rotation
      */
-    ~Matrice();
-
-    /* Getters */
+    static Matrix_Full rotation_matrix_z(float theta);
 
     /**
-     * \brief Getters du membre n_.
-     * \return La taille de la matrice carrée.
+     * @brief Obtenir la matrice de translation par une translation (x, y, z) en coordonnées homogènes
+     * 
+     * @param x 
+     * @param y 
+     * @param z 
+     * @return Matrix_Full matrice de translation
      */
-    int get_n() const;
-
-    /* Opérateurs internes */
+    static Matrix_Full get_translation_matrix(float x, float y, float z);
 
     /**
-     * \brief Opérateur interne () de la classe Matrice.
-     * \param i Indice de la ligne.
-     * \param j Indice de la colonne.
-     * \return Une référence de la valeur située aux coordonnées (i,j) dans la matrice.
+     * @brief retourne la matrice identité de taille i
+     * 
+     * @param i 
+     * @return Matrix_Full 
      */
-    float & operator()(int i, int j);
+    static Matrix_Full identity(int i);
 
-    /**
-     * \brief Opérateur interne () constant de la classe Matrice.
-     * \param i Indice de la ligne.
-     * \param j Indice de la colonne.
-     * \return La valeur située aux coordonnées (i,j) dans la matrice.
-     */
-    float operator()(int i, int j) const;
+    /**matrice identité de taille 4*/
+    const static Matrix_Full id4;
 
-    /**
-     * \brief Opérateur interne = de la classe Matrice.
-     * \param mat Une matrice (const) à affecter à la variable.
-     * \return Une référence de la matrice dont la taille et les vaileurs ont pris les valeurs de celles de la matrice donnée en paramètre.
-     */
-    Matrice & operator=(const Matrice mat);
-
-    /* Fonctions */
-
-    /**
-     * \brief Transposée d'une matrice.
-     * \param mat Une matrice.
-     * \return La transposée de la matrice donnée en paramètre.
-     */
-    Matrice transp(Matrice mat);
 };
 
-/* Opérateurs externes */
+/**
+ * @brief permet d'afficher une matrice
+ * 
+ * @param out 
+ * @param v 
+ * @return std::ostream& 
+ */
+std::ostream & operator<<(std::ostream & out, const Matrix_Full & v);
 
 /**
- * \brief Opérateur externe de flux pour une matrice.
- * \param st Une réference du flux à utiliser.
- * \param mat Une réference de la matrice à afficher.
- * \return Un flux.
+ * @brief operator+ entre deux Matrix_Full
+ * 
+ * @param m1 
+ * @param m2 
+ * @return Matrix_Full 
  */
-std::ostream & operator<<(std::ostream & st, const Matrice &mat);
+Matrix_Full operator+(const Matrix_Full m1, const Matrix_Full m2);
 
 /**
- * \brief Opérateur externe + pour deux matrices.
- * \param mat1 Une matrice à additionner.
- * \param mat2 La deuxième matrice à additionner.
- * \return La somme des deux matrices.
+ * @brief operator- entre deux Matrix_Full
+ * 
+ * @param m1 
+ * @param m2 
+ * @return Matrix_Full 
  */
-Matrice operator+(const Matrice & mat1, const Matrice & mat2);
+Matrix_Full operator-(const Matrix_Full m1, const Matrix_Full m2);
 
 /**
- * \brief Opérateur externe - pour deux matrices.
- * \param mat1 Une matrice.
- * \param mat2 La matrice à soustraire.
- * \return La différence des deux matrices.
+ * @brief operator* entre deux Matrix_Full
+ * 
+ * @param m1 
+ * @param m2 
+ * @return Matrix_Full 
  */
-Matrice operator-(const Matrice & mat1, const Matrice & mat2);
+Matrix_Full operator*(const Matrix_Full m1, const Matrix_Full m2);
 
 /**
- * \brief Opérateur externe * pour deux matrices.
- * \param mat1 Une matrice.
- * \param mat2 La matrice à multiplier.
- * \return La multiplication des deux matrices.
+ * @brief operator* entre une Matrix_Full et un vecteur colonne
+ * 
+ * @param m1
+ * @param vect vecteur colonne
+ * @return Matrix_Full 
  */
-Matrice operator*(const Matrice & mat1, const Matrice & mat2);
+Matrix_Full operator*(const Matrix_Full m, std::vector<double> & vect);
 
 /**
- * \brief Opérateur externe * pour une matrice et un scalaire.
- * \param mat Une matrice.
- * \param x Un scalaire.
- * \return La matrice multipliée par le scalaire.
+ * @brief operator* entre une Matrix_Full et un vecteur ligne
+ * 
+ * @param vect vecteur ligne
+ * @param m
+ * @return Matrix_Full 
  */
-Matrice operator*(const Matrice & mat, float x);
+Matrix_Full operator*(std::vector<double> & vect, const Matrix_Full m);
 
-/**
- * \brief Opérateur externe * pour une matrice et un scalaire.
- * \param x Un scalaire.
- * \param mat Une matrice.
- * \return La matrice multipliée par le scalaire.
- */
-Matrice operator*(float x, const Matrice & mat);
 
-/**
- * \brief Opérateur externe * pour une matrice et un Vecteur3D.
- * \param mat Une matrice.
- * \param p Un vecteur 3D.
- * \return Le vecteur multiplié la matrice.
- */
-Vecteur3D operator*(const Matrice & mat, const Vecteur3D & p);
-
-/**
- * \brief Opérateur externe * pour une matrice et un Vecteur2D.
- * \param mat Une matrice.
- * \param p Un vecteur 2D.
- * \return Le vecteur multiplié la matrice.
- */
-Vecteur2D operator*(const Matrice & mat, const Vecteur2D & p);
-
-/**
- * \brief Opérateur externe / pour une matrice et un scalaire.
- * \param mat Une matrice.
- * \param x Un scalaire non nul.
- * \return La matrice divisée par le scalaire.
- */
-Matrice operator/(const Matrice & matrice, float x);
-
-/* Fonctions */
-
-/**
- * \brief Une fonction renvoyant la matrice de rotation associée à un axe et un angle.
- * \param p Un axe (Vecteur3D) non nul.
- * \param angle Un angle (en radian).
- * \return La matrice de rotation associée à l'axe et l'angle donnés en paramètre.
- */
-Matrice Mat_Rotation(Vecteur3D p, float angle);
-
-/**
- * \brief Une fonction calculant la matrice de projection associée à un FOV, et au champs de vision d'une caméra.
- * \param FOVx Le FOV selon l'axe X de la caméra.
- * \param FOVy Le FOV selon l'axe Y de la caméra.
- * \param Zmin La distance minimale à laquelle la caméra peut voir.
- * \param Zmax La distance maximale à laquelle la caméra peut voir.
- * \return La matrice de projection associée aux paramètres donnés.
- */
-Matrice Mat_Projection(float FOVx, float FOVy, float Zmin, float Zmax);
-
-#endif //_MATRICE_H
+#endif
