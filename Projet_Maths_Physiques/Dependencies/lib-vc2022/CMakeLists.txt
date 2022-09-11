@@ -1,0 +1,1 @@
+add_library(GLFW STATIC glfw3.lib)
