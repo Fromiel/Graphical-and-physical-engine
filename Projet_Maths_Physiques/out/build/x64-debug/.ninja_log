@@ -1,4 +1,0 @@
-# ninja log v5
-1	92	0	Dependencies/lib-vc2022/GLFW.lib	ec61615596612e7f
-7	361	6846249559510723	CMakeFiles/Projet_Maths_Physique.dir/test.cpp.obj	a0c567cb1cf68ca5
-362	874	6846249564514412	Projet_Maths_Physique.exe	a402e1b1715a1196
