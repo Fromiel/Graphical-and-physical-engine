@@ -2,8 +2,8 @@
 // Created by jules on 07/09/2022.
 //
 
-#ifndef PROJET_MATHS_PHYSIQUES_JV_VECTEUR3D_H
-#define PROJET_MATHS_PHYSIQUES_JV_VECTEUR3D_H
+#ifndef VECTEUR3D_H
+#define VECTEUR3D_H
 
 #include <iostream>
 #include <cmath>
@@ -31,9 +31,9 @@ class Vecteur3D{
 
         double norm_squared();
 
-        Vecteur3D normalized();
+        void normalized();
 
-        Vecteur3D scalar_multiplication(double scalar);
+        void scalar_multiplication(double scalar);
 
 };
 
@@ -49,4 +49,4 @@ double scalar_product(const Vecteur3D vect1, const Vecteur3D vect2);
 
 Vecteur3D vectorial_product(const Vecteur3D vect1, const Vecteur3D vect2);
 
-#endif //PROJET_MATHS_PHYSIQUES_JV_VECTEUR3D_H
+#endif //VECTEUR3D_H
