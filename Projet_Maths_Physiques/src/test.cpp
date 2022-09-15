@@ -4,10 +4,13 @@
 
 #include "linmath.h"
 
+#include "Vecteur3D.h"
 #include "Matrix_Full.h"
 
 #include <cstdio>
 #include <iostream>
+
+
 
 static const struct
 {
@@ -57,6 +60,32 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void)
 {
+    /* Vecteur3D test1(1, 2, 3);
+    Vecteur3D test2(4, 5, 6);
+    
+    Vecteur3D test_copie(test1);
+    double res = test1.norm();
+    double res2 = test1.norm_squared();
+    test1 = test1.normalized();
+    test2 = test2.scalar_multiplication(2);
+    std::cout << test_copie << std::endl;
+    std::cout << res << std::endl;
+    std::cout << res2 << std::endl;
+    std::cout << test1 << std::endl;
+    std::cout << test2 << std::endl;
+
+    Vecteur3D test_plus = test1 + test2;
+    Vecteur3D test_moins = test1 - test2;
+    Vecteur3D test_fois = test1 * test2;
+    double test_ps = scalar_product(test1, test2);
+    Vecteur3D test_pv = vectorial_product(test1, test2);
+    std::cout << test_plus << std::endl;
+    std::cout << test_moins << std::endl;
+    std::cout << test_fois << std::endl;
+    std::cout << test_ps << std::endl;
+    std::cout << test_pv << std::endl; */
+    
+
     Matrix_Full test(2,1);
     GLFWwindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;

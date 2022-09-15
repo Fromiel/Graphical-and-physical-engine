@@ -31,9 +31,9 @@ class Vecteur3D{
 
         double norm_squared();
 
-        void normalized();
+        Vecteur3D normalized();
 
-        void scalar_multiplication(double scalar);
+        Vecteur3D scalar_multiplication(double scalar);
 
 };
 
