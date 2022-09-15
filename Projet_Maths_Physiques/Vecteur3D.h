@@ -21,11 +21,11 @@ class Vecteur3D{
 
         Vecteur3D(const Vecteur3D & vect);
 
-        double get_x() const {return x;}
+        double get_x() const {return _x;}
 
-        double get_y() const {return y;}
+        double get_y() const {return _y;}
 
-        double get_z() const {return z;}
+        double get_z() const {return _z;}
 
         double norm();
 
