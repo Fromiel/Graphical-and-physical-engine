@@ -10,7 +10,7 @@ add_subdirectory(Dependencies/lib-vc2022)
 
 
 # Ajoutez une source à l'exécutable de ce projet.
-add_executable (Projet_Maths_Physique "test.cpp" "test.h")
+add_executable (Projet_Maths_Physique "test.cpp" "test.h" "Particule.h" "Particule.cpp")
 
 include_directories(Dependencies/include)
 link_directories(Dependencies/lib-vc2022)
