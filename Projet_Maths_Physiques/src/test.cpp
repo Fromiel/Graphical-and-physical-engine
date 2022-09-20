@@ -1,6 +1,6 @@
 ﻿#include "OpenGLManager.h"
 
-#include "Matrix_Full.h"
+#include "Matrix3D.h"
 #include "Sphere.h"
 
 #include <cstdio>
