@@ -35,11 +35,11 @@ void Particule::update() {
 	updatePosition(h);
 }
 
-void Particule::updateVelocity(double frameRate) {
+void Particule::updatePosition(double frameRate) {
 	position = position + (frameRate * velocity);
 }
 
-void Particule::updatePosition(double frameRate) {
-	velocity = velocity + (frameRate * acceleration);
+void Particule::updateVelocity(double frameRate) {
+	velocity = (pow(d,frameRate)) * velocity + (frameRate * acceleration);
 }
 

@@ -37,7 +37,10 @@ private:
 	double rayon;
 	double InverseMasse;
 
+	//Constante de gravité
 	static double g = 9.81;
+	//Valeur des frottements
+	static double d = 0.7;
 
 	//Fonctions d'update
 
