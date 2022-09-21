@@ -28,7 +28,7 @@ public:
 	/**
 	* Fonction qui mets à jour la position de la particule en fonction du temps
 	*/
-	void update();
+	void update(double h = 1.0/60.0);
 
 private:
 	Vecteur3D position;
@@ -38,21 +38,21 @@ private:
 	double InverseMasse;
 
 	//Constante de gravité
-	static double g = 9.81;
+	static double g;
 	//Valeur des frottements
-	static double d = 0.7;
+	static double d;
 
 	//Fonctions d'update
 
 	/**
 	* Mets à jour la position de la particule en fonction du frame rate
 	*/
-	void updatePosition(double frameRate = 1/60);
+	void updatePosition(double frameRate);
 
 	/**
 	* Mets à jour la vélocité de la particule en fonction du frame rate
 	*/
-	void updateVelocity(double frameRate = 1/60);
+	void updateVelocity(double frameRate);
 
 };
 

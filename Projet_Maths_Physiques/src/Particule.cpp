@@ -1,10 +1,12 @@
 #include "Particule.h"
-#include <ctime>
+
+double Particule::g = 9.81;
+double Particule::d = 0.7;
 
 Particule::Particule(Vecteur3D pos_initiale, Vecteur3D v_initiale, double r, double m) {
 	position = pos_initiale;
 	velocity = v_initiale;
-	acceleration = 0;
+	acceleration = Vecteur3D(0,-g,0);
 	rayon = r;
 	InverseMasse = m;
 }
@@ -29,17 +31,25 @@ void Particule::setAcceleration(const Vecteur3D a) {
 	acceleration = a;
 }
 
-void Particule::update() {
-	double h = time.h / ctime; 
+void Particule::update(double h) { 
+	std::cout << "Update with h = " << h << std::endl;
 	updateVelocity(h);
 	updatePosition(h);
 }
 
 void Particule::updatePosition(double frameRate) {
-	position = position + (frameRate * velocity);
+	//std::cout << "vel * frameRate = " << velocity.scalar_multiplication(frameRate) << std::endl;
+	//position = position + (velocity.scalar_multiplication(frameRate));
+	position = position +  (frameRate * velocity);
 }
 
 void Particule::updateVelocity(double frameRate) {
-	velocity = (pow(d,frameRate)) * velocity + (frameRate * acceleration);
+	//std::cout << "pow(d,frameRate)) = " << (pow(d, frameRate))  << std::endl;
+	//std::cout << "frameRate = " << frameRate << std::endl;
+	//std::cout << "acceleration = " << acceleration << std::endl;
+	//std::cout << "frameRate*acceleration = " << (frameRate*acceleration) << std::endl;
+	//std::cout << "frameRate * acceleration = " << acceleration.scalar_multiplication(frameRate) << std::endl;
+	//velocity =  velocity.scalar_multiplication((pow(d, frameRate))) + (acceleration.scalar_multiplication(frameRate));
+	velocity = pow(d, frameRate) * velocity + frameRate * acceleration;
 }
 

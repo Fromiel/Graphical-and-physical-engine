@@ -68,3 +68,13 @@ Vecteur3D vectorial_product(const Vecteur3D vect1, const Vecteur3D vect2) {
     Vecteur3D res(x, y, z);
     return res;
 }
+
+Vecteur3D operator*(const double d, const Vecteur3D& v) {
+    double x = v.get_x() * d;
+    double y = v.get_y() * d;
+    double z = v.get_z() * d;
+    Vecteur3D res(x, y, z);
+    return res;   
+}
+
+Vecteur3D operator*(const Vecteur3D& v, const double d) { return d * v; }

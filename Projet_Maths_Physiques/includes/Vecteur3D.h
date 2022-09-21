@@ -45,6 +45,9 @@ Vecteur3D operator-(const Vecteur3D vect1, const Vecteur3D vect2);
 
 Vecteur3D operator*(const Vecteur3D vect1, const Vecteur3D vect2);
 
+Vecteur3D operator*(const double d, const Vecteur3D& v);
+Vecteur3D operator*(const Vecteur3D& v, const double d);
+
 double scalar_product(const Vecteur3D vect1, const Vecteur3D vect2);
 
 Vecteur3D vectorial_product(const Vecteur3D vect1, const Vecteur3D vect2);
