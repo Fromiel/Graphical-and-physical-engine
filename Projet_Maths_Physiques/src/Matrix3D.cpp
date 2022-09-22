@@ -16,10 +16,6 @@ Matrix3D::Matrix3D(const Matrix3D &matrix3D) {
     return;
 }
 
-Matrix3D::~Matrix3D() {
-    return;
-}
-
 std::vector<double> Matrix3D::getContentAsStdVector() const {
     return content;
 }

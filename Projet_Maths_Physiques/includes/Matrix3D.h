@@ -18,7 +18,6 @@ class Matrix3D {
         Matrix3D();
         Matrix3D(const std::vector<double> &content);
         Matrix3D(const Matrix3D &matrix3D);
-        ~Matrix3D();
 
         std::vector<double> getContentAsStdVector() const;
         
