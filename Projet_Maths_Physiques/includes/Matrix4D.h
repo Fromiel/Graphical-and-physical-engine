@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <cmath>
 
 class Matrix4D {
 private:
@@ -22,7 +23,8 @@ public:
 
     std::vector<double> getContentAsStdVector() const;
 
-    double operator()(const int& line, const int& column) const;
+    double operator()(int line, int column) const;
+    double& operator()(int line, int column);
     void operator=(const Matrix4D& matrix4D);
 
     Matrix4D operator+=(const Matrix4D& matrix4D);
@@ -35,12 +37,16 @@ public:
     static Matrix4D translation(Vecteur3D &vect);
     static Matrix4D scaling(Vecteur3D& vect);
     //static Matrix4D rotation(Vecteur3D& vect);
+
+    static Matrix4D modelMatrix(Vecteur3D &translation, Vecteur3D &scaling);
+    static Matrix4D viewMatrix(Vecteur3D &cameraPosition);
+    static Matrix4D projectionMatrix(float radianFov, float ratio, float near, float far);
 };
 
 Matrix4D operator+(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2);
 Matrix4D operator-(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2);
 
-Matrix4D operator*(const Matrix4D& matrix3D, const double& multiplier);
+Matrix4D operator*(const Matrix4D& matrix4D, const double& multiplier);
 Matrix4D operator*(const double& multiplier, const Matrix4D& matrix4D);
 
 Matrix4D operator*(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2);

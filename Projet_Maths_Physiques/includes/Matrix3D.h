@@ -22,6 +22,7 @@ class Matrix3D {
         std::vector<double> getContentAsStdVector() const;
         
         double operator()(const int &line, const int &column) const;
+        double& operator()(int line, int colonne);
         void operator=(const Matrix3D &matrix3D);
 
         Matrix3D operator+=(const Matrix3D &matrix3D);

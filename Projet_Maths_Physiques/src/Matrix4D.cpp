@@ -1,11 +1,11 @@
 #include "Matrix4D.h"
 
-Matrix4D::Matrix4D() : _content(std::vector<double>(12,0.0))
+Matrix4D::Matrix4D() : _content(std::vector<double>(16,0.0))
 {
 }
 
 Matrix4D::Matrix4D(const std::vector<double>& content) {
-	if (_content.size() != 12) throw std::invalid_argument("Matrix3D::Provide content with size 12");
+	if (_content.size() != 16) throw std::invalid_argument("Matrix3D::Provide content with size 16");
 	_content = content;
 }
 
@@ -17,11 +17,18 @@ std::vector<double> Matrix4D::getContentAsStdVector() const {
 	return _content;
 }
 
-double Matrix4D::operator() (const int& line, const int& column) const {
+double Matrix4D::operator() (int line, int column) const {
 	if (line < 0 || line > 3 || column < 0 || column > 3) {
-		throw std::out_of_range("Matrix4D::Provide line and column between 0 and 2 include");
+		throw std::out_of_range("Matrix4D::Provide line and column between 0 and 3 include");
 	}
 	return _content[Matrix4D::columnCount * line + column];
+}
+
+double& Matrix4D::operator() (int line, int column) {
+    if (line < 0 || line > 3 || column < 0 || column > 3) {
+        throw std::out_of_range("Matrix4D::Provide line and column between 0 and 3 include");
+    }
+    return _content[Matrix4D::columnCount * line + column];
 }
 
 void Matrix4D::operator=(const Matrix4D& matrix4D) {
@@ -29,15 +36,17 @@ void Matrix4D::operator=(const Matrix4D& matrix4D) {
 }
 
 Matrix4D Matrix4D::operator+=(const Matrix4D& matrix4D) {
-	std::transform(_content.begin(), _content.end(), matrix4D._content(), _content.begin(), std::plus<double>());
+	std::transform(_content.begin(), _content.end(), matrix4D._content.begin(), _content.begin(), std::plus<double>());
+    return *this;
 }
 
 Matrix4D Matrix4D::operator-=(const Matrix4D& matrix4D) {
-	std::transform(_content.begin(), _content.end(), matrix4D._content(), _content.begin(), std::minus<double>());
+	std::transform(_content.begin(), _content.end(), matrix4D._content.begin(), _content.begin(), std::minus<double>());
+    return *this;
 }
 
 Matrix4D Matrix4D::transpose() const {
-	Matrix3D res = Matrix4D({
+	Matrix4D res = Matrix4D({
 		_content[0], _content[4], _content[8], _content[12],
 		_content[1], _content[5], _content[9], _content[13],
 		_content[2], _content[6], _content[10], _content[14],
@@ -171,68 +180,94 @@ Matrix4D Matrix4D::invert() const
 
         det = 1.0 / det;
 
-        std::vector<double> invOut[16];
+        std::vector<double> invOut;
 
         for (i = 0; i < 16; i++)
-            invOut[i] = inv[i] * det;
+            invOut.push_back(inv[i] * det);
 
-        _content = invOut;
+        return Matrix4D(invOut);
 }
 
-static Matrix4D Matrix4D::identity() {
-    Matrix4D res = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
+Matrix4D Matrix4D::identity() {
+    Matrix4D res({ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 });
     return res;
 }
 
-static Matrix Matrix4D::translation(Vecteur3D &vect) {
-    Matrix4D res = { 1,0,0,vect.get_x,0,1,0,vect.get_y,0,0,0,vect.get_z,0,0,0,1 };
+Matrix4D Matrix4D::translation(Vecteur3D &vect) {
+    Matrix4D res({ 1, 0, 0, vect.get_x(), 0, 1, 0, vect.get_y(), 0, 0, 0, vect.get_z(), 0, 0, 0, 1 });
     return res;
 }
 
-static Matrix4D Matrix4D::scaling(Vecteur3D& vect) {
-    Matrix4D res = { vect.get_x,0,0,0,0,vect.get_y,0,0,0,0,vect.get_z,0,0,0,1 };
+Matrix4D Matrix4D::scaling(Vecteur3D& vect) {
+    Matrix4D res({ vect.get_x(), 0, 0, 0, 0, vect.get_y(), 0, 0, 0, 0, vect.get_z(), 0, 0, 0, 1 });
     return res;
+}
+
+Matrix4D Matrix4D::modelMatrix(Vecteur3D& translationVect, Vecteur3D& scalingVect)
+{
+    //Pour plus tard rajouter la rotation
+    return Matrix4D::translation(translationVect) * Matrix4D::scaling(scalingVect);
+}
+
+Matrix4D Matrix4D::viewMatrix(Vecteur3D& cameraPosition)
+{
+    //Pour plus tard rajouter rotation
+    Vecteur3D oppPosition = Vecteur3D() - cameraPosition;
+    return Matrix4D::translation(oppPosition);
+}
+
+Matrix4D Matrix4D::projectionMatrix(float radianFov, float ratio, float near, float far)
+{
+    Matrix4D projMatrix;
+    float tan_half_angle;
+    tan_half_angle = tan(radianFov / 2);
+    projMatrix(0, 0) = 1 / (ratio * tan_half_angle);
+    projMatrix(1, 1) = 1 / (tan_half_angle);
+    projMatrix(2, 2) = -(far + near) / (far - near);
+    projMatrix(3, 2) = -1;
+    projMatrix(2, 3) = -(2 * far * near) / (far - near);
+    return projMatrix;
 }
 
 // static Matrix4D Matrix4D::rotation(Vecteur3D &vect){}
 
 Matrix4D operator+(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {
-    std::vector<double> res;
-    for (int i; i < 16; i++) {
-        res[i] = matrix4D_1[i] + matrix4D_2[i];
+    Matrix4D res;
+    for (int i = 0; i < 4; i++) {
+        for(int j = 0; j < 4; j++)
+            res(i, j) = matrix4D_1(i, j) + matrix4D_2(i, j);
     }
-    Matrix4D mat(res);
-    return mat;
+    return res;
 }
 
 Matrix4D operator-(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {
-    std::vector<double> res;
-    for (int i; i < 16; i++) {
-        res[i] = matrix4D_1[i] - matrix4D_2[i];
+    Matrix4D res;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++)
+            res(i, j) = matrix4D_1(i, j) - matrix4D_2(i, j);
     }
-    Matrix4D mat(res);
-    return mat;
+    return res;
 }
 
-Matrix4D operator*(const Matrix4D& matrix4D, const double scalar) {
-    std::vector<double> res;
-    for (int i; i < 16; i++) {
-        res[i] = matrix4D_1[i]*scalar;
+Matrix4D operator*(const Matrix4D& matrix4D, const double &scalar) {
+    Matrix4D res;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++)
+            res(i, j) = matrix4D(i, j) * scalar;
     }
-    Matrix4D mat(res);
-    return mat;
+    return res;
 }
 
-Matrix4D operator*(const double scalar, const Matrix4D& matrix4D) {
+Matrix4D operator*(const double &scalar, const Matrix4D& matrix4D) {
     return matrix4D * scalar;
 }
 
 Matrix4D operator*(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {
-    std::vector<double> content_1 = matrix3D_1.getContentAsStdVector();
-    std::vector<double> content_2 = matrix3D_2.getContentAsStdVector();
+    std::vector<double> content_1 = matrix4D_1.getContentAsStdVector();
+    std::vector<double> content_2 = matrix4D_2.getContentAsStdVector();
     std::vector<double> content_out = std::vector<double>(12, 0);
 
-    content_out[0] = content_1[0] * content_2[0] + content_1[1] * content2[4] + content_1[2] * content_2[8] + content_1[3] * content_2[12];
+    content_out[0] = content_1[0] * content_2[0] + content_1[1] * content_2[4] + content_1[2] * content_2[8] + content_1[3] * content_2[12];
     content_out[1] = content_1[0] * content_2[1] + content_1[1] * content_2[5] + content_1[2] * content_2[9] + content_1[3] * content_2[13];
     content_out[2] = content_1[0] * content_2[2] + content_1[1] * content_2[6] + content_1[2] * content_2[10] + content_1[3] * content_2[14];
     content_out[3] = content_1[0] * content_2[3] + content_1[1] * content_2[7] + content_1[2] * content_2[11] + content_1[3] * content_2[15];
@@ -252,7 +287,7 @@ Matrix4D operator*(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {
     content_out[14] = content_1[12] * content_2[2] + content_1[13] * content_2[6] + content_1[14] * content_2[10] + content_1[15] * content_2[14];
     content_out[15] = content_1[12] * content_2[3] + content_1[13] * content_2[7] + content_1[14] * content_2[11] + content_1[15] * content_2[15];
 
-    return Matrix3D(content_out);
+    return Matrix4D(content_out);
 }
 
 bool operator==(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {

@@ -40,28 +40,28 @@ std::ostream& operator<<(std::ostream& out, const Vecteur3D& vect) {            
     return out;
 }
 
-Vecteur3D operator+(const Vecteur3D vect1, const Vecteur3D vect2) {
+Vecteur3D operator+(const Vecteur3D &vect1, const Vecteur3D &vect2) {
     Vecteur3D res(vect1.get_x() + vect2.get_x(), vect1.get_y() + vect2.get_y(), vect1.get_z() + vect2.get_z());
     return res;
 }
 
-Vecteur3D operator-(const Vecteur3D vect1, const Vecteur3D vect2) {
+Vecteur3D operator-(const Vecteur3D &vect1, const Vecteur3D &vect2) {
     Vecteur3D res(vect1.get_x() - vect2.get_x(), vect1.get_y() - vect2.get_y(), vect1.get_z() - vect2.get_z());
     return res;
 }
 
-Vecteur3D operator*(const Vecteur3D vect1, const Vecteur3D vect2) {
+Vecteur3D operator*(const Vecteur3D &vect1, const Vecteur3D &vect2) {
     Vecteur3D res(vect1.get_x() * vect2.get_x(), vect1.get_y() * vect2.get_y(), vect1.get_z() * vect2.get_z());
     return res;
 }
 
-double scalar_product(const Vecteur3D vect1, const Vecteur3D vect2) {
+double scalar_product(const Vecteur3D &vect1, const Vecteur3D &vect2) {
     double res;
     res = (vect1.get_x() * vect2.get_x()) + (vect1.get_y() * vect2.get_y()) + (vect1.get_z() * vect2.get_z());
     return res;
 }
 
-Vecteur3D vectorial_product(const Vecteur3D vect1, const Vecteur3D vect2) {
+Vecteur3D vectorial_product(const Vecteur3D &vect1, const Vecteur3D &vect2) {
     double x = vect1.get_y() * vect2.get_z() - vect1.get_z() * vect2.get_y();
     double y = vect1.get_z() * vect2.get_x() - vect1.get_x() * vect2.get_z();
     double z = vect1.get_x() * vect2.get_y() - vect1.get_y() * vect2.get_x();

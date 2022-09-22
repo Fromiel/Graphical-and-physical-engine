@@ -27,6 +27,13 @@ double Matrix3D::operator()(const int &line, const int &column) const {
     return content[Matrix3D::columnCount * line + column];
 }
 
+double& Matrix3D::operator()(const int line, const int column) {
+    if (line < 0 || line > 2 || column < 0 || column > 2) {
+        throw std::invalid_argument("Matrix3D::Provide line and column inferior to 3");
+    }
+    return content[Matrix3D::columnCount * line + column];
+}
+
 void Matrix3D::operator=(const Matrix3D &matrix3D) {
     content = matrix3D.content;
     return;
