@@ -12,11 +12,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 }
 
 
-OpenGLManager::OpenGLManager()
-{
-
-}
-
 
 OpenGLManager::~OpenGLManager()
 {
@@ -86,47 +81,77 @@ void OpenGLManager::loadVertices(std::vector<Vertice> vertices, std::vector<unsi
 	glVertexAttribPointer(vcolLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)(sizeof(float) * 3));
 	glEnableVertexAttribArray(normalLocation_);
 	glVertexAttribPointer(normalLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)(sizeof(float) * 6));
-
 	
 }
 
 
+void toGlFloat(Matrix3D matrix, GLfloat arr[])
+{
+	std::vector<double> content = matrix.getContentAsStdVector();
+	std::copy(content.begin(), content.end(), arr);
+}
+
+void toGlFloat(Matrix4D matrix, GLfloat arr[])
+{
+	std::vector<double> content = matrix.getContentAsStdVector();
+	std::copy(content.begin(), content.end(), arr);
+
+}
+
+
+
 void OpenGLManager::Render(Shader shader)
 {
+
 	float ratio;
 	int width, height;
-	mat4x4 m, p, mvp;
-	const GLfloat normalMatrix[9] = { 1, 0, 0 , 0, 1, 0, 0, 0, 1 };
-	Vecteur3D posCamera(0.f, 0.f, 1.f);
+	Matrix4D model = object_.getModelMatrix();
+	Matrix4D view = camera_.getViewMatrix();
+	Matrix4D projection = Matrix4D::projectionMatrix(camera_.getFov(), camera_.getRatio(), camera_.getNear(), camera_.getFar());
+	Matrix4D mvp = (projection * view * model).transpose(); //On applique la transposée car quand on va passer les matrices à glsl, il va construire les matrices colonne par colonne et non ligne par ligne comme nous
+	Matrix4D modelView = view * model;
+	Matrix3D upperLeftModelView;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			upperLeftModelView(i, j) = modelView(i, j);
+		}
+	}
+
+	Matrix3D normalMatrix = upperLeftModelView.invert();
+	Vecteur3D posCamera = camera_.getPosition();
 
 	glfwGetFramebufferSize(window_, &width, &height);
 	ratio = width / (float)height;
 
-	glClearColor(0.9, 0.9, 0.9, 1.);
+	glClearColor(0.13, 0.13, 0.13, 1.);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
-
-	mat4x4_identity(m);
-	
-	//mat4x4_rotate_Z(m, m, (float)glfwGetTime());
-	mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-	mat4x4_mul(mvp, p, m);
+	GLfloat modelMatrix[16];
+	toGlFloat(model.transpose(), modelMatrix);
+	GLfloat viewMatrix[16];
+	toGlFloat(view.transpose(), viewMatrix);
+	GLfloat normalMat[9];
+	toGlFloat(normalMatrix, normalMat);
+	GLfloat MVP[16];
+	toGlFloat(mvp, MVP);
 
 	
 	shader.use();
 	glBindVertexArray(VAO_);
-	shader.setUniformMatrix4fv("MVP", (const GLfloat*)mvp);
-	shader.setUniformMatrix4fv("modelMatrix", (const GLfloat*)m);
-	shader.setUniformMatrix3fv("normalMatrix", normalMatrix);
+	//On charge les variables uniforme
+	shader.setUniformMatrix4fv("MVP", (const GLfloat *) MVP);
+	shader.setUniformMatrix4fv("modelMatrix", (const GLfloat*) modelMatrix);
+	shader.setUniformMatrix4fv("viewMatrix", (const GLfloat*)viewMatrix);
+	shader.setUniformMatrix3fv("normalMatrix", (const GLfloat*)normalMat);
 	shader.setUniform3f("posLumiere", lightPosition_.get_x(), lightPosition_.get_y(), lightPosition_.get_z());
 	shader.setUniform3f("posCamera", posCamera.get_x(), posCamera.get_y(), posCamera.get_z());
 	shader.setUniform3f("coulLumiere", 1, 1, 1);
-	shader.setUniform3f("coulObjet", 0.3, 1, 0.6);
+	shader.setUniform3f("coulObjet", 1.0f, 0.5f, 0.31f);
 	shader.setUniform3f("specLumiere", 1, 1, 1);
 	shader.setUniform3f("specObjet", 1, 1, 1);
-	shader.setUniform1f("alpha", 0.5);
+	shader.setUniform1f("alpha", 6);
 
-	//glDrawArrays(GL_TRIANGLE_STRIP, 0, vertices_.size());
 	glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, &indices_[0]);
 }

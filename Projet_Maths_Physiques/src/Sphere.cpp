@@ -1,10 +1,13 @@
 #include "Sphere.h"
 
 
-Sphere::Sphere(float radius, Vecteur3D center, unsigned int sectorCount, unsigned int stackCount) : radius_(radius), center_(center), sectorCount_(sectorCount), stackCount_(stackCount)
+Sphere::Sphere(float radius, Vecteur3D center, unsigned int sectorCount, unsigned int stackCount) : radius_(radius), sectorCount_(sectorCount), stackCount_(stackCount)
 {
+    position_ = center;
+    scaling_ = Vecteur3D(1, 1, 1);
+    modelMatrix_ = Matrix4D::translation(position_) * Matrix4D::scaling(scaling_);
     float x, y, z, xy;                              // vertex position
-    float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
+    float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normale
     float s, t;                                     // vertex texCoord
 
     float sectorStep = 2 * M_PI / sectorCount_;
@@ -13,45 +16,46 @@ Sphere::Sphere(float radius, Vecteur3D center, unsigned int sectorCount, unsigne
 
     for (int i = 0; i <= stackCount_; ++i)
     {
-        stackAngle = M_PI / 2 - i * stackStep;        // starting from pi/2 to -pi/2
+        stackAngle = M_PI / 2 - i * stackStep;        // commence de pi/2 à -pi/2
         xy = radius_ * cosf(stackAngle);             // r * cos(u)
         z = radius_ * sinf(stackAngle);              // r * sin(u)
 
-        // add (sectorCount+1) vertices per stack
-        // the first and last vertices have same position and normal, but different tex coords
+        // ajoute (sectorCount+1) vertices par latitude
+        //les premier et dernier vertices ont la meme position et normale, mais des différentes coordonnées de texture
         for (int j = 0; j <= sectorCount_; ++j)
         {
-            sectorAngle = j * sectorStep;           // starting from 0 to 2pi
+            sectorAngle = j * sectorStep;           // on commence de 0 à 2pi
 
             // vertex position (x, y, z)
-            x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
+            x = xy * cosf(sectorAngle);           // r * cos(u) * cos(v)
             y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
 
-            // normalized vertex normal (nx, ny, nz)
+            // normale au vertex normalisée (nx, ny, nz)
             nx = x * lengthInv;
             ny = y * lengthInv;
             nz = z * lengthInv;
-            vertices_.push_back({x, y, z, 0.5f, 0.5f, 0.5f, nx, ny, nz});
 
-            /*
-            // vertex tex coord (s, t) range between [0, 1]
+            // coordonnée de texture du vertex (s, t) entre [0, 1]
             s = (float)j / sectorCount;
             t = (float)i / stackCount;
-            texCoords.push_back(s);
-            texCoords.push_back(t);
-            */
+
+
+            vertices_.push_back({x, y, z, 0.5f, 0.5f, 0.5f, nx, ny, nz, s, t});
+
+       
+            
         }
     }
 
     int k1, k2;
     for (int i = 0; i < stackCount_; ++i)
     {
-        k1 = i * (sectorCount_ + 1);     // beginning of current stack
-        k2 = k1 + sectorCount_ + 1;      // beginning of next stack
+        k1 = i * (sectorCount_ + 1);     // début de la latitude actuelle
+        k2 = k1 + sectorCount_ + 1;      // début de la latitude suivante
 
         for (int j = 0; j < sectorCount_; ++j, ++k1, ++k2)
         {
-            // 2 triangles per sector excluding first and last stacks
+            // 2 triangles par longitude en excluant la première et dernière latitude
             // k1 => k2 => k1+1
             if (i != 0)
             {

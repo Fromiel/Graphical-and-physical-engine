@@ -5,13 +5,16 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include "linmath.h"
-
 #include <iostream>
 #include <vector>
 #include "Vertice.h"
 #include "Vecteur3D.h"
+#include "Matrix3D.h"
+#include "Matrix4D.h"
 #include "Shader.h"
+#include "Object3d.h"
+#include "Camera.h"
+#include "Particule.h"
 
 /// <summary>
 /// Class gérant l'affichage avec opengl
@@ -19,6 +22,8 @@
 class OpenGLManager
 {
 	private:
+		Object3D object_;
+		Camera camera_;
 		std::vector<Vertice> vertices_; //les points à afficher
 		std::vector<unsigned int> indices_; //les indices des points
 		Vecteur3D lightPosition_; //position de la lumière
@@ -28,7 +33,6 @@ class OpenGLManager
 		
 
 	public:
-		OpenGLManager();
 
 		~OpenGLManager();
 
@@ -48,6 +52,18 @@ class OpenGLManager
 		/// </summary>
 		/// <param name="lightPosition"></param>
 		void setLightPosition(Vecteur3D lightPosition) { lightPosition_ = lightPosition; }
+
+		/// <summary>
+		/// Set l'objet3d
+		/// </summary>
+		/// <param name="object"></param>
+		void setObject(Object3D object) { object_ = object; }
+
+		/// <summary>
+		/// Set la camera
+		/// </summary>
+		/// <param name="camera"></param>
+		void setCamera(Camera camera) { camera_ = camera; }
 
 		/// <summary>
 		/// Méthode permettant de set vertices_, indices_ et program_; de charger les attributes et de générer les buffers

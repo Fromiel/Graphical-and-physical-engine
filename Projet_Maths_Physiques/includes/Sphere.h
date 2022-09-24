@@ -12,7 +12,6 @@ class Sphere : public Object3D
 {
 	private:
 		float radius_; //rayon
-		Vecteur3D center_; //centre
 		unsigned int sectorCount_, stackCount_; //Subdivisions en longitudes (sectors) et latitudes (stacks)
 
 

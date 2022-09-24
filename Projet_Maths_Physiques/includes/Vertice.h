@@ -9,6 +9,7 @@ const struct Vertice
 	float x, y, z; //Coordonnées du point
 	float r, g, b; //Couleur du point 
 	float xn, yn, zn; //Normale au point
+	float s, t; //Coordonnées des textures
 };
 
 #endif
