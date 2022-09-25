@@ -46,7 +46,9 @@ int main(void)
     {
         current_ticks = clock();
        
-        particule.update(frameRate);
+        if (particule.getPos().get_y() >= 0) {
+            particule.update(frameRate);
+        }
         sphere.setPosition(particule.getPos());
         openGLManager.setObject(sphere);
 

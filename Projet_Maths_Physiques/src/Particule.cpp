@@ -32,12 +32,10 @@ void Particule::setAcceleration(const Vecteur3D a) {
 }
 
 void Particule::update(double h) {
-	if (position.get_y() >= 0) {
 		std::cout << "Update with h = " << h << std::endl;
 		std::cout << "Particule at position : " << position << std::endl;
 		updateVelocity(h);
 		updatePosition(h);
-	}
 }
 
 void Particule::updatePosition(double frameRate) {
