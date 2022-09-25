@@ -37,11 +37,16 @@ int main(void)
     openGLManager.setCamera(Camera(0.1, 100000, Vecteur3D(5, 5, 17), 90));
 
     openGLManager.loadVertices(sphere.getVertices(), sphere.getIndices(), shader.getIDProgram());
- 
+
+    clock_t current_ticks, delta_ticks;
+    double frameRate = 1.0 / 60.0;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(openGLManager.getWindow()))
     {
-        particule.update();
+        current_ticks = clock();
+       
+        particule.update(frameRate);
         sphere.setPosition(particule.getPos());
         openGLManager.setObject(sphere);
 
@@ -53,6 +58,11 @@ int main(void)
 
         /* Poll for and process events */
         glfwPollEvents();
+
+        /* Frame Rate Update */
+        delta_ticks = clock() - current_ticks;
+        frameRate = (double)delta_ticks / (double)CLOCKS_PER_SEC;
+
     }
 
     return 0;

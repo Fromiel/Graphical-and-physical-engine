@@ -31,25 +31,20 @@ void Particule::setAcceleration(const Vecteur3D a) {
 	acceleration = a;
 }
 
-void Particule::update(double h) { 
-	std::cout << "Update with h = " << h << std::endl;
-	updateVelocity(h);
-	updatePosition(h);
+void Particule::update(double h) {
+	if (position.get_y() >= 0) {
+		std::cout << "Update with h = " << h << std::endl;
+		std::cout << "Particule at position : " << position << std::endl;
+		updateVelocity(h);
+		updatePosition(h);
+	}
 }
 
 void Particule::updatePosition(double frameRate) {
-	//std::cout << "vel * frameRate = " << velocity.scalar_multiplication(frameRate) << std::endl;
-	//position = position + (velocity.scalar_multiplication(frameRate));
 	position = position +  (frameRate * velocity);
 }
 
 void Particule::updateVelocity(double frameRate) {
-	//std::cout << "pow(d,frameRate)) = " << (pow(d, frameRate))  << std::endl;
-	//std::cout << "frameRate = " << frameRate << std::endl;
-	//std::cout << "acceleration = " << acceleration << std::endl;
-	//std::cout << "frameRate*acceleration = " << (frameRate*acceleration) << std::endl;
-	//std::cout << "frameRate * acceleration = " << acceleration.scalar_multiplication(frameRate) << std::endl;
-	//velocity =  velocity.scalar_multiplication((pow(d, frameRate))) + (acceleration.scalar_multiplication(frameRate));
 	velocity = pow(d, frameRate) * velocity + frameRate * acceleration;
 }
 
