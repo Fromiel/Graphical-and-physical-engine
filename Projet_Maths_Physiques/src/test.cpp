@@ -7,6 +7,10 @@
 #include <iostream>
 
 
+static Particule particule1(Vecteur3D(-5, 0, 0), Vecteur3D(20, 20, 0), 1, 10);
+static Particule particule2(Vecteur3D(-5, 0, 0), Vecteur3D(40, 40, 0), 1, 20);
+static Particule particule3(Vecteur3D(-5, 0, 0), Vecteur3D(10, 10, 0), 1, 5);
+
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -15,12 +19,29 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 }
 
+Particule askUser() {
+    int user_input;
+    std::cout << "Quelle particule souhaitez vous utiliser ? \n1 = Basique\n2 = Soft\n3 = Lourde\n " << std::endl;
+    std::cin >> user_input;
+    switch (user_input) {
+    case 2:
+        return particule2;
+        break;
+    case 3:
+        return particule3;
+        break;
+    default:
+        return particule1;
+        break;
+    }
+}
+
 
 int main(void)
 {
     OpenGLManager openGLManager;
 
-    Particule particule(Vecteur3D(-5, 0, 0), Vecteur3D(20, 20, 0), 1, 10);
+    Particule particule = askUser();
 
     Sphere sphere(1.f, Vecteur3D(0.0f, 0.0f, 0.0f), 36, 18);
 
@@ -47,11 +68,19 @@ int main(void)
         current_ticks = clock();
        
         if (particule.getPos().get_y() >= 0) {
+            std::cout << "Update Particle" << std::endl;
             particule.update(frameRate);
         }
-        sphere.setPosition(particule.getPos());
-        openGLManager.setObject(sphere);
+        else {
+            particule = askUser();
+            current_ticks = clock();
+        }
 
+
+        sphere.setPosition(particule.getPos());
+        
+        openGLManager.setObject(sphere);
+   
         /* Render here */
         openGLManager.Render(shader);
 

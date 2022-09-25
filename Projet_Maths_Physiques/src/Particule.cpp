@@ -32,8 +32,8 @@ void Particule::setAcceleration(const Vecteur3D a) {
 }
 
 void Particule::update(double h) {
-		std::cout << "Update with h = " << h << std::endl;
-		std::cout << "Particule at position : " << position << std::endl;
+		std::cout << "Update with h = " << h << std::endl; //FOR DEBUG
+		std::cout << "Particule at position : " << position << std::endl; //FOR DEBUG
 		updateVelocity(h);
 		updatePosition(h);
 }
@@ -43,6 +43,7 @@ void Particule::updatePosition(double frameRate) {
 }
 
 void Particule::updateVelocity(double frameRate) {
+	std::cout << "Particule velocity is " << velocity.norm() << std::endl; //FOR DEBUG
 	velocity = pow(d, frameRate) * velocity + frameRate * acceleration;
 }
 
