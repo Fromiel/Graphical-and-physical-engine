@@ -6,6 +6,7 @@
 #include <ostream>
 #include "Vertice.h"
 #include "Matrix4D.h"
+#include "Particule.h"
 
 /// <summary>
 /// Classe représentant un object en 3D 
@@ -18,8 +19,10 @@ class Object3D
 		Vecteur3D position_; 
 		Vecteur3D scaling_;
 		Matrix4D modelMatrix_;
+		Particule particule_;
 
 	public:
+		Object3D(Vecteur3D position, Vecteur3D scaling, Particule particule);
 
 		/// <summary>
 		/// 
@@ -56,26 +59,32 @@ class Object3D
 		/// Permet de changer la position de l'objet (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="position">nouvelle position</param>
-		void setPosition(Vecteur3D position);
+		void setPosition(const Vecteur3D &position);
 
 		/// <summary>
 		/// Permet de changer l'aggrandissement de l'objet (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="position">position nouvelle position</param>
-		void setScaling(Vecteur3D scale);
+		void setScaling(const Vecteur3D &scale);
 
 		/// <summary>
 		/// Bouge l'objet du vecteur mis en argument dans ses coordonnées (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="vect"></param>
-		void move(Vecteur3D vect);
+		void move(const Vecteur3D &vect);
 
 		/// <summary>
 		/// Effectue la rotation de l'objet dans ses coordonnées (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="angle"></param>
 		/// <param name="pivot"></param>
-		void rotate(float angle, Vecteur3D pivot);
+		void rotate(float angle, const Vecteur3D &pivot);
+
+		/// <summary>
+		/// Applique les forces exercées sur l'objet en fonction du frame rate
+		/// </summary>
+		/// <param name="frameRate"></param>
+		void applyForces(double frameRate);
 		
 
 

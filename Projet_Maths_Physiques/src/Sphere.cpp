@@ -1,11 +1,8 @@
 #include "Sphere.h"
 
 
-Sphere::Sphere(float radius, Vecteur3D center, unsigned int sectorCount, unsigned int stackCount) : radius_(radius), sectorCount_(sectorCount), stackCount_(stackCount)
+Sphere::Sphere(float radius, Vecteur3D center, Vecteur3D vel_initiale, double m, unsigned int sectorCount, unsigned int stackCount) : Object3D(center, Vecteur3D(1, 1, 1), Particule(center, vel_initiale, radius, m)), radius_(radius), sectorCount_(sectorCount), stackCount_(stackCount)
 {
-    position_ = center;
-    scaling_ = Vecteur3D(1, 1, 1);
-    modelMatrix_ = Matrix4D::translation(position_) * Matrix4D::scaling(scaling_);
     float x, y, z, xy;                              // vertex position
     float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normale
     float s, t;                                     // vertex texCoord

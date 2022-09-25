@@ -17,7 +17,7 @@ Camera::Camera(float near, float far, const Vecteur3D& position, float fov, floa
 }
 
 
-void Camera::setPosition(Vecteur3D position)
+void Camera::setPosition(const Vecteur3D &position)
 {
     viewMatrix_ = viewMatrix_ * Matrix4D::translation(Vecteur3D() - position) * Matrix4D::translation(Vecteur3D(position_));
     position_ = position;
@@ -30,18 +30,18 @@ void Camera::setPosition(float x, float y, float z)
 }
 
 
-void Camera::move(Vecteur3D vect)
+void Camera::move(const Vecteur3D &vect)
 {
     //todo
 }
 
 
-void Camera::rotate(float angle, Vecteur3D pivot)
+void Camera::rotate(float angle, const Vecteur3D &pivot)
 {
     //todo
 }
 
-void Camera::lookAt(Vecteur3D eye, Vecteur3D center, Vecteur3D up)
+void Camera::lookAt(const Vecteur3D &eye, const Vecteur3D &center, const Vecteur3D &up)
 {
     //todo
 }

@@ -2,6 +2,7 @@
 
 #include "Matrix3D.h"
 #include "Sphere.h"
+#include "Scene.h"
 
 #include <cstdio>
 #include <iostream>
@@ -39,11 +40,17 @@ Particule askUser() {
 
 int main(void)
 {
+    //initialisation
+
     OpenGLManager openGLManager;
+
+    Scene scene(Camera(0.1, 100000, Vecteur3D(5, 5, 17), 90), Light(Vecteur3D(0, 0, 1000)));
 
     Particule particule = askUser();
 
-    Sphere sphere(1.f, Vecteur3D(0.0f, 0.0f, 0.0f), 36, 18);
+    Sphere sphere(1, Vecteur3D(-5, 0, 0), particule.getVelocity(), 1 / particule.getInverseMasse());
+
+    scene.addGameObject(sphere);
 
     openGLManager.initAndCreateWindow();
     
@@ -51,36 +58,31 @@ int main(void)
     
     openGLManager.setKeyCallback(key_callback);
 
-    openGLManager.setLightPosition(Vecteur3D(0, 0, 1000));
+    openGLManager.setIdProgram(shader.getIDProgram());
 
-    openGLManager.setObject(sphere);
-
-    openGLManager.setCamera(Camera(0.1, 100000, Vecteur3D(5, 5, 17), 90));
-
-    openGLManager.loadVertices(sphere.getVertices(), sphere.getIndices(), shader.getIDProgram());
+    openGLManager.loadScene(scene);
 
     clock_t current_ticks, delta_ticks;
     double frameRate = 1.0 / 60.0;
+
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(openGLManager.getWindow()))
     {
         current_ticks = clock();
        
-        if (particule.getPos().get_y() >= 0) {
+        if (openGLManager.getScene().getGameObjects()[0].getPosition().get_y() >= 0) {
             std::cout << "Update Particle" << std::endl;
-            particule.update(frameRate);
+            openGLManager.updateScene(frameRate);
         }
         else {
             particule = askUser();
+            Sphere s(1, Vecteur3D(-5, 0, 0), particule.getVelocity(), 1 / particule.getInverseMasse());
+            openGLManager.setGameObject(0, s);
             current_ticks = clock();
         }
 
-
-        sphere.setPosition(particule.getPos());
-        
-        openGLManager.setObject(sphere);
-   
+        //openGLManager.getScene().applyForces(frameRate);
         /* Render here */
         openGLManager.Render(shader);
 

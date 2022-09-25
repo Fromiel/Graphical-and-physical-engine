@@ -8,12 +8,10 @@
 #include <iostream>
 #include <vector>
 #include "Vertice.h"
-#include "Vecteur3D.h"
 #include "Matrix3D.h"
 #include "Matrix4D.h"
 #include "Shader.h"
-#include "Object3d.h"
-#include "Camera.h"
+#include "Scene.h"
 #include "Particule.h"
 
 /// <summary>
@@ -22,11 +20,9 @@
 class OpenGLManager
 {
 	private:
-		Object3D object_;
-		Camera camera_;
+		Scene scene_;
 		std::vector<Vertice> vertices_; //les points à afficher
 		std::vector<unsigned int> indices_; //les indices des points
-		Vecteur3D lightPosition_; //position de la lumière
 		GLFWwindow* window_; //Fenêtre
 		GLuint vertexBuffer_, vertexShader_, fragmentShader_, program_, VAO_, EBO_; //Differents id
 		GLint vposLocation_, vcolLocation_, normalLocation_; //Id des attributes
@@ -42,36 +38,36 @@ class OpenGLManager
 		void initAndCreateWindow();
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>La scène</returns>
+		Scene getScene() const { return scene_; }
+
+		void setGameObject(int index, Object3D object) { scene_.setGameObject(index, object); }
+
+		/// <summary>
+		/// Appel la méthode applyForces de la scene
+		/// </summary>
+		/// <param name="frameRate"></param>
+		void updateScene(double frameRate) { scene_.applyForces(frameRate); }
+
+		/// <summary>
 		/// Méthode affectant la fonction à appelé pour gérer les inputs
 		/// </summary>
 		/// <param name="key_callback">la fonction à appeler</param>
 		void setKeyCallback(static void (*key_callback)(GLFWwindow*, int, int, int, int)) { glfwSetKeyCallback(window_, key_callback); };
 
 		/// <summary>
-		/// Set la position de la lumière
+		/// Méthode pour set l'id du programme
 		/// </summary>
-		/// <param name="lightPosition"></param>
-		void setLightPosition(Vecteur3D lightPosition) { lightPosition_ = lightPosition; }
+		/// <param name="ID">Nouvel ID</param>
+		void setIdProgram(GLuint ID) { program_ = ID; }
 
 		/// <summary>
-		/// Set l'objet3d
+		/// Méthode permettant de charger une scène, ce qui va set vertices_ et indices_; ainsi que charger les attributes et de générer les buffers
 		/// </summary>
-		/// <param name="object"></param>
-		void setObject(Object3D object) { object_ = object; }
-
-		/// <summary>
-		/// Set la camera
-		/// </summary>
-		/// <param name="camera"></param>
-		void setCamera(Camera camera) { camera_ = camera; }
-
-		/// <summary>
-		/// Méthode permettant de set vertices_, indices_ et program_; de charger les attributes et de générer les buffers
-		/// </summary>
-		/// <param name="vertices"></param>
-		/// <param name="indices"></param>
-		/// <param name="idProgram"></param>
-		void loadVertices(std::vector<Vertice> vertices, std::vector<unsigned int> indices, GLuint idProgram);
+		/// <param name="scene">La scene à charger</param>
+		void loadScene(Scene scene);
 
 		/// <summary>
 		/// Retourne l'id de la fenêtre
@@ -84,6 +80,8 @@ class OpenGLManager
 		/// </summary>
 		/// <param name="shader"></param>
 		void Render(Shader shader);
+
+
 
 
 
