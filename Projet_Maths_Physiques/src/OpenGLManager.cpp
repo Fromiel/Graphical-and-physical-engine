@@ -56,12 +56,19 @@ void OpenGLManager::loadScene(Scene scene)
 	vertices_ = std::vector<Vertice>();
 	indices_ = std::vector<unsigned int>();
 
+	int currentIndex = 0;
+
 	for (auto object : scene.getGameObjects())
 	{
 		auto verticesObject = object.getVertices();
 		auto indicesObject = object.getIndices();
+		for (int i = 0; i < indicesObject.size(); i++)
+		{
+			indicesObject[i] += currentIndex;
+		}
 		vertices_.insert(vertices_.end(), verticesObject.begin(), verticesObject.end());
 		indices_.insert(indices_.end(), indicesObject.begin(), indicesObject.end());
+		currentIndex = vertices_.size();
 	}
 
 	glGenBuffers(1, &vertexBuffer_);
@@ -115,21 +122,8 @@ void OpenGLManager::Render(Shader shader)
 	Camera camera = scene_.getCamera();
 	Vecteur3D lightPosition = scene_.getLight().getPosition();
 	Vecteur3D lightColor = scene_.getLight().getColor();
-	Matrix4D model = scene_.getGameObjects()[0].getModelMatrix();
 	Matrix4D view = camera.getViewMatrix();
 	Matrix4D projection = Matrix4D::projectionMatrix(camera.getFov(), camera.getRatio(), camera.getNear(), camera.getFar());
-	Matrix4D mvp = (projection * view * model).transpose(); //On applique la transposée car quand on va passer les matrices à glsl, il va construire les matrices colonne par colonne et non ligne par ligne comme nous
-	Matrix4D modelView = view * model;
-	Matrix3D upperLeftModelView;
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			upperLeftModelView(i, j) = modelView(i, j);
-		}
-	}
-
-	Matrix3D normalMatrix = upperLeftModelView.invert();
 	Vecteur3D posCamera = camera.getPosition();
 
 	glfwGetFramebufferSize(window_, &width, &height);
@@ -138,23 +132,14 @@ void OpenGLManager::Render(Shader shader)
 	glClearColor(0.13, 0.13, 0.13, 1.);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	GLfloat modelMatrix[16];
-	toGlFloat(model.transpose(), modelMatrix);
 	GLfloat viewMatrix[16];
 	toGlFloat(view.transpose(), viewMatrix);
-	GLfloat normalMat[9];
-	toGlFloat(normalMatrix, normalMat);
-	GLfloat MVP[16];
-	toGlFloat(mvp, MVP);
 
 	
 	shader.use();
 	glBindVertexArray(VAO_);
 	//On charge les variables uniforme
-	shader.setUniformMatrix4fv("MVP", (const GLfloat *) MVP);
-	shader.setUniformMatrix4fv("modelMatrix", (const GLfloat*) modelMatrix);
 	shader.setUniformMatrix4fv("viewMatrix", (const GLfloat*)viewMatrix);
-	shader.setUniformMatrix3fv("normalMatrix", (const GLfloat*)normalMat);
 	shader.setUniform3f("posLumiere", lightPosition.get_x(), lightPosition.get_y(), lightPosition.get_z());
 	shader.setUniform3f("posCamera", posCamera.get_x(), posCamera.get_y(), posCamera.get_z());
 	shader.setUniform3f("coulLumiere", lightColor.get_x(), lightColor.get_y(), lightColor.get_z());
@@ -163,5 +148,43 @@ void OpenGLManager::Render(Shader shader)
 	shader.setUniform3f("specObjet", 1, 1, 1);
 	shader.setUniform1f("alpha", 6);
 
-	glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, &indices_[0]);
+
+	//On boucle sur tous les gameObjects pour changer la modelMatrix et la mvpMatrix et la normalMatrix
+	int currentIndex = 0;
+	auto gameObjects = scene_.getGameObjects();
+
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		auto object = gameObjects[i];
+		int length = object.getIndices().size();
+
+		Matrix4D model = object.getModelMatrix();
+		Matrix4D mvp = (projection * view * model).transpose(); //On applique la transposée car quand on va passer les matrices à glsl, il va construire les matrices colonne par colonne et non ligne par ligne comme nous
+		Matrix4D modelView = view * model;
+
+		Matrix3D upperLeftModelView;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				upperLeftModelView(i, j) = modelView(i, j);
+			}
+		}
+
+		Matrix3D normalMatrix = upperLeftModelView.invert();
+
+		GLfloat normalMat[9];
+		toGlFloat(normalMatrix, normalMat);
+		GLfloat MVP[16];
+		toGlFloat(mvp, MVP);
+		GLfloat modelMatrix[16];
+		toGlFloat(model.transpose(), modelMatrix);
+
+		shader.setUniformMatrix3fv("normalMatrix", (const GLfloat*)normalMat);
+		shader.setUniformMatrix4fv("MVP", (const GLfloat*)MVP);
+		shader.setUniformMatrix4fv("modelMatrix", (const GLfloat*)modelMatrix);
+
+		glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, &indices_[currentIndex]);
+		currentIndex += length;
+	}
 }

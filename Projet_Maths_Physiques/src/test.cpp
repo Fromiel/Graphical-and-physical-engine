@@ -3,6 +3,7 @@
 #include "Matrix3D.h"
 #include "Matrix4D.h"
 #include "Sphere.h"
+#include "Cube.h"
 #include "Scene.h"
 
 #include <cstdio>
@@ -45,12 +46,15 @@ int main(void)
 
     OpenGLManager openGLManager;
 
-    Scene scene(Camera(0.1, 100000, Vecteur3D(5, 5, 17), 90), Light(Vecteur3D(0, 0, 1000)));
+    Scene scene(Camera(0.1, 10000, Vecteur3D(5, 5, 25), 90), Light(Vecteur3D(0, 0, 1000)));
 
     Particule particule = askUser();
 
     Sphere sphere(1, Vecteur3D(-5, 0, 0), particule.getVelocity(), 1 / particule.getInverseMasse());
 
+    Cube cube(1, Vecteur3D(0, 0, 0), Vecteur3D(200, 0.01, 200));
+
+    scene.addGameObject(cube);
     scene.addGameObject(sphere);
 
     openGLManager.initAndCreateWindow();
@@ -153,14 +157,14 @@ int main(void)
     {
         current_ticks = clock();
        
-        if (openGLManager.getScene().getGameObjects()[0].getPosition().get_y() >= 0) {
+        if (openGLManager.getScene().getGameObjects()[1].getPosition().get_y() >= 0) {
             std::cout << "Update Particle" << std::endl;
             openGLManager.updateScene(frameRate);
         }
         else {
             particule = askUser();
             Sphere s(1, Vecteur3D(-5, 0, 0), particule.getVelocity(), 1 / particule.getInverseMasse());
-            openGLManager.setGameObject(0, s);
+            openGLManager.setGameObject(1, s);
             current_ticks = clock();
         }
 

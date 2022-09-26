@@ -22,6 +22,13 @@ class Object3D
 		Particule particule_;
 
 	public:
+
+		/// <summary>
+		/// Constructeur de Object3d ou l'on specifie une particule
+		/// </summary>
+		/// <param name="position"></param>
+		/// <param name="scaling"></param>
+		/// <param name="particule"></param>
 		Object3D(Vecteur3D position, Vecteur3D scaling, Particule particule);
 
 		/// <summary>
