@@ -6,7 +6,6 @@ project ("Projet_Maths_Physique")
 
 
 add_subdirectory(Dependencies/lib-vc2022)
-
 file(GLOB SOURCES src/*.cpp)
 # Ajoutez une source à l'exécutable de ce projet.
 add_executable(Projet_Maths_Physique ${SOURCES}  "includes/test.h" "includes/Vertice.h")

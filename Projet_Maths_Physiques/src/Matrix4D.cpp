@@ -1,8 +1,11 @@
 #include "Matrix4D.h"
 
-Matrix4D::Matrix4D() : _content(std::vector<double>(16,0.0))
+Matrix4D::Matrix4D()
 {
+    std::vector<double> content = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+    _content = content;
 }
+
 
 Matrix4D::Matrix4D(const std::vector<double>& content) : _content(content) {
 	if (_content.size() != 16) throw std::invalid_argument("Matrix3D::Provide content with size 16");
