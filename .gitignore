@@ -400,4 +400,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Exclude build
 Projet_Maths_Physiques/out/
+
+# Exclude tests builds
+Projet_Maths_Physiques/Tests/*/*.o
+Projet_Maths_Physiques/Tests/*/*.exe
