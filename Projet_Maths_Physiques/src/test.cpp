@@ -20,6 +20,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
+    if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+        createParticule(1);
+    }
 
 }
 
@@ -38,6 +41,24 @@ Particule askUser() {
         return particule1;
         break;
     }
+}
+
+void createParticule(int i) {
+    Sphere sphereMesh(1, Vecteur3D(-5, 0, 0));
+    Particule p(particule1);
+    switch (i) {
+    case 1:
+        break;
+    case 2:
+        p = particule2;
+        break;
+    case 3:
+        p = particule3;
+        break;
+    default:
+        break;
+    }
+    GameObject sphere(sphereMesh, p);
 }
 
 
