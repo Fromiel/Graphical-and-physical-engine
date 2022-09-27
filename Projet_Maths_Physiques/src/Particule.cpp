@@ -2,6 +2,7 @@
 
 double Particule::g = 9.81;
 double Particule::d = 0.7;
+double Particule::sol = 0.0;
 
 Particule::Particule(Vecteur3D pos_initiale, Vecteur3D v_initiale, double r, double m) {
 	position = pos_initiale;
@@ -32,10 +33,13 @@ void Particule::setAcceleration(const Vecteur3D a) {
 }
 
 void Particule::update(double h) {
+	if (position.get_y() >= sol) {
+
 		std::cout << "Update with h = " << h << std::endl; //FOR DEBUG
 		std::cout << "Particule at position : " << position << std::endl; //FOR DEBUG
 		updateVelocity(h);
 		updatePosition(h);
+	}
 }
 
 void Particule::updatePosition(double frameRate) {

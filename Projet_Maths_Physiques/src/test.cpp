@@ -15,6 +15,25 @@ static Particule particule1(Vecteur3D(-5, 0, 0), Vecteur3D(20, 20, 0), 1, 10);
 static Particule particule2(Vecteur3D(-5, 0, 0), Vecteur3D(40, 40, 0), 1, 20);
 static Particule particule3(Vecteur3D(-5, 0, 0), Vecteur3D(10, 10, 0), 1, 5);
 
+void createParticule(int i) {
+    Sphere sphereMesh(1, Vecteur3D(-5, 0, 0));
+    Particule p(particule1);
+    switch (i) {
+    case 1:
+        break;
+    case 2:
+        p = particule2;
+        break;
+    case 3:
+        p = particule3;
+        break;
+    default:
+        break;
+    }
+    GameObject sphere(sphereMesh, p);
+    OpenGLManager::getInstance()->addGameObject(sphere);
+}
+
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -23,8 +42,12 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
         createParticule(1);
     }
-
-    Scene scene = OpenGLManager::getInstance()->getScene();
+    if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+        createParticule(2);
+    }
+    if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+        createParticule(3);
+    }
 }
 
 Particule askUser() {
@@ -44,23 +67,7 @@ Particule askUser() {
     }
 }
 
-void createParticule(int i) {
-    Sphere sphereMesh(1, Vecteur3D(-5, 0, 0));
-    Particule p(particule1);
-    switch (i) {
-    case 1:
-        break;
-    case 2:
-        p = particule2;
-        break;
-    case 3:
-        p = particule3;
-        break;
-    default:
-        break;
-    }
-    GameObject sphere(sphereMesh, p);
-}
+
 
 
 int main(void)
@@ -71,17 +78,17 @@ int main(void)
 
     Scene scene(Camera(0.1, 10000, Vecteur3D(5, 5, 25), 90), Light(Vecteur3D(0, 0, 1000)));
 
-    Particule particule = askUser();
+    //Particule particule = askUser();
 
     Sphere sphereMesh(1, Vecteur3D(-5, 0, 0));
 
     Cube cubeMesh(1, Vecteur3D(0, 0, 0), Vecteur3D(200, 0.01, 200));
 
-    GameObject sphere(sphereMesh, particule);
+    //GameObject sphere(sphereMesh, particule);
     GameObject cube(cubeMesh);
 
     scene.addGameObject(cube);
-    scene.addGameObject(sphere);
+    //scene.addGameObject(sphere);
 
     openGLManager->initAndCreateWindow();
     
@@ -191,8 +198,8 @@ int main(void)
     while (!glfwWindowShouldClose(openGLManager->getWindow()))
     {
         current_ticks = clock();
-       
-        if (openGLManager->getScene().getGameObjects()[1].getMesh().getPosition().get_y() >= 0) {
+
+        /*if (openGLManager->getScene().getGameObjects()[1].getMesh().getPosition().get_y() >= 0) {
             std::cout << "Update Particle" << std::endl;
             openGLManager->updateScene(frameRate);
         }
@@ -202,7 +209,9 @@ int main(void)
             GameObject s(sMesh, particule);
             openGLManager->setGameObject(1, s);
             current_ticks = clock();
-        }
+        }*/
+
+        openGLManager->updateScene(frameRate);
 
         //openGLManager.getScene().applyForces(frameRate);
         /* Render here */

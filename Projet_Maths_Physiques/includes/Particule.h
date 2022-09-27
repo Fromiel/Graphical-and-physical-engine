@@ -41,6 +41,8 @@ private:
 	static double g;
 	//Valeur des frottements
 	static double d;
+	//Hauteur du sol
+	static double sol;
 
 	//Fonctions d'update
 
