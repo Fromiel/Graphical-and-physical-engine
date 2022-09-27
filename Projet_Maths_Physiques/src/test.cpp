@@ -97,7 +97,10 @@ int main(void)
 
     //----------------Fin initialisation--------------------
 
-/*  Vecteur3D test1(1, 2, 3);
+/*  
+    Test Vecteur3D :
+    
+    Vecteur3D test1(1, 2, 3);
     Vecteur3D test2(4, 5, 6);
 
     Vecteur3D test_copie(test1);
@@ -120,9 +123,11 @@ int main(void)
     std::cout << test_moins << std::endl;
     std::cout << test_fois << std::endl;
     std::cout << test_ps << std::endl;
-    std::cout << test_pv << std::endl; */
+    std::cout << test_pv << std::endl; 
 
-    /*Matrix4D test_mat_0;
+    Test Matrix4D :
+
+    Matrix4D test_mat_0;
     std::vector<double> content = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 };
     Matrix4D test_mat_1(content);
     content = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
