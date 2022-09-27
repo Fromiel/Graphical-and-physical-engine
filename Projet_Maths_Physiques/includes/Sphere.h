@@ -23,7 +23,7 @@ class Sphere : public Object3D
 		/// <param name="center"></param>
 		/// <param name="sectorCount"></param>
 		/// <param name="stackCount"></param>
-		Sphere(float radius, Vecteur3D center, Vecteur3D vel_initiale, double m, unsigned int sectorCount = 36, unsigned int stackCount = 18);
+		Sphere(float radius, Vecteur3D center, unsigned int sectorCount = 36, unsigned int stackCount = 18);
 
 
 };

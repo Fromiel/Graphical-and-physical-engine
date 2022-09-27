@@ -1,6 +1,6 @@
 #include "Scene.h"
 
-Scene::Scene(Camera camera, Light light, std::vector<Object3D> gameObjects) : camera_(camera), light_(light), gameObjects_(gameObjects)
+Scene::Scene(Camera camera, Light light, std::vector<GameObject> gameObjects) : camera_(camera), light_(light), gameObjects_(gameObjects)
 {
 
 }

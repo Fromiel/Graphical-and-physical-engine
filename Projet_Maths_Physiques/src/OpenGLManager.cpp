@@ -58,10 +58,10 @@ void OpenGLManager::loadScene(Scene scene)
 
 	int currentIndex = 0;
 
-	for (auto object : scene.getGameObjects())
+	for (auto gameobject : scene.getGameObjects())
 	{
-		auto verticesObject = object.getVertices();
-		auto indicesObject = object.getIndices();
+		auto verticesObject = gameobject.getMesh().getVertices();
+		auto indicesObject = gameobject.getMesh().getIndices();
 		for (int i = 0; i < indicesObject.size(); i++)
 		{
 			indicesObject[i] += currentIndex;
@@ -155,7 +155,7 @@ void OpenGLManager::Render(Shader shader)
 
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		auto object = gameObjects[i];
+		auto object = gameObjects[i].getMesh();
 		int length = object.getIndices().size();
 
 		Matrix4D model = object.getModelMatrix();

@@ -1,6 +1,6 @@
 #include "Object3D.h"
 
-Object3D::Object3D(Vecteur3D position, Vecteur3D scaling, Particule particule) : position_(position), scaling_(scaling), particule_(particule)
+Object3D::Object3D(Vecteur3D position, Vecteur3D scaling) : position_(position), scaling_(scaling)
 {
 	modelMatrix_ = Matrix4D::translation(position_) * Matrix4D::scaling(scaling_);
 }
@@ -27,9 +27,4 @@ void Object3D::rotate(float angle, const Vecteur3D &pivot)
 	//todo
 }
 
-void Object3D::applyForces(double frameRate)
-{
-	particule_.update(frameRate);
-	setPosition(particule_.getPos());
-}
 

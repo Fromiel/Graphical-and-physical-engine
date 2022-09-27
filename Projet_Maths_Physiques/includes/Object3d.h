@@ -19,7 +19,6 @@ class Object3D
 		Vecteur3D position_; 
 		Vecteur3D scaling_;
 		Matrix4D modelMatrix_;
-		Particule particule_;
 
 	public:
 
@@ -28,8 +27,7 @@ class Object3D
 		/// </summary>
 		/// <param name="position"></param>
 		/// <param name="scaling"></param>
-		/// <param name="particule"></param>
-		Object3D(Vecteur3D position, Vecteur3D scaling, Particule particule);
+		Object3D(Vecteur3D position, Vecteur3D scaling);
 
 		/// <summary>
 		/// 
@@ -87,11 +85,6 @@ class Object3D
 		/// <param name="pivot"></param>
 		void rotate(float angle, const Vecteur3D &pivot);
 
-		/// <summary>
-		/// Applique les forces exercées sur l'objet en fonction du frame rate
-		/// </summary>
-		/// <param name="frameRate"></param>
-		void applyForces(double frameRate);
 		
 
 

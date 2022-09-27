@@ -43,7 +43,12 @@ class OpenGLManager
 		/// <returns>La scène</returns>
 		Scene getScene() const { return scene_; }
 
-		void setGameObject(int index, Object3D object) { scene_.setGameObject(index, object); }
+		/// <summary>
+		/// Permet de set le gameobject à l'indice mis en argument
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="object"></param>
+		void setGameObject(int index, GameObject object) { scene_.setGameObject(index, object); }
 
 		/// <summary>
 		/// Appel la méthode applyForces de la scene

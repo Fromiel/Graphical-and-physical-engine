@@ -4,12 +4,13 @@
 #include "Object3D.h"
 #include "Camera.h"
 #include "Light.h"
+#include "GameObject.h"
 
 
 class Scene
 {
 	private:
-		std::vector<Object3D> gameObjects_;
+		std::vector<GameObject> gameObjects_;
 		Camera camera_;
 		Light light_;
 
@@ -20,7 +21,7 @@ class Scene
 		/// <param name="camera">Caméra de la scène</param>
 		/// <param name="light">Lumière de la scène</param>
 		/// <param name="gameObjects">Les objets de la scène</param>
-		Scene(Camera camera = Camera(), Light light = Light(), std::vector<Object3D> gameObjects = std::vector<Object3D>());
+		Scene(Camera camera = Camera(), Light light = Light(), std::vector<GameObject> gameObjects = std::vector<GameObject>());
 
 		/// <summary>
 		/// 
@@ -38,16 +39,16 @@ class Scene
 		/// 
 		/// </summary>
 		/// <returns>Les objets de la scène</returns>
-		std::vector<Object3D> getGameObjects() const { return gameObjects_; }
+		std::vector<GameObject> getGameObjects() const { return gameObjects_; }
 
 		
-		void setGameObject(int index, Object3D object) { gameObjects_[index] = object; }
+		void setGameObject(int index, GameObject object) { gameObjects_[index] = object; }
 
 		/// <summary>
-		/// Ajoute un objet à la scène­
+		/// Ajoute un GameObjectbjet à la scène­
 		/// </summary>
 		/// <param name="object">L'objet à ajouter</param>
-		void addGameObject(const Object3D& object) { gameObjects_.push_back(object); }
+		void addGameObject(const GameObject& object) { gameObjects_.push_back(object); }
 
 		/// <summary>
 		/// Applique les forces exercées sur les objets de la scène en fonction du frame rate

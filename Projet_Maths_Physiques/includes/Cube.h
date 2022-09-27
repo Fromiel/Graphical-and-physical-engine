@@ -9,6 +9,7 @@
 class Cube : public Object3D
 {
 	private:
+		//Longueur d'une arrête du cube
 		float length_;
 
 	public:

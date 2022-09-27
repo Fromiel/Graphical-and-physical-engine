@@ -5,6 +5,7 @@
 #include "Sphere.h"
 #include "Cube.h"
 #include "Scene.h"
+#include "GameObject.h"
 
 #include <cstdio>
 #include <iostream>
@@ -42,7 +43,7 @@ Particule askUser() {
 
 int main(void)
 {
-    //initialisation
+    //------------------initialisation------------------------
 
     OpenGLManager openGLManager;
 
@@ -50,9 +51,12 @@ int main(void)
 
     Particule particule = askUser();
 
-    Sphere sphere(1, Vecteur3D(-5, 0, 0), particule.getVelocity(), 1 / particule.getInverseMasse());
+    Sphere sphereMesh(1, Vecteur3D(-5, 0, 0));
 
-    Cube cube(1, Vecteur3D(0, 0, 0), Vecteur3D(200, 0.01, 200));
+    Cube cubeMesh(1, Vecteur3D(0, 0, 0), Vecteur3D(200, 0.01, 200));
+
+    GameObject sphere(sphereMesh, particule);
+    GameObject cube(cubeMesh);
 
     scene.addGameObject(cube);
     scene.addGameObject(sphere);
@@ -69,6 +73,8 @@ int main(void)
 
     clock_t current_ticks, delta_ticks;
     double frameRate = 1.0 / 60.0;
+
+    //----------------Fin initialisation--------------------
 
 /*  Vecteur3D test1(1, 2, 3);
     Vecteur3D test2(4, 5, 6);
@@ -152,18 +158,21 @@ int main(void)
     std::cout << test_fois_3 << std::endl;
     std::cout << test_egalite << std::endl; */
 
+
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(openGLManager.getWindow()))
     {
         current_ticks = clock();
        
-        if (openGLManager.getScene().getGameObjects()[1].getPosition().get_y() >= 0) {
+        if (openGLManager.getScene().getGameObjects()[1].getMesh().getPosition().get_y() >= 0) {
             std::cout << "Update Particle" << std::endl;
             openGLManager.updateScene(frameRate);
         }
         else {
             particule = askUser();
-            Sphere s(1, Vecteur3D(-5, 0, 0), particule.getVelocity(), 1 / particule.getInverseMasse());
+            Sphere sMesh(1, Vecteur3D(-5, 0, 0));
+            GameObject s(sMesh, particule);
             openGLManager.setGameObject(1, s);
             current_ticks = clock();
         }
