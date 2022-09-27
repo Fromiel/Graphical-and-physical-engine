@@ -91,6 +91,10 @@ class OpenGLManager
 		/// <param name="shader"></param>
 		void Render(Shader shader);
 
+		/// <summary>
+		/// Ajoute un gameobject a la scene et recharge la scene
+		/// </summary>
+		/// <param name="gameObject"></param>
 		void addGameObject(GameObject gameObject);
 
 		

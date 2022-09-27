@@ -201,3 +201,11 @@ void OpenGLManager::Render(Shader shader)
 		currentIndex += length;
 	}
 }
+
+
+
+void OpenGLManager::addGameObject(GameObject gameObject)
+{
+	scene_.addGameObject(gameObject);
+	loadScene(scene_);
+}
