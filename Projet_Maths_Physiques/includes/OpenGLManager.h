@@ -20,6 +20,8 @@
 class OpenGLManager
 {
 	private:
+		static OpenGLManager* instance;
+
 		Scene scene_;
 		std::vector<Vertice> vertices_; //les points à afficher
 		std::vector<unsigned int> indices_; //les indices des points
@@ -27,10 +29,13 @@ class OpenGLManager
 		GLuint vertexBuffer_, vertexShader_, fragmentShader_, program_, VAO_, EBO_; //Differents id
 		GLint vposLocation_, vcolLocation_, normalLocation_; //Id des attributes
 		
+		OpenGLManager();
 
 	public:
 
 		~OpenGLManager();
+
+		static OpenGLManager* getInstance();
 
 		/// <summary>
 		/// Méthode initialisant glad et glfw et créant une fenêtre
@@ -86,15 +91,10 @@ class OpenGLManager
 		/// <param name="shader"></param>
 		void Render(Shader shader);
 
-
-
-
-
-
+		void addGameObject(GameObject gameObject);
 
 		
 };
-
 
 
 #endif

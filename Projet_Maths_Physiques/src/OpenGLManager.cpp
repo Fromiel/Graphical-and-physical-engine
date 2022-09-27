@@ -11,7 +11,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
+OpenGLManager::OpenGLManager(){}
 
+OpenGLManager* OpenGLManager::instance = NULL;
+
+OpenGLManager* OpenGLManager::getInstance()
+{
+	if (instance == NULL)
+	{
+		instance = new OpenGLManager();
+	}
+
+	return instance;
+}
 
 OpenGLManager::~OpenGLManager()
 {
@@ -21,6 +33,7 @@ OpenGLManager::~OpenGLManager()
 	glDeleteProgram(program_);
 	glfwTerminate();
 }
+
 
 void OpenGLManager::initAndCreateWindow()
 {

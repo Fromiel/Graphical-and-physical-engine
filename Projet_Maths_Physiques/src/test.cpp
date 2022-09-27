@@ -24,6 +24,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         createParticule(1);
     }
 
+    Scene scene = OpenGLManager::getInstance()->getScene();
 }
 
 Particule askUser() {
@@ -66,7 +67,7 @@ int main(void)
 {
     //------------------initialisation------------------------
 
-    OpenGLManager openGLManager;
+    OpenGLManager* openGLManager = OpenGLManager::getInstance();
 
     Scene scene(Camera(0.1, 10000, Vecteur3D(5, 5, 25), 90), Light(Vecteur3D(0, 0, 1000)));
 
@@ -82,15 +83,15 @@ int main(void)
     scene.addGameObject(cube);
     scene.addGameObject(sphere);
 
-    openGLManager.initAndCreateWindow();
+    openGLManager->initAndCreateWindow();
     
     Shader shader("./../../../src/Shaders/shader.vert", "./../../../src/Shaders/shader.frag");
     
-    openGLManager.setKeyCallback(key_callback);
+    openGLManager->setKeyCallback(key_callback);
 
-    openGLManager.setIdProgram(shader.getIDProgram());
+    openGLManager->setIdProgram(shader.getIDProgram());
 
-    openGLManager.loadScene(scene);
+    openGLManager->loadScene(scene);
 
     clock_t current_ticks, delta_ticks;
     double frameRate = 1.0 / 60.0;
@@ -182,28 +183,28 @@ int main(void)
 
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(openGLManager.getWindow()))
+    while (!glfwWindowShouldClose(openGLManager->getWindow()))
     {
         current_ticks = clock();
        
-        if (openGLManager.getScene().getGameObjects()[1].getMesh().getPosition().get_y() >= 0) {
+        if (openGLManager->getScene().getGameObjects()[1].getMesh().getPosition().get_y() >= 0) {
             std::cout << "Update Particle" << std::endl;
-            openGLManager.updateScene(frameRate);
+            openGLManager->updateScene(frameRate);
         }
         else {
             particule = askUser();
             Sphere sMesh(1, Vecteur3D(-5, 0, 0));
             GameObject s(sMesh, particule);
-            openGLManager.setGameObject(1, s);
+            openGLManager->setGameObject(1, s);
             current_ticks = clock();
         }
 
         //openGLManager.getScene().applyForces(frameRate);
         /* Render here */
-        openGLManager.Render(shader);
+        openGLManager->Render(shader);
 
         /* Swap front and back buffers */
-        glfwSwapBuffers(openGLManager.getWindow());
+        glfwSwapBuffers(openGLManager->getWindow());
 
         /* Poll for and process events */
         glfwPollEvents();
