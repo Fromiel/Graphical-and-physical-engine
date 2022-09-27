@@ -92,7 +92,7 @@ int main(void)
 
     openGLManager->initAndCreateWindow();
     
-    Shader shader("./../../../src/Shaders/shader.vert", "./../../../src/Shaders/shader.frag");
+    Shader shader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
     
     openGLManager->setKeyCallback(key_callback);
 
