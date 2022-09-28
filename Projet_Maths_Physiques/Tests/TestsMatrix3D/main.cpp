@@ -1,8 +1,6 @@
 #include <iostream>
 #include "TestsMatrix3D.h"
 
-void printMatrix(const Matrix3D &matrix3D);
-
 int main(int argc, char **argv) {
     std::cout << "\nStarting tests for Matrix3D\n" << std::endl;
 

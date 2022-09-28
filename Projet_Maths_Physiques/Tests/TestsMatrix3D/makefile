@@ -1,19 +1,16 @@
-SRC=$(wildcard *.cpp)
-OBJ=$(patsubst %.cpp, %.o, $(SRC)) Matrix3D.o
+SRC=$(wildcard *.cpp) ../../src/Matrix3D.cpp
+OBJ=$(patsubst %.cpp, %.o, $(SRC))
 
 CC=g++
-CFLAGS=-Wall -std=c++2a -pedantic -g
-CLIBS=-lm
+CFLAGS=-Wall -std=c++2a -pedantic -g -I"../../includes"
 BIN=TestsMatrix3D.exe
 
 $(BIN): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $@ $(CLIBS)
-
-Matrix3D.o: ../../src/Matrix3D.cpp
-	$(CC) $(CFLAGS) -c $^ -o $@ -I "../../includes" $(CLIBS)
+	$(CC) $(CFLAGS) $(OBJ) -o $@
+	del ..\..\src\Matrix3D.o
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $^ -o $@ $(CLIBS)
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 clean:
 	del *.o
