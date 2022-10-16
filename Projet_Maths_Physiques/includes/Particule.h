@@ -30,12 +30,25 @@ public:
 	*/
 	void update(double h = 1.0/60.0);
 
+	/*
+	* Fonction d'ajout de force à la particule
+	*/
+	void addForce(const Vecteur3D&);
+
+	/*
+	* Fonction de nettoyage de l'accumulateur
+	*/
+	void clearAccum();
+
 private:
 	Vecteur3D position;
 	Vecteur3D velocity;
 	Vecteur3D acceleration;
 	double rayon;
 	double InverseMasse;
+
+	//Accumulateur de forces
+	Vecteur3D AccumForce;
 
 	//Constante de gravité
 	static double g;

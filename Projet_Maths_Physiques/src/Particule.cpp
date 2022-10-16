@@ -10,6 +10,8 @@ Particule::Particule(Vecteur3D pos_initiale, Vecteur3D v_initiale, double r, dou
 	acceleration = Vecteur3D(0,-g,0);
 	rayon = r;
 	InverseMasse = m;
+	clearAccum();
+	
 }
 
 Particule::Particule(const Particule &p) {
@@ -18,6 +20,7 @@ Particule::Particule(const Particule &p) {
 	acceleration = p.getAcc();
 	rayon = p.getRayon();
 	InverseMasse = p.getInverseMasse();
+	clearAccum();
 }
 
 void Particule::setPos(const Vecteur3D pos) {
@@ -51,3 +54,10 @@ void Particule::updateVelocity(double frameRate) {
 	velocity = pow(d, frameRate) * velocity + frameRate * acceleration;
 }
 
+void Particule::addForce(const Vecteur3D& Force) {
+	AccumForce = AccumForce + Force;
+}
+
+void Particule::clearAccum() {
+	AccumForce = Vecteur3D(0, 0, 0);
+}
