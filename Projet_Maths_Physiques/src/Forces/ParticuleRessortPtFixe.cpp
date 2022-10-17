@@ -13,5 +13,5 @@ ParticuleRessortPtFixe::~ParticuleRessortPtFixe() {
 
 virtual void ParticuleRessortPtFixe::updateForce(Particule* particule, float duration) {
 	float l = distance(particule->getPos, _attache);
-	particule->addForce(_kElasticite * (_l0 - l));
+	particule->addForce(_kElasticite * (l - _l0));
 };

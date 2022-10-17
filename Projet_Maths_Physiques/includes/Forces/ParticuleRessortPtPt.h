@@ -1,24 +1,26 @@
 #pragma once
-#ifndef PARTICULE_RESSORT_PTFIXE_H
-#define PARTICULE_RESSORT_PTFIXE_H
+#ifndef PARTICULE_RESSORT_PTPT_H
+#define PARTICULE_RESSORT_PTPT_H
 
 #include "ParticuleForceGenerator.h"
 
-class ParticuleRessortPtFixe : public ParticuleForceGenerator {
-	
+class ParticuleRessortPtPt : public ParticuleForceGenerator {
+
 private:
 	Vecteur3D _forceRessort;
 	float _kElasticite;
-	Vecteur3D _attache;
+	Particule* _particuleExt;
 	Vecteur3D _l0;
 
 public:
-	ParticuleRessortPtFixe(const Vecteur3D& vect, float kElasticite, Vecteur3D attache, Particule* particule);
-	~ParticuleRessortPtFixe();
+	ParticuleRessortPtPt(const Vecteur3D&, float kElasticite, Particule* particule1, Particule* particule2);
+	~ParticuleRessortPtPt();
 	Vecteur3D getForceRessort() { return _forceRessort; };
 	float getkElasticite() { return _kElasticite; };
 	Vecteur3D getAttache() { return _attache; };
 	virtual void updateForce(Particule*, float duration);
 };
 
-#endif // !PARTICULE_RESSORT_PTFIXE_H
+
+
+#endif // !PARTICULE_RESSORT_PTPT_H
