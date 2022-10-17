@@ -78,3 +78,10 @@ Vecteur3D operator*(const double d, const Vecteur3D& v) {
 }
 
 Vecteur3D operator*(const Vecteur3D& v, const double d) { return d * v; }
+
+float distance(const Vecteur3D& vect1, const Vecteur3D& vect2) {
+    float dist_x = pow(vect1.get_x() - vect2.get_x(), 2);
+    float dist_y = pow(vect1.get_y() - vect2.get_y(), 2);
+    float dist_z = pow(vect1.get_z() - vect2.get_z(), 2);
+    return sqrt(dist_x + dist_y + dist_z);
+}

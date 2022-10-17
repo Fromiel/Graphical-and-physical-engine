@@ -140,4 +140,6 @@ double scalar_product(const Vecteur3D &vect1, const Vecteur3D &vect2);
 /// <returns> Le produit vectoriel des deux vecteurs </returns>
 Vecteur3D vectorial_product(const Vecteur3D &vect1, const Vecteur3D &vect2);
 
+float distance(const Vecteur3D& vect1, const Vecteur3D& vect2);
+
 #endif //VECTEUR3D_H
