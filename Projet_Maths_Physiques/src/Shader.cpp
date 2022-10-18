@@ -3,7 +3,7 @@
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
     // 1. On charge les codes sources vertex/fragment à partir du chemin de leur fichier
-    /*std::string vertexCode;
+    std::string vertexCode;
     std::string fragmentCode;
     std::ifstream vertexShaderFile;
     std::ifstream fragmentShaderFile;
@@ -30,69 +30,10 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     {
         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
     }
-    */
-    const char* vertexShaderCode =
-        "#version 330 core\n"
-        "uniform vec3 posLumiere;\n"
-        "uniform vec3 posCamera;\n"
-        "uniform mat4 MVP;\n"
-        "uniform mat4 modelMatrix;\n"
-        "uniform mat4 viewMatrix;\n"
-        "uniform mat3 normalMatrix;\n"
+    
+    const char* vertexShaderCode = vertexCode.c_str();
+    const char* fragmentShaderCode = fragmentCode.c_str();
 
-        "attribute vec3 normal;\n"
-        "attribute vec3 vPos;\n"
-        "attribute vec3 vCol;\n"
-
-        "out vec3 d;\n"
-        "out vec3 n;\n"
-        "out vec3 r;\n"
-        "out vec3 v;\n"
-
-        "void main()\n"
-        " {\n"
-        "vec4 c1 = vec4(1, 0, 0, 0);\n"
-        "vec4 c2 = vec4(0, 1, 0, 0);\n"
-        "vec4 c3 = vec4(0, 0, 1, 0);\n"
-        "vec4 c4 = vec4(2, 0, 0, 1);\n"
-        "mat4 model2 = mat4(c1, c2, c3, c4);\n"
-        "vec4 pos = modelMatrix * vec4(vPos, 1.0);\n"
-        "gl_Position = MVP * vec4(vPos, 1.0);\n"
-        "d = posLumiere - (pos.xyz / pos.w);\n"
-        "n = normalMatrix * normal;\n"
-
-        "v = posCamera - pos.xyz / pos.w;\n"
-        "r = reflect(-d, n);\n"
-        "};\n";
-        
-        //vertexCode.c_str();
-    const char* fragmentShaderCode =
-        "#version 330 core\n"
-        "uniform vec3 coulLumiere;\n"
-        "uniform vec3 coulObjet;\n"
-        "uniform vec3 specLumiere;\n"
-        "uniform vec3 specObjet;\n"
-        "uniform float alpha;\n"
-
-        "in vec3 d;\n"
-        "in vec3 n;\n"
-        "in vec3 r;\n"
-        "in vec3 v;\n"
-
-        " void main()\n"
-        "{\n"
-
-        "float valueC = -dot(normalize(n), normalize(d));\n"
-        "float valueR = max(dot(normalize(r), normalize(v)), 0.0f);\n"
-
-        "vec3 reflet = specObjet * specLumiere * pow(valueR, 10);\n"
-        "vec3 couleur = coulObjet * coulLumiere * valueC;\n"
-
-        "gl_FragColor = vec4(couleur + reflet + vec3(0.1, 0.25, 0.05), 1.0);\n"
-
-        "};\n";
-        
-        //fragmentCode.c_str();
 
     // 2. on compile les shaders
     GLuint vertex, fragment;
