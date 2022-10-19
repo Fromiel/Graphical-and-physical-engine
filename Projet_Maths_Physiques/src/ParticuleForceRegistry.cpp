@@ -6,19 +6,21 @@ void ParticuleForceRegistry::add(Particule* particule, ParticuleForceGenerator* 
 }
 
 void ParticuleForceRegistry::remove(Particule* particule, ParticuleForceGenerator* fg) {
-	for (ParticuleForceRegistration*& pfg : registre) {
-		if (pfg->particule == particule && pfg->fg == fg) {
-			registre.erase(pfg); //not sure if correct
+	int i(0);
+	for (ParticuleForceRegistration& pfg : registre) {
+		if (pfg.particule == particule && pfg.fg == fg) {
+			registre.erase(registre.begin()+i); //not sure if correct
+			++i;
 		}
 	}
 }
 
 void ParticuleForceRegistry::clear() {
-	registre = new Registre;
+	registre.clear();
 }
 
 void ParticuleForceRegistry::updateForces(float duration) {
-	for (ParticuleForceRegistration*& x : registre) {
-		x->fg->updateForce(x->particule, duration);
+	for (ParticuleForceRegistration& x : registre) {
+		x.fg->updateForce(x.particule, duration);
 	}
 }
