@@ -1,7 +1,6 @@
 #include "Forces/ParticuleRessortPtPt.h"
 
-ParticuleRessortPtPt::ParticuleRessortPtPt(const Vecteur3D& vect, float kElasticite, Particule* particule1, Particule* particule2) {
-	_forceRessort = Vecteur3D(vect);
+ParticuleRessortPtPt::ParticuleRessortPtPt(float kElasticite, Particule* particule1, Particule* particule2) {
 	_kElasticite = kElasticite;
 	_particuleExt = particule2;
 	_l0 = distance(particule1->getPos, particule2->getPos);
