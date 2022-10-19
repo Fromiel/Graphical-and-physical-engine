@@ -6,7 +6,7 @@ void ParticuleForceRegistry::add(Particule* particule, ParticuleForceGenerator* 
 }
 
 void ParticuleForceRegistry::remove(Particule* particule, ParticuleForceGenerator* fg) {
-	for (ParticuleForceRegistration* pfg : registre) {
+	for (ParticuleForceRegistration*& pfg : registre) {
 		if (pfg->particule == particule && pfg->fg == fg) {
 			registre.erase(pfg); //not sure if correct
 		}
@@ -18,7 +18,7 @@ void ParticuleForceRegistry::clear() {
 }
 
 void ParticuleForceRegistry::updateForces(float duration) {
-	for (ParticuleForceRegistration* x : registre) {
+	for (ParticuleForceRegistration*& x : registre) {
 		x->fg->updateForce(x->particule, duration);
 	}
 }
