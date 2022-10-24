@@ -5,7 +5,7 @@ ParticuleContact::resolve(float duration) {
 }
 
 ParticuleContact::calculateSeparatingVelocity() {
-	//TODO
+	return -restitution * particules[0]->getVelocity();
 }
 
 ParticuleContact::resolveVelocity() {
