@@ -89,6 +89,11 @@ public:
     Matrix4D invert() const;
 
     /// <summary>
+    /// Stocke la transposée de la matrice 4D dans le tableau de float passé en argument
+    /// </summary>
+    void toFloatArray(float arr[]);
+
+    /// <summary>
     /// Méthode permettant de créer la matrice identité
     /// </summary>
     /// <returns> La matrice identité </returns>

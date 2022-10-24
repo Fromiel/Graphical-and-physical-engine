@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include "Matrix4D.h"
+#include "Matrix3D.h"
 
 /// <summary>
 /// Cette classe permet de représenter la caméra qui va permettre de fixer le point de vue de la scène
@@ -71,6 +72,12 @@ public:
     /// </summary>
     /// <returns>la view matrice</returns>
     Matrix4D getViewMatrix() const { return viewMatrix_; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    ///<returns>la matrice normale</returns>
+    Matrix3D getNormalMatrix(Matrix4D modelMatrix);
 
     /// <summary>
     /// Permet de changer la position de la caméra (on modifie la viewMatrix)

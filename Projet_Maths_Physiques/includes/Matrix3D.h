@@ -34,6 +34,11 @@ class Matrix3D {
         Matrix3D adjugate() const;
         Matrix3D invert() const;
 
+        /// <summary>
+        /// Stocke la transposée de la matrice 3D dans le tableau de float passé en argument
+        /// </summary>
+        void toFloatArray(float arr[]);
+
         static Matrix3D identity();
 };
 

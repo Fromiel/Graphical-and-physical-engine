@@ -29,6 +29,22 @@ void Camera::setPosition(float x, float y, float z)
     setPosition(Vecteur3D(x, y, z));
 }
 
+Matrix3D Camera::getNormalMatrix(Matrix4D modelMatrix)
+{
+    Matrix4D modelView = viewMatrix_ * modelMatrix;
+    Matrix3D upperLeftModelView;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            upperLeftModelView(i, j) = modelView(i, j);
+        }
+    }
+    Matrix3D normalMatrix = upperLeftModelView.invert();
+
+    return normalMatrix;
+}
+
 
 void Camera::move(const Vecteur3D &vect)
 {

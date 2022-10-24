@@ -61,6 +61,8 @@ foreach(file ${testsFiles})
 	  GTest::gtest_main
 	)
 
+	include_directories(Tests/ glm)
+
 	target_link_libraries(${fileName} ${Projet_Maths_Physique_SOURCE_DIR}/DEPENDENCIES/lib-vc2022/glfw3.lib)
 	target_link_libraries(${fileName} GLAD)
 	set_target_properties(GLFW PROPERTIES LINKER_LANGUAGE CXX)

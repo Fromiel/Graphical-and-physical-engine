@@ -220,6 +220,12 @@ Matrix4D Matrix4D::projectionMatrix(float radianFov, float ratio, float near, fl
     return projMatrix;
 }
 
+void Matrix4D::toFloatArray(float arr[])
+{
+    std::vector<double> content = this->transpose().getContentAsStdVector();
+    std::copy(content.begin(), content.end(), arr);
+}
+
 // static Matrix4D Matrix4D::rotation(Vecteur3D &vect){}
 
 Matrix4D operator+(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {

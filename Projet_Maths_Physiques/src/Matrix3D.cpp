@@ -20,6 +20,12 @@ std::vector<double> Matrix3D::getContentAsStdVector() const {
     return content;
 }
 
+void Matrix3D::toFloatArray(float arr[])
+{
+    std::vector<double> content = this->transpose().getContentAsStdVector();
+    std::copy(content.begin(), content.end(), arr);
+}
+
 double Matrix3D::operator()(const int &line, const int &column) const {
     if (line < 0 || line > 2 || column < 0 || column > 2) {
         throw std::invalid_argument("Matrix3D::Provide line and column inferior to 3");

@@ -118,13 +118,6 @@ void toGlFloat(Matrix3D matrix, GLfloat arr[])
 	std::copy(content.begin(), content.end(), arr);
 }
 
-void toGlFloat(Matrix4D matrix, GLfloat arr[])
-{
-	std::vector<double> content = matrix.getContentAsStdVector();
-	std::copy(content.begin(), content.end(), arr);
-
-}
-
 
 
 void OpenGLManager::Render(Shader shader)
@@ -146,7 +139,7 @@ void OpenGLManager::Render(Shader shader)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	GLfloat viewMatrix[16];
-	toGlFloat(view.transpose(), viewMatrix);
+	view.toFloatArray(viewMatrix);
 
 	
 	shader.use();
@@ -172,26 +165,19 @@ void OpenGLManager::Render(Shader shader)
 		int length = object.getIndices().size();
 
 		Matrix4D model = object.getModelMatrix();
-		Matrix4D mvp = (projection * view * model).transpose(); //On applique la transposée car quand on va passer les matrices à glsl, il va construire les matrices colonne par colonne et non ligne par ligne comme nous
+		Matrix4D mvp = (projection * view * model);
 		Matrix4D modelView = view * model;
 
-		Matrix3D upperLeftModelView;
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				upperLeftModelView(i, j) = modelView(i, j);
-			}
-		}
-
-		Matrix3D normalMatrix = upperLeftModelView.invert();
+		Matrix3D normalMatrix = camera.getNormalMatrix(model);
 
 		GLfloat normalMat[9];
-		toGlFloat(normalMatrix, normalMat);
+		normalMatrix.toFloatArray(normalMat);
+
 		GLfloat MVP[16];
-		toGlFloat(mvp, MVP);
+		mvp.toFloatArray(MVP);
+
 		GLfloat modelMatrix[16];
-		toGlFloat(model.transpose(), modelMatrix);
+		model.toFloatArray(modelMatrix);
 
 		shader.setUniformMatrix3fv("normalMatrix", (const GLfloat*)normalMat);
 		shader.setUniformMatrix4fv("MVP", (const GLfloat*)MVP);
