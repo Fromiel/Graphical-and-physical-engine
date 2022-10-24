@@ -1,18 +1,19 @@
-#include "TestsVecteur3D.h"
+#include <gtest/gtest.h>
+#include "Vecteur3D.h"
 
-bool TestsVecteur3D::norm() {
+TEST(norm, TestVecteur3D_1) {
     double result = Vecteur3D(1, 2, 3).norm();
     double expected = sqrt(14);
-    return result == expected;
+    EXPECT_TRUE(result == expected);
 }
 
-bool TestsVecteur3D::norm_squared() {
+TEST(norm_squared, TestVecteur3D_1) {
     double result = Vecteur3D(1, 2, 3).norm_squared();
     double expected = 14;
-    return result == expected;
+    EXPECT_TRUE(result == expected);
 }
 
-bool TestsVecteur3D::normalized() {
+TEST(normalized, TestVecteur3D_1) {
     Vecteur3D result = Vecteur3D(14, 7, 14).normalized();
     Vecteur3D expected = Vecteur3D(2./3., 1./3., 2./3.);
 
@@ -22,10 +23,10 @@ bool TestsVecteur3D::normalized() {
     if (result.get_y() != expected.get_y()) testPass = false;
     if (result.get_z() != expected.get_z()) testPass = false;
 
-    return testPass;
+    EXPECT_TRUE(testPass);
 }
 
-bool TestsVecteur3D::scalar_multiplication() {
+TEST(scalar_multiplication, TestVecteur3D_1) {
     Vecteur3D result = Vecteur3D(1, 2, 3).scalar_multiplication(2);
     Vecteur3D expected = Vecteur3D(2, 4, 6);
 
@@ -35,10 +36,10 @@ bool TestsVecteur3D::scalar_multiplication() {
     if (result.get_y() != expected.get_y()) testPass = false;
     if (result.get_z() != expected.get_z()) testPass = false;
 
-    return testPass;
+    EXPECT_TRUE(testPass);
 }
 
-bool TestsVecteur3D::addition() {
+TEST(addition, TestVecteur3D_1) {
     Vecteur3D result = Vecteur3D(1, 2, 3) + Vecteur3D(1, 2, 3);
     Vecteur3D expected = Vecteur3D(2, 4, 6);
 
@@ -48,10 +49,10 @@ bool TestsVecteur3D::addition() {
     if (result.get_y() != expected.get_y()) testPass = false;
     if (result.get_z() != expected.get_z()) testPass = false;
     
-    return testPass;
+    EXPECT_TRUE(testPass);
 }
 
-bool TestsVecteur3D::substraction() {
+TEST(substraction, TestVecteur3D_1) {
     Vecteur3D result = Vecteur3D(1, 2, 3) - Vecteur3D(1, 2, 3);
     Vecteur3D expected = Vecteur3D(0, 0, 0);
 
@@ -61,17 +62,17 @@ bool TestsVecteur3D::substraction() {
     if (result.get_y() != expected.get_y()) testPass = false;
     if (result.get_z() != expected.get_z()) testPass = false;
 
-    return testPass;
+    EXPECT_TRUE(testPass);
 }
 
-bool TestsVecteur3D::scalar_product() {
-    double result = ::scalar_product(Vecteur3D(1, 2, 3), Vecteur3D(4, 5, 6));
+TEST(scalarProduct, TestVecteur3D_1) {
+    double result = scalar_product(Vecteur3D(1, 2, 3), Vecteur3D(4, 5, 6));
     double expected = 32;
-    return result == expected;
+    EXPECT_TRUE(result == expected);
 }
 
-bool TestsVecteur3D::vectorial_product() {
-    Vecteur3D result = ::vectorial_product(Vecteur3D(1, 2, 3), Vecteur3D(4, 5, 6));
+TEST(vectorialProduct, TestVecteur3D_1) {
+    Vecteur3D result = vectorial_product(Vecteur3D(1, 2, 3), Vecteur3D(4, 5, 6));
     Vecteur3D expected = Vecteur3D(-3, 6, -3);
 
     bool testPass = true;
@@ -80,5 +81,5 @@ bool TestsVecteur3D::vectorial_product() {
     if (result.get_y() != expected.get_y()) testPass = false;
     if (result.get_z() != expected.get_z()) testPass = false;
 
-    return testPass;
+    EXPECT_TRUE(testPass);
 }

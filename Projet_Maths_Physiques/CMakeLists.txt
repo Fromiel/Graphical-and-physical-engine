@@ -42,24 +42,33 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(
-	testsMatrix3D
-	Tests/testsMatrix3D.cpp ${SOURCES}
-)
 
-target_link_libraries(
-  testsMatrix3D
-  GTest::gtest_main
-)
-
-target_link_libraries(testsMatrix3D ${Projet_Maths_Physique_SOURCE_DIR}/DEPENDENCIES/lib-vc2022/glfw3.lib)
-target_link_libraries(testsMatrix3D GLAD)
-set_target_properties(GLFW PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(GLAD PROPERTIES LINKER_LANGUAGE CXX)
-
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET testsMatrix3D PROPERTY CXX_STANDARD 20)
-endif()
+file(GLOB testsFiles "Tests/Tests*.cpp")
 
 include(GoogleTest)
-gtest_discover_tests(testsMatrix3D)
+
+foreach(file ${testsFiles})
+
+	string(REGEX MATCH "[A-Za-z0-9]+\.cpp" fileName ${file})
+  
+	add_executable(
+		${fileName}
+		${file} ${SOURCES}
+	)
+
+	target_link_libraries(
+	  ${fileName}
+	  GTest::gtest_main
+	)
+
+	target_link_libraries(${fileName} ${Projet_Maths_Physique_SOURCE_DIR}/DEPENDENCIES/lib-vc2022/glfw3.lib)
+	target_link_libraries(${fileName} GLAD)
+	set_target_properties(GLFW PROPERTIES LINKER_LANGUAGE CXX)
+	set_target_properties(GLAD PROPERTIES LINKER_LANGUAGE CXX)
+
+	set_property(TARGET ${fileName} PROPERTY CXX_STANDARD 20)
+
+	gtest_discover_tests(${fileName})
+
+endforeach()
+

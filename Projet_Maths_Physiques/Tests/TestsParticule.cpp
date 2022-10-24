@@ -1,6 +1,7 @@
-#include "TestsParticule.h"
+#include <gtest/gtest.h>
+#include "Particule.h"
 
-bool TestsParticule::constructor() {
+/*bool TestsParticule::constructor() {
 	Vecteur3D acceleration = Vecteur3D(0, -9.81, 0);
 	Vecteur3D pos_initiale = Vecteur3D(1, 2, 3);
 	Vecteur3D vel_initiale = Vecteur3D(1, 2, 3);
@@ -23,4 +24,9 @@ bool TestsParticule::constructor() {
 	if (particule.getInverseMasse() 		!= m			) testsPass = false;
 
 	return testsPass;
+}*/
+
+TEST(test, testtesttest)
+{
+	EXPECT_TRUE(true);
 }

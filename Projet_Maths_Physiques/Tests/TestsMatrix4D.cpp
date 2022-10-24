@@ -1,3 +1,12 @@
+#include <gtest/gtest.h>
+#include "Matrix4D.h"
+
+TEST(test, testtest)
+{
+    EXPECT_TRUE(true);
+}
+
+
 /*Test Matrix4D :
 
     Matrix4D test_mat_0;
