@@ -6,6 +6,8 @@
 
 class ParticuleContact {
 public:
+	~ParticuleContact();
+
 	//Les 2 particules en contact
 	Particule* particules[2];
 

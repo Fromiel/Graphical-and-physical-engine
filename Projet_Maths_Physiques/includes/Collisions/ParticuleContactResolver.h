@@ -2,6 +2,7 @@
 #ifndef PARTICULE_CONTACT_RESOLVER_H
 #define PARTICULE_CONTACT_RESOLVER_H
 
+#include <vector>
 #include "ParticuleContact.h"
 
 class ParticuleContactResolver {
@@ -15,7 +16,7 @@ public:
 	/// <param name="contactArray">Les contacts entre particules</param>
 	/// <param name="numContact">Le nombre de contacts</param>
 	/// <param name="duration">La durée</param>
-	void resolveContacts(ParticuleContact* contactArray, unsigned int numContact, float duration);
+	void resolveContacts(std::vector<ParticuleContact> contactArray, unsigned int numContact, float duration);
 };
 
 #endif
