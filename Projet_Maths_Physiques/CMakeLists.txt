@@ -6,9 +6,10 @@ project ("Projet_Maths_Physique")
 include(GNUInstallDirs)
 
 add_subdirectory(Dependencies/lib-vc2022)
-file(GLOB SOURCES src/*.cpp)
+file(GLOB_RECURSE SOURCES src/*.cpp)
+message(STATUS "----------------------------${SOURCES}")
 # Ajoutez une source à l'exécutable de ce projet.
-add_executable(Projet_Maths_Physique Game/main.cpp ${SOURCES}  "includes/test.h" "includes/Vertice.h")
+add_executable(Projet_Maths_Physique Game/ecsmain.cpp ${SOURCES})
 
 include_directories(Dependencies/include includes)
 link_directories(Dependencies/lib-vc2022)
