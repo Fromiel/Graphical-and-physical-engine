@@ -24,7 +24,7 @@ public:
 	void resolve(float duration);
 
 	//Renvoie la vélocité de séparation des particules
-	void calculateSeparatingVelocity();
+	float calculateSeparatingVelocity();
 
 private:
 	//Gère les impulsions de la collision
@@ -32,6 +32,9 @@ private:
 
 	//Gère l'interpénétration de la collision
 	void resolveInterpenetration();
+
+	//Renvoie la valeur de k
+	float calculateK() const;
 };
 
 #endif
