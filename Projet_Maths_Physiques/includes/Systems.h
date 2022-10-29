@@ -5,5 +5,6 @@
 #include "Systems/Render.h"
 #include "Systems/Time.h"
 #include "Systems/Physics.h"
+#include "Systems/Logic.h"
 
 #endif

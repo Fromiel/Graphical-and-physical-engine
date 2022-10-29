@@ -22,7 +22,7 @@ Render::Render()
 		throw "Error in initialisation of glfw";
 
 	/* Create a windowed mode window and its OpenGL context */
-	window_ = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window_ = glfwCreateWindow(640, 480, "Physical engine", NULL, NULL);
 	if (!window_)
 	{
 		throw "Error in creating the window";
@@ -56,7 +56,7 @@ void Render::update(float dt)
 
 	float ratio;
 	int width, height;
-	Camera camera = coordinator->getComponent<Camera>(camera_);
+	Camera& camera = coordinator->getComponent<Camera>(camera_);
 	Vecteur3D lightPosition = coordinator->getComponent<Transform>(light_).getPosition();
 	Vecteur3D lightColor = coordinator->getComponent<Light>(light_).getColor();
 	Matrix4D view = camera.getViewMatrix();
@@ -65,6 +65,7 @@ void Render::update(float dt)
 
 	glfwGetFramebufferSize(window_, &width, &height);
 	ratio = width / (float)height;
+	camera.setRatio(ratio);
 
 	glClearColor(0.13, 0.13, 0.13, 1.);
 	glClear(GL_COLOR_BUFFER_BIT);

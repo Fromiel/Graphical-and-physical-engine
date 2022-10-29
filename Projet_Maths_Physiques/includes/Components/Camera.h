@@ -41,6 +41,14 @@ class Camera
         /// <param name="ratio">le ratio de l'écran</param>
         Camera(Entity entity, float near = 0.1, float far = 100, float fov = 110, float ratio = 640. / 480.0);
 
+        /// <summary>
+        /// Constructeur pour les tests
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name=""></param>
+        /// <param name=""></param>
+        /// <param name="fov"></param>
+        /// <param name="ratio"></param>
         Camera(Transform transform, float near = 0.1, float far = 100, float fov = 110, float ratio = 640. / 480.0);
 
         /// <summary>
@@ -66,6 +74,12 @@ class Camera
         /// </summary>
         /// <returns>le ratio de la caméra</returns>
         float getRatio() const { return ratio_; }
+
+        /// <summary>
+        /// Setter du ratio
+        /// </summary>
+        /// <param name="fov"></param>
+        void setRatio(float ratio) { ratio_ = ratio; }
 
         /// <summary>
         /// 

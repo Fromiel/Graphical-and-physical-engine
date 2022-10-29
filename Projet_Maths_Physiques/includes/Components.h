@@ -8,6 +8,7 @@
 #include "Components/Camera.h"
 #include "Components/Light.h"
 #include "Components/Particule.h"
+#include "Components/LogicBehaviour.h"
 
 
 
