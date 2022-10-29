@@ -12,7 +12,7 @@ private:
 	float _l0;
 
 public:
-	ParticuleRessortPtFixe(float kElasticite, Vecteur3D attache, const Particule& particule);
+	ParticuleRessortPtFixe(float kElasticite, Vecteur3D attache, const Particule& particule, float l0);
 	~ParticuleRessortPtFixe();
 	float getkElasticite() { return _kElasticite; };
 	Vecteur3D getAttache() { return _attache; };

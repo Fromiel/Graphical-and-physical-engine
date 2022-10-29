@@ -51,10 +51,10 @@ int main(void)
 
 	//initialisation des entités
 	//Sphere
-	Transform sphereTransform(Vecteur3D(0, 50, 0));
+	Transform sphereTransform(Vecteur3D(0, 30, 0));
 	Sphere sphere(1);
 	Entity sphereEntity = coordinator->createEntity();
-	Particule p(Vecteur3D(0, 50, 0), Vecteur3D(0, 0, 0), 1, 1);
+	Particule p(Vecteur3D(0, 30, 0), Vecteur3D(0, 0, 0), 1, 1);
 	coordinator->addComponent(sphereEntity, (Object3D)sphere);
 	coordinator->addComponent(sphereEntity, sphereTransform);
 	coordinator->addComponent(sphereEntity, p);
@@ -79,7 +79,7 @@ int main(void)
 	inputsManager->setInputCallBacks();
 
 	auto registreForce = ParticuleForceRegistry();
-	ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(-5, Vecteur3D(0, 50, 0), coordinator->getComponent<Particule>(sphereEntity));
+	ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
 	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81);
 	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
 	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceGravite);
