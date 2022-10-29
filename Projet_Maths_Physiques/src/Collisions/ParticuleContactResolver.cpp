@@ -1,8 +1,8 @@
 #include "Collisions/ParticuleContactResolver.h"
 #include <algorithm>
-#include <unordered_map>
+#include <map>
 
-/*ParticuleContactResolver::resolveContacts(std::vector<ParticuleContact> contactArray, unsigned int numContact, float duration) {
+void ParticuleContactResolver::resolveContacts(std::vector<ParticuleContact> contactArray, unsigned int numContact, float duration) {
 
 	int it = 0;
 	bool resolved = false;
@@ -11,9 +11,9 @@
 		it++;
 
 		//Calculer vélocités relatives de chaque contact
-		std::unordered_map<ParticuleContact, float> velocitesRelative;
-		for (ParticuleContact pc : contactArray) {
-			velocitesRelative.push_back(std::make_pair<ParticuleContact, float>(pc, pc.calculateSeparatingVelocity()); //vélocité relative ?
+		std::map<ParticuleContact, float> velocitesRelative;
+		for (ParticuleContact &pc : contactArray) {
+			velocitesRelative.insert(std::make_pair(pc, pc.calculateSeparatingVelocity())); //vélocité relative ?
 		}
 
 		//Conserver la plus petite valeur (si cette valeur est > 0 => resolved = true)
@@ -23,13 +23,14 @@
 		float minVelocite = minValue.second;
 		if (minVelocite > 0) resolved = true;
 		
-		minValue.first.resolve();
+		minValue.first.resolve(0);
 
 		
 	}
 }
 
-std::pair<ParticuleContact, float> ParticuleContactResolver::minimum(std::unordered_map<ParticuleContact, float> map) {
+
+std::pair<ParticuleContact, float> ParticuleContactResolver::minimum(std::map<ParticuleContact, float> map) {
 	float min = INFINITY;
 	ParticuleContact minPart;
 	for (auto el : map) {
@@ -38,5 +39,5 @@ std::pair<ParticuleContact, float> ParticuleContactResolver::minimum(std::unorde
 			minPart = el.first;
 		}
 	}
-	return std::make_pair<ParticuleContact, float>(minPart, min);
-}*/
+	return std::make_pair(minPart, min);
+}

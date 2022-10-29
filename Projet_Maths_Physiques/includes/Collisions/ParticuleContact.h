@@ -21,10 +21,11 @@ public:
 	Vecteur3D contactNormal;
 
 	//Résolveur de la vélocité et interpénétration
+	//NOTE : Implémentation des résolutions différente du livre (plus proche du cours ?); possibilité de changer en cas de dysfonctionnement
 	void resolve(float duration);
 
 	//Renvoie la vélocité de séparation des particules
-	float calculateSeparatingVelocity();
+	float calculateSeparatingVelocity() const;
 
 private:
 	//Gère les impulsions de la collision
@@ -36,5 +37,8 @@ private:
 	//Renvoie la valeur de k
 	float calculateK() const;
 };
+
+//Opérateurs -> nécessaire à la compilation
+bool operator<(const ParticuleContact&, const ParticuleContact&);
 
 #endif

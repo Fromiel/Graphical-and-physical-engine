@@ -3,7 +3,7 @@
 #define PARTICULE_CONTACT_RESOLVER_H
 
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include "ParticuleContact.h"
 
 class ParticuleContactResolver {
@@ -12,7 +12,7 @@ protected:
 	unsigned int iteration;
 
 	//ParticuleContact ayant le float minimum dans une map
-	std::pair<ParticuleContact, float> minimum(std::unordered_map<ParticuleContact, float>);
+	std::pair<ParticuleContact, float> minimum(std::map<ParticuleContact, float>);
 public:
 	/// <summary>
 	/// Prend un tableau de contact, itère sur chacun à partir de leur vélocité de séparation et arrête quand tout a été résolu ou qu'on dépasse le nombre max d'itérations 
