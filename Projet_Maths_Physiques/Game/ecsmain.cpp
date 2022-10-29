@@ -1,4 +1,3 @@
-//#include "OpenGLManager.h"
 
 #include <cstdio>
 #include <ostream>
@@ -8,12 +7,14 @@
 #include "ParticuleForceRegistry.h"
 #include "Forces/ParticuleRessortPtFixe.h"
 #include "Forces/ParticuleGravity.h"
+#include "Scripts/CreateSphere.h"
 
 struct NoEntity {};
 
 int main(void)
 {
 	Coordinator* coordinator = Coordinator::getInstance();
+
 
 	//Register components
 	coordinator->registerComponent<Transform>();
@@ -22,12 +23,14 @@ int main(void)
 	coordinator->registerComponent<Camera>();
 	coordinator->registerComponent<NoEntity>();
 	coordinator->registerComponent<Particule>();
+	coordinator->registerComponent<LogicBehaviour>();
 
 	//initialisation des systèmes
 	auto time = coordinator->registerSystem<Time>();
 	auto render = coordinator->registerSystem<Render>();
 	auto inputsManager = coordinator->registerSystem<InputsManager>();
 	auto physics = coordinator->registerSystem<Physics>();
+	auto logic = coordinator->registerSystem<Logic>();
 
 	Signature noEntity;
 	noEntity.set(coordinator->getComponentType<NoEntity>());
@@ -39,14 +42,22 @@ int main(void)
 	physicsSignature.set(coordinator->getComponentType<Transform>());
 	physicsSignature.set(coordinator->getComponentType<Particule>());
 
+	Signature logicSignature;
+	logicSignature.set(coordinator->getComponentType<LogicBehaviour>());
+
 	coordinator->setSystemSignature<Time>(noEntity);
 	coordinator->setSystemSignature<InputsManager>(noEntity);
 	coordinator->setSystemSignature<Render>(renderSignature);
 	coordinator->setSystemSignature<Physics>(physicsSignature);
+	coordinator->setSystemSignature<Logic>(logicSignature);
 
 	//set shader
 	Shader shader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 	render->setShader(&shader);
+
+	//set les inputs
+	inputsManager->setupKeyInputs(render->getWindow());
+	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S }));
 
 
 	//initialisation des entités
@@ -59,9 +70,16 @@ int main(void)
 	coordinator->addComponent(sphereEntity, sphereTransform);
 	coordinator->addComponent(sphereEntity, p);
 
+	//Cube fixe
+	Transform cubeTransform(Vecteur3D(0, 40, 0));
+	Cube cube(1);
+	Entity cubeEntity = coordinator->createEntity();
+	coordinator->addComponent(cubeEntity, cubeTransform);
+	coordinator->addComponent(cubeEntity, (Object3D)cube);
+
 	//camera
 	Entity cameraEntity = coordinator->createEntity();
-	Transform cameraTransform(Vecteur3D(0, 0, 50));
+	Transform cameraTransform(Vecteur3D(0, 35, 20));
 	coordinator->addComponent(cameraEntity, cameraTransform);
 	Camera camera(cameraEntity, 0.1, 10000, 90);
 	coordinator->addComponent(cameraEntity, camera);
@@ -73,10 +91,12 @@ int main(void)
 	coordinator->addComponent(lightEntity, lightTransform);
 	coordinator->addComponent(lightEntity, light);
 
-	
-	//set les inputs
-	inputsManager->setWindow(render->getWindow());
-	inputsManager->setInputCallBacks();
+	//Create random spheres
+	Entity logicEntity = coordinator->createEntity();
+	CreateSphere createRandomSpheres(logicEntity);
+	coordinator->addComponent(logicEntity, (LogicBehaviour)createRandomSpheres);
+
+
 
 	auto registreForce = ParticuleForceRegistry();
 	ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
@@ -84,10 +104,15 @@ int main(void)
 	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
 	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceGravite);
 
+	//Start des LogicBehaviours
+	logic->start();
+
 	while (!inputsManager->endGame()) //rajouter condition de fin
 	{
 		//update clock
 		time->update();
+		//Logic
+		logic->update(time->deltaTime());
 		//Physical simulation
 		registreForce.updateForces(time->deltaTime());
 		physics->update(time->deltaTime());
@@ -102,5 +127,6 @@ int main(void)
 
 	}
 
+	
 	return 0;
 }
