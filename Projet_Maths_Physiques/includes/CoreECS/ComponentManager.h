@@ -99,6 +99,10 @@ class ComponentManager
 		template<typename T>
 		T& getComponent(Entity entity) { return getComponentArray<T>()->getData(entity); }
 
+
+		template<typename T>
+		T* getComponentPtr(Entity entity) { return getComponentArray<T>()->getDataPtr(entity); }
+
 		/// <summary>
 		/// Permet de savoir si une entité possède un component de type T
 		/// </summary>

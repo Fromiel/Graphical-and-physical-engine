@@ -103,6 +103,9 @@ class Coordinator
 		template<typename T>
 		T& getComponent(Entity entity) {return componentManager_->getComponent<T>(entity);}
 
+		template<typename T>
+		T* getComponentPtr(Entity entity) { return componentManager_->getComponentPtr<T>(entity); }
+
 
 		/// <summary>
 		/// Permet de savoir si une entité possède un component de type T

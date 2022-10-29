@@ -107,6 +107,14 @@ class ComponentArray : public IComponentArray
 			return componentArray_[entityToIndexMap_[entity]];
 		}
 
+		T* getDataPtr(Entity entity)
+		{
+			assert(entityToIndexMap_.find(entity) != entityToIndexMap_.end() && "Retrieving non-existent component.");
+
+			// Retourne une référence au component de l'entité
+			return &componentArray_[entityToIndexMap_[entity]];
+		}
+
 		/// <summary>
 		/// Permet de savoir si une entité possède un component de ce type
 		/// </summary>
