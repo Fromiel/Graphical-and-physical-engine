@@ -18,9 +18,9 @@ void main()
      float valueC = max(dot(normalize(n), normalize(d)), 0);
      float valueR = max(dot(normalize(r), normalize(v)), 0.0f);
 
-     vec3 reflet = 0.5 * coulLumiere * pow(valueR, 32);
+     vec3 reflet = specLumiere * specObjet * coulLumiere * pow(valueR, 32);
      vec3 couleur = coulLumiere * valueC;
 
-     gl_FragColor = vec4(ambient + couleur + reflet /*+ vec3(0.1, 0.25, 0.05)*/, 1.0);
+     gl_FragColor = vec4((ambient + couleur + reflet) * coulObjet, 1.0);
    
 };

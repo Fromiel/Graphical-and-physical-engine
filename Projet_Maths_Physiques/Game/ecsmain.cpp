@@ -96,7 +96,7 @@ int main(void)
 	//light
 	Transform lightTransform(Vecteur3D(0, 30, 10));
 	Sphere sun(0.5);
-	Light light(Vecteur3D(0.1,0.4,0.6));
+	Light light(Vecteur3D(1,1,1));
 	Entity lightEntity = coordinator->createEntity();
 	coordinator->addComponent(lightEntity, lightTransform);
 	coordinator->addComponent(lightEntity, light);
