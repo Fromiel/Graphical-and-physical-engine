@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-ParticuleContactResolver::resolveContacts(std::vector<ParticuleContact> contactArray, unsigned int numContact, float duration) {
+/*ParticuleContactResolver::resolveContacts(std::vector<ParticuleContact> contactArray, unsigned int numContact, float duration) {
 
 	int it = 0;
 	bool resolved = false;
@@ -39,4 +39,4 @@ std::pair<ParticuleContact, float> ParticuleContactResolver::minimum(std::unorde
 		}
 	}
 	return std::make_pair<ParticuleContact, float>(minPart, min);
-}
+}*/

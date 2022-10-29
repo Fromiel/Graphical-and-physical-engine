@@ -1,7 +1,7 @@
-#include "Sphere.h"
+#include "Components/Sphere.h"
 
 
-Sphere::Sphere(float radius, Vecteur3D center, unsigned int sectorCount, unsigned int stackCount): Object3D(center, Vecteur3D(1, 1, 1)), radius_(radius), sectorCount_(sectorCount), stackCount_(stackCount)
+Sphere::Sphere(float radius, unsigned int sectorCount, unsigned int stackCount): radius_(radius), sectorCount_(sectorCount), stackCount_(stackCount)
 {
     float x, y, z, xy;                              // vertex position
     float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normale

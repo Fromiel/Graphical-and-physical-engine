@@ -2,5 +2,5 @@
 
 unsigned int ParticuleRod::addContact(ParticuleContact* contact, unsigned int limit) {
 	//TODO
-	
+	return 0;
 }

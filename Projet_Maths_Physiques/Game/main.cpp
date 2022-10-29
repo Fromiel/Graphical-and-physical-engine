@@ -1,11 +1,9 @@
 ﻿#include "OpenGLManager.h"
 
-#include "Matrix3D.h"
-#include "Matrix4D.h"
-#include "Sphere.h"
-#include "Cube.h"
-#include "Scene.h"
-#include "GameObject.h"
+#include "Maths/Matrix3D.h"
+#include "Maths/Matrix4D.h"
+#include "Components/Sphere.h"
+#include "Components/Cube.h"
 
 #include <cstdio>
 #include <iostream>
@@ -50,25 +48,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 }
 
-Particule askUser() {
-    int user_input;
-    std::cout << "Quelle particule souhaitez vous utiliser ? \n1 = Basique\n2 = Soft\n3 = Lourde\n " << std::endl;
-    std::cin >> user_input;
-    switch (user_input) {
-    case 2:
-        return particule2;
-        break;
-    case 3:
-        return particule3;
-        break;
-    default:
-        return particule1;
-        break;
-    }
-}
-
-
-
 
 int main(void)
 {
@@ -77,8 +56,6 @@ int main(void)
     OpenGLManager* openGLManager = OpenGLManager::getInstance();
 
     Scene scene(Camera(0.1, 10000, Vecteur3D(5, 5, 25), 90), Light(Vecteur3D(0, 0, 1000)));
-
-    //Particule particule = askUser();
 
     Sphere sphereMesh(1, Vecteur3D(-5, 0, 0));
 

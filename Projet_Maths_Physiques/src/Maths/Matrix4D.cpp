@@ -1,4 +1,4 @@
-#include "Matrix4D.h"
+#include "Maths/Matrix4D.h"
 
 Matrix4D::Matrix4D()
 {
@@ -205,19 +205,6 @@ Matrix4D Matrix4D::scaling(const Vecteur3D& vect) {
     std::vector<double> elements = { vect.get_x(), 0, 0, 0, 0, vect.get_y(), 0, 0, 0, 0, vect.get_z(), 0, 0, 0, 0, 1 };
     Matrix4D res(elements);
     return res;
-}
-
-Matrix4D Matrix4D::projectionMatrix(float radianFov, float ratio, float near, float far)
-{
-    Matrix4D projMatrix;
-    float tan_half_angle;
-    tan_half_angle = tan(radianFov / 2);
-    projMatrix(0, 0) = 1 / (ratio * tan_half_angle);
-    projMatrix(1, 1) = 1 / (tan_half_angle);
-    projMatrix(2, 2) = -(far + near) / (far - near);
-    projMatrix(3, 2) = -1;
-    projMatrix(2, 3) = -(2 *  far * near) / (far - near);
-    return projMatrix;
 }
 
 void Matrix4D::toFloatArray(float arr[])

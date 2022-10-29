@@ -2,7 +2,7 @@
 #ifndef PARTICULE_FORCE_GENERATOR_H
 #define PARTICULE_FORCE_GENERATOR_H
 
-#include "Particule.h"
+#include "Components/Particule.h"
 
 class ParticuleForceGenerator {
 public:

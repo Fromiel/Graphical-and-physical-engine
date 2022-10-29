@@ -1,6 +1,7 @@
-#include "Cube.h"
+#include "Components/Cube.h"
 
-Cube::Cube(float length, Vecteur3D position, Vecteur3D scale) : Object3D(position, scale), length_(length)
+
+Cube::Cube(float length) : length_(length)
 {
 	float l = length / 2;
 	vertices_ = std::vector<Vertice>(

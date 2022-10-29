@@ -1,13 +1,13 @@
-#pragma once
 #ifndef PARTICULE_H
 #define PARTICULE_H
 
-#include "Vecteur3D.h"
+#include "Maths/Vecteur3D.h"
 
-class Particule {
+class Particule 
+{
 public:
 	//Constructeurs//
-
+	Particule() {}
 	Particule(Vecteur3D pos_initiale, Vecteur3D vel_initiale, double r, double m);
 	Particule(const Particule &p);
 

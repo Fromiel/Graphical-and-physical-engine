@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Matrix4D.h"
+#include "Maths/Matrix4D.h"
 
 TEST(test, testtest)
 {

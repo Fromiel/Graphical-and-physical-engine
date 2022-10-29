@@ -2,7 +2,7 @@
 #ifndef PARTICULE_CONTACT_H
 #define PARTICULE_CONTACT_H
 
-#include "Particule.h"
+#include "Components/Particule.h"
 
 class ParticuleContact {
 public:

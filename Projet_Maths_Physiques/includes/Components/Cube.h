@@ -19,7 +19,7 @@ class Cube : public Object3D
 		/// <param name="length_">longueur d'un cote du cube</param>
 		/// <param name="position"></param>
 		/// <param name="scale"></param>
-		Cube(float length, Vecteur3D position, Vecteur3D scale);
+		Cube(float length = 1.0f);
 
 		/// <summary>
 		/// 

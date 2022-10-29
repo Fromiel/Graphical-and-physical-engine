@@ -11,6 +11,7 @@
 /// <summary>
 /// Classe gérant les shaders (ici vertex et fragment shaders)
 /// </summary>
+
 class Shader
 {
     private:
@@ -25,6 +26,10 @@ class Shader
         /// <param name="fragmentPath">Chemin du fichier pour le fragment shader</param>
         Shader(const char* vertexPath, const char* fragmentPath);
 
+        /// <summary>
+        /// Retourne l'id du programme
+        /// </summary>
+        /// <returns></returns>
         unsigned int getIDProgram() { return IDProgram_; }
 
         /// <summary>

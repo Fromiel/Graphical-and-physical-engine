@@ -1,6 +1,6 @@
 #include "Forces/ParticuleGravity.h"
 
-virtual void ParticuleGravity::updateForce(Particule* particule, float duration) {
+void ParticuleGravity::updateForce(Particule* particule, float duration) {
 	double imasse = particule->getInverseMasse();
 	if (imasse < DBL_MAX) {
 		double masse = (imasse == 0 ? 0 : 1 / imasse);

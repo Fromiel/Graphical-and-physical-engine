@@ -2,7 +2,7 @@
 // Created by jules on 07/09/2022.
 //
 
-#include "Vecteur3D.h"
+#include "Maths/Vecteur3D.h"
 #include <math.h>
 using namespace std;
 

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Vecteur3D.h"
+#include "Maths/Vecteur3D.h"
 
 TEST(norm, TestVecteur3D_1) {
     double result = Vecteur3D(1, 2, 3).norm();

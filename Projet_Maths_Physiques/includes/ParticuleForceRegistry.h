@@ -2,7 +2,7 @@
 #ifndef PARTICULE_FORCE_REGISTRY_H
 #define PARTICULE_FORCE_REGISTRY_H
 
-#include "Particule.h"
+#include "Components/Particule.h"
 #include "ParticuleForceGenerator.h"
 
 #include <vector>

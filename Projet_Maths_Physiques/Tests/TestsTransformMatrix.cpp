@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Camera.h"
+#include "Components/Camera.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Sphere.h"
+#include "Components/Sphere.h"
 
 
 glm::vec3 toVec3(Vecteur3D vect)
@@ -50,7 +50,8 @@ bool compareGlmMatrixWithMatrix(Matrix3D result, glm::mat3 expected)
 TEST(viewMatrix, TestsTransformMatrix_1)
 {
 	Vecteur3D position(0.0f, 0.0f, 27.0f);
-	Camera camera(0.1, 100, position);
+	Transform transform(position);
+	Camera camera(transform, 0.1, 100);
 
 	//Create a camera which looks at the center of the world (0, 0, 0)
 	
@@ -96,9 +97,10 @@ TEST(scalingMatrix, TestsTransformMatrix_1)
 TEST(projectionMatrix, TestsTransformMatrix_1)
 {
 	Vecteur3D position(0.0f, 0.0f, 27.0f);
-	Camera camera(0.1, 100, position, 110);
+	Transform transform(position);
+	Camera camera(transform, 0.1, 100, 110);
 
-	Matrix4D projection = Matrix4D::projectionMatrix(camera.getFov(), camera.getRatio(), camera.getNear(), camera.getFar());
+	Matrix4D projection = camera.projectionMatrix();
 
 	glm::mat4 expected = glm::perspective(camera.getFov(), camera.getRatio(), camera.getNear(), camera.getFar());
 
@@ -108,12 +110,12 @@ TEST(projectionMatrix, TestsTransformMatrix_1)
 TEST(normalMatrix, TestsTransformMatrix_1)
 {
 	Vecteur3D position(0.0f, 0.0f, 27.0f);
-	Camera camera(0.1, 100, position, 110);
+	Transform transformCamera(position);
+	Camera camera(transformCamera, 0.1, 100, 110);
 
-	Sphere s(2, Vecteur3D(0.0f, 5.0f, 25.0f));
-	s.setScaling(Vecteur3D(0.5f, 0.45f, 1.0f));
+	Transform transform(Vecteur3D(0.0f, 5.0f, 25.0f), Vecteur3D(0.5f, 0.45f, 1.0f));
 
-	Matrix3D normal = camera.getNormalMatrix(s.getModelMatrix());
+	Matrix3D normal = camera.getNormalMatrix(transform.getModelMatrix());
 
 
 	glm::mat4 view;
@@ -121,7 +123,7 @@ TEST(normalMatrix, TestsTransformMatrix_1)
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), toVec3(s.getPosition())) * glm::scale(glm::mat4(1.0f), toVec3(s.getScaling()));
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), toVec3(transform.getPosition())) * glm::scale(glm::mat4(1.0f), toVec3(transform.getScaling()));
 	glm::mat4 modelViewMatrix = view * model;
 
 	glm::mat3 modelViewMatrix3(modelViewMatrix);

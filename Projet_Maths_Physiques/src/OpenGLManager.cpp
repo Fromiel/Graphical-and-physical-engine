@@ -1,6 +1,6 @@
 #include "OpenGLManager.h"
 
-void error_callback(int error, const char* description)
+/*void error_callback(int error, const char* description)
 {
 	std::cerr << "Error: %s" << std::endl;
 	std::cerr << description << std::endl;
@@ -9,7 +9,7 @@ void error_callback(int error, const char* description)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
-}
+}*/
 
 OpenGLManager::OpenGLManager(){}
 
@@ -37,7 +37,7 @@ OpenGLManager::~OpenGLManager()
 
 void OpenGLManager::initAndCreateWindow()
 {
-	glfwSetErrorCallback(error_callback);
+	//glfwSetErrorCallback(error_callback);
 
 	/* Initialize the library */
 	if (!glfwInit())
@@ -58,20 +58,20 @@ void OpenGLManager::initAndCreateWindow()
 		throw "Error in initialisation of glad";
 	}
 
-	glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
+	//glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
 
 }
 
-void OpenGLManager::loadScene(Scene scene)
+/*void OpenGLManager::loadScene(Scene scene)
 {
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	scene_ = scene;
 	vertices_ = std::vector<Vertice>();
 	indices_ = std::vector<unsigned int>();
 
-	int currentIndex = 0;
+	int currentIndex = 0;*/
 
-	for (auto gameobject : scene.getGameObjects())
+	/*for (auto gameobject : scene.getGameObjects())
 	{
 		auto verticesObject = gameobject.getMesh().getVertices();
 		auto indicesObject = gameobject.getMesh().getIndices();
@@ -82,8 +82,8 @@ void OpenGLManager::loadScene(Scene scene)
 		vertices_.insert(vertices_.end(), verticesObject.begin(), verticesObject.end());
 		indices_.insert(indices_.end(), indicesObject.begin(), indicesObject.end());
 		currentIndex = vertices_.size();
-	}
-
+	}*/
+/*
 	glGenBuffers(1, &vertexBuffer_);
 	glGenBuffers(1, &EBO_);
 
@@ -109,7 +109,7 @@ void OpenGLManager::loadScene(Scene scene)
 	glEnableVertexAttribArray(normalLocation_);
 	glVertexAttribPointer(normalLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)(sizeof(float) * 6));
 	
-}
+}*/
 
 
 void toGlFloat(Matrix3D matrix, GLfloat arr[])
@@ -123,7 +123,7 @@ void toGlFloat(Matrix3D matrix, GLfloat arr[])
 void OpenGLManager::Render(Shader shader)
 {
 
-	float ratio;
+	/*float ratio;
 	int width, height;
 	Camera camera = scene_.getCamera();
 	Vecteur3D lightPosition = scene_.getLight().getPosition();
@@ -185,13 +185,13 @@ void OpenGLManager::Render(Shader shader)
 
 		glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, &indices_[currentIndex]);
 		currentIndex += length;
-	}
+	}*/
 }
 
 
 
-void OpenGLManager::addGameObject(GameObject gameObject)
+/*void OpenGLManager::addGameObject(GameObject gameObject)
 {
 	scene_.addGameObject(gameObject);
 	loadScene(scene_);
-}
+}*/

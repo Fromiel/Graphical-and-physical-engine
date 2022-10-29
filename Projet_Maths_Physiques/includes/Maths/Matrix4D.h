@@ -112,18 +112,9 @@ public:
     /// <param name="vect"> Le vecteur de mise à l'échelle </param>
     /// <returns> La matrice de mise à l'échelle associée au vecteur de mise à l'échelle </returns>
     static Matrix4D scaling(const Vecteur3D& vect);
+
     //static Matrix4D rotation(Vecteur3D& vect);
 
-    /// <summary>
-    /// Matrice de projection de perspective symetrique
-    /// Les plans du near et du far correspondent respectivement à la coordonnée z normalisée de -1 et 1 respectivement 
-    /// </summary>
-    /// <param name="radianFov">Le champ de vision en radians</param>
-    /// <param name="ratio">Largeur de l'écran / hauteur de l'écran</param>
-    /// <param name="near">La distance la plus proche observable (Doit etre positive)</param>
-    /// <param name="far">La distance la plus lointaine observable (Doit etre positive)</param>
-    /// <returns></returns>
-    static Matrix4D projectionMatrix(float radianFov, float ratio, float near, float far);
 };
 
 /// <summary>

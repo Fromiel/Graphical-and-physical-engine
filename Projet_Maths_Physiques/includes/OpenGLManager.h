@@ -8,11 +8,11 @@
 #include <iostream>
 #include <vector>
 #include "Vertice.h"
-#include "Matrix3D.h"
-#include "Matrix4D.h"
+#include "Maths/Matrix3D.h"
+#include "Maths/Matrix4D.h"
 #include "Shader.h"
 #include "Scene.h"
-#include "Particule.h"
+#include "Components/Particule.h"
 
 /// <summary>
 /// Class gérant l'affichage avec opengl
@@ -22,7 +22,7 @@ class OpenGLManager
 	private:
 		static OpenGLManager* instance;
 
-		Scene scene_;
+		//Scene scene_;
 		std::vector<Vertice> vertices_; //les points à afficher
 		std::vector<unsigned int> indices_; //les indices des points
 		GLFWwindow* window_; //Fenêtre
@@ -46,20 +46,20 @@ class OpenGLManager
 		/// 
 		/// </summary>
 		/// <returns>La scène</returns>
-		Scene getScene() const { return scene_; }
+		//Scene getScene() const { return scene_; }
 
 		/// <summary>
 		/// Permet de set le gameobject à l'indice mis en argument
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="object"></param>
-		void setGameObject(int index, GameObject object) { scene_.setGameObject(index, object); }
+		//void setGameObject(int index, GameObject object) { scene_.setGameObject(index, object); }
 
 		/// <summary>
 		/// Appel la méthode applyForces de la scene
 		/// </summary>
 		/// <param name="frameRate"></param>
-		void updateScene(double frameRate) { scene_.applyForces(frameRate); }
+		//void updateScene(double frameRate) { scene_.applyForces(frameRate); }
 
 		/// <summary>
 		/// Méthode affectant la fonction à appelé pour gérer les inputs
@@ -77,7 +77,7 @@ class OpenGLManager
 		/// Méthode permettant de charger une scène, ce qui va set vertices_ et indices_; ainsi que charger les attributes et de générer les buffers
 		/// </summary>
 		/// <param name="scene">La scene à charger</param>
-		void loadScene(Scene scene);
+		//void loadScene(Scene scene);
 
 		/// <summary>
 		/// Retourne l'id de la fenêtre
@@ -95,7 +95,7 @@ class OpenGLManager
 		/// Ajoute un gameobject a la scene et recharge la scene
 		/// </summary>
 		/// <param name="gameObject"></param>
-		void addGameObject(GameObject gameObject);
+		//void addGameObject(GameObject gameObject);
 
 		
 };

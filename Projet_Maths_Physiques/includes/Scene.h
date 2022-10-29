@@ -1,8 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "Object3D.h"
-#include "Camera.h"
+/*#include "Components/Object3D.h"
+#include "CompoCamera.h"
 #include "Light.h"
 #include "GameObject.h"
 
@@ -58,6 +58,6 @@ class Scene
 
 
 };
-
+*/
 
 #endif

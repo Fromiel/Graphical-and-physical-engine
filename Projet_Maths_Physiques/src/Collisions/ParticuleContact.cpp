@@ -5,7 +5,7 @@ ParticuleContact::~ParticuleContact() {
 	delete particules[1];
 }
 
-ParticuleContact::resolve(float duration) {
+/*ParticuleContact::resolve(float duration) {
 	resolveVelocity();
 	resolveInterpenetration();
 }
@@ -44,4 +44,4 @@ ParticuleContact::resolveInterpenetration() {
 float ParticuleContact::calculateK() const {
 	float vreel = calculateSeparatingVelocity();
 	return ( (restitution + 1) * vreel) / ((particules[0]->getInverseMasse()) + (particules[1]->getInverseMasse()) );
-}
+}*/

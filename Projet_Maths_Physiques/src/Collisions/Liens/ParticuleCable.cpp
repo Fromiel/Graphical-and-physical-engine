@@ -2,4 +2,5 @@
 
 unsigned int ParticuleCable::addContact(ParticuleContact* contact, unsigned int limit) const {
 	//TODO
+	return 0;
 }

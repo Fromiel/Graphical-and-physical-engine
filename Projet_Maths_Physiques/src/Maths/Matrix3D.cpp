@@ -1,4 +1,4 @@
-#include "Matrix3D.h"
+#include "Maths/Matrix3D.h"
 
 Matrix3D::Matrix3D() {
     this->content = {0, 0, 0, 0, 0, 0, 0, 0, 0};

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Matrix3D.h"
+#include "Maths/Matrix3D.h"
 
 TEST(addition, TestMatrix3D_1)
 {

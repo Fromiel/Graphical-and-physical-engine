@@ -3,6 +3,7 @@
 #define PARTICULE_CONTACT_RESOLVER_H
 
 #include <vector>
+#include <unordered_map>
 #include "ParticuleContact.h"
 
 class ParticuleContactResolver {
