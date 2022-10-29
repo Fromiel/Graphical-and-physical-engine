@@ -37,6 +37,8 @@ Render::Render()
 	}
 
 	glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 
@@ -52,6 +54,8 @@ Render::~Render()
 
 void Render::update(float dt)
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	Coordinator* coordinator = Coordinator::getInstance();
 
 	float ratio;
@@ -138,7 +142,8 @@ void Render::insertEntity(Entity entity)
 	{
 		light_ = entity;
 	}
-	else if (coordinator->hasComponent<Object3D>(entity))
+
+	if (coordinator->hasComponent<Object3D>(entity))
 	{
 		loadMeshes();
 	}

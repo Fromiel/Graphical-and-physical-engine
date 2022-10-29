@@ -70,12 +70,21 @@ int main(void)
 	coordinator->addComponent(sphereEntity, sphereTransform);
 	coordinator->addComponent(sphereEntity, p);
 
-	//Cube fixe
+	//Cube fixe pour centre ressort
 	Transform cubeTransform(Vecteur3D(0, 40, 0));
-	Cube cube(1);
+	Cube cube(0.5);
 	Entity cubeEntity = coordinator->createEntity();
 	coordinator->addComponent(cubeEntity, cubeTransform);
 	coordinator->addComponent(cubeEntity, (Object3D)cube);
+
+
+	//Sol en y = 0
+	Transform solTransform(Vecteur3D(0, 0, 0), Vecteur3D(100,0.01,100));
+	Cube sol(1);
+	Entity solEntity = coordinator->createEntity();
+	coordinator->addComponent(solEntity, solTransform);
+	coordinator->addComponent(solEntity, (Object3D)sol);
+
 
 	//camera
 	Entity cameraEntity = coordinator->createEntity();
@@ -85,11 +94,13 @@ int main(void)
 	coordinator->addComponent(cameraEntity, camera);
 
 	//light
-	Transform lightTransform(Vecteur3D(0, 0, 1000));
-	Light light;
+	Transform lightTransform(Vecteur3D(0, 30, 10));
+	Sphere sun(0.5);
+	Light light(Vecteur3D(0.1,0.4,0.6));
 	Entity lightEntity = coordinator->createEntity();
 	coordinator->addComponent(lightEntity, lightTransform);
 	coordinator->addComponent(lightEntity, light);
+	coordinator->addComponent(lightEntity, (Object3D) sun);
 
 	//Create random spheres
 	Entity logicEntity = coordinator->createEntity();

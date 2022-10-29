@@ -12,13 +12,15 @@ in vec3 v;
 
 void main()
 {
+     float ambientStrength = 0.1;
+     vec3 ambient = ambientStrength * coulLumiere;
 
-     float valueC = -dot(normalize(n), normalize(d));
+     float valueC = max(dot(normalize(n), normalize(d)), 0);
      float valueR = max(dot(normalize(r), normalize(v)), 0.0f);
 
-     vec3 reflet = specObjet * specLumiere * pow(valueR, 10);
-     vec3 couleur = coulObjet * coulLumiere * valueC;
+     vec3 reflet = 0.5 * coulLumiere * pow(valueR, 32);
+     vec3 couleur = coulLumiere * valueC;
 
-     gl_FragColor = vec4(couleur + reflet + vec3(0.1, 0.25, 0.05), 1.0);
+     gl_FragColor = vec4(ambient + couleur + reflet /*+ vec3(0.1, 0.25, 0.05)*/, 1.0);
    
 };

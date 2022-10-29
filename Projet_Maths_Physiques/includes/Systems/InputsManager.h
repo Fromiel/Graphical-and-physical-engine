@@ -7,7 +7,7 @@
 #include <iostream>
 
 /// <summary>
-/// Système gérant les inputs de l'utilisateur (classe non finie)
+/// Système gérant les inputs de l'utilisateur
 /// </summary>
 class InputsManager : public System
 {

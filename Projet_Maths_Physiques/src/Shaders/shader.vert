@@ -17,11 +17,6 @@ out vec3 v;
 
 void main()
 {
-    vec4 c1 = vec4(1, 0, 0, 0);
-    vec4 c2 = vec4(0, 1, 0, 0);
-    vec4 c3 = vec4(0, 0, 1, 0);
-    vec4 c4 = vec4(2, 0, 0, 1);
-    mat4 model2 = mat4(c1, c2, c3, c4);
     vec4 pos = modelMatrix * vec4(vPos, 1.0);
     gl_Position = MVP * vec4(vPos, 1.0);
     d = posLumiere - (pos.xyz / pos.w);
