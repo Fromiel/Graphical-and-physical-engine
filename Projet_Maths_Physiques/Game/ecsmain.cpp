@@ -5,6 +5,9 @@
 #include "CoreECS/Coordinator.h"
 #include "Components.h"
 #include "Systems.h"
+#include "ParticuleForceRegistry.h"
+#include "Forces/ParticuleRessortPtFixe.h"
+#include "Forces/ParticuleGravity.h"
 
 struct NoEntity {};
 
@@ -75,12 +78,18 @@ int main(void)
 	inputsManager->setWindow(render->getWindow());
 	inputsManager->setInputCallBacks();
 
+	auto registreForce = ParticuleForceRegistry();
+	ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(-5, Vecteur3D(0, 50, 0), coordinator->getComponent<Particule>(sphereEntity));
+	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceGravite);
 
 	while (!inputsManager->endGame()) //rajouter condition de fin
 	{
 		//update clock
 		time->update();
 		//Physical simulation
+		registreForce.updateForces(time->deltaTime());
 		physics->update(time->deltaTime());
 		
 		//Motion

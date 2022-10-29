@@ -22,6 +22,9 @@ double Vecteur3D::norm_squared() {
 
 Vecteur3D Vecteur3D::normalized() {
     double norm_vect = norm();
+    if (norm_vect == 0) {
+        return *this;
+    }
     _x = _x / norm_vect;
     _y = _y / norm_vect;
     _z = _z / norm_vect;

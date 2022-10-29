@@ -7,7 +7,8 @@ double Particule::sol = 0.0;
 Particule::Particule(Vecteur3D pos_initiale, Vecteur3D v_initiale, double r, double m) {
 	position = pos_initiale;
 	velocity = v_initiale;
-	acceleration = Vecteur3D(0,-g,0);
+	//acceleration = Vecteur3D(0,-g,0);
+	acceleration = Vecteur3D(0, 0, 0);
 	rayon = r;
 	InverseMasse = m;
 	clearAccum();
@@ -36,8 +37,10 @@ void Particule::setAcceleration(const Vecteur3D a) {
 }
 
 void Particule::update(double h) {
+	std::cout << position << std::endl;
 	if (position.get_y() >= sol) {
 
+		acceleration = AccumForce * InverseMasse; //Somme des forces (rpz par AccumForce) = m*acceleration
 		std::cout << "Update with h = " << h << std::endl; //FOR DEBUG
 		std::cout << "Particule at position : " << position << std::endl; //FOR DEBUG
 		updateVelocity(h);
