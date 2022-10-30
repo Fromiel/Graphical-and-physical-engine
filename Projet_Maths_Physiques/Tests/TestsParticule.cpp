@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Particule.h"
+#include "Components/Particule.h"
 
 /*bool TestsParticule::constructor() {
 	Vecteur3D acceleration = Vecteur3D(0, -9.81, 0);

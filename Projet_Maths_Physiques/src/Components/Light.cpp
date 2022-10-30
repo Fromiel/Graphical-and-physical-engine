@@ -1,6 +1,6 @@
 #include "Components/Light.h"
 
-Light::Light(Vecteur3D color) : color_(color)
+Light::Light(Vecteur3D color, Vecteur3D specular) : color_(color), specular_(specular)
 {
 
 }

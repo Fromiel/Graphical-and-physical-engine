@@ -2,25 +2,25 @@
 #define PARTICULE_H
 
 #include "Maths/Vecteur3D.h"
+#include "CoreECS/Coordinator.h"
 
 class Particule 
 {
 public:
 	//Constructeurs//
 	Particule() {}
-	Particule(Vecteur3D pos_initiale, Vecteur3D vel_initiale, double r, double m);
+	Particule(Entity entityParent, Vecteur3D vel_initiale, double r, double m);
 	Particule(const Particule &p);
 
 	//Getters//
 
 	double getInverseMasse() const { return InverseMasse; }
 	double getRayon() const { return rayon; }
-	Vecteur3D getPos() const { return position; }
+	Vecteur3D getPos() const;
 	Vecteur3D getVelocity() const { return velocity; }
 	Vecteur3D getAcc() const { return acceleration; }
 	
 	//Setters//
-	
 	void setPos(const Vecteur3D);
 	void setVelocity(const Vecteur3D);
 	void setAcceleration(const Vecteur3D);
@@ -41,7 +41,7 @@ public:
 	void clearAccum();
 
 private:
-	Vecteur3D position;
+	Entity entity;
 	Vecteur3D velocity;
 	Vecteur3D acceleration;
 	double rayon;

@@ -4,8 +4,7 @@ double Particule::g = 9.81;
 double Particule::d = 0.7;
 double Particule::sol = 0.0;
 
-Particule::Particule(Vecteur3D pos_initiale, Vecteur3D v_initiale, double r, double m) {
-	position = pos_initiale;
+Particule::Particule(Entity entityParent, Vecteur3D v_initiale, double r, double m) : entity(entityParent) {
 	velocity = v_initiale;
 	//acceleration = Vecteur3D(0,-g,0);
 	acceleration = Vecteur3D(0, 0, 0);
@@ -15,8 +14,7 @@ Particule::Particule(Vecteur3D pos_initiale, Vecteur3D v_initiale, double r, dou
 	
 }
 
-Particule::Particule(const Particule &p) {
-	position = p.getPos();
+Particule::Particule(const Particule &p) : entity(p.entity) {
 	velocity = p.getVelocity();
 	acceleration = p.getAcc();
 	rayon = p.getRayon();
@@ -24,8 +22,14 @@ Particule::Particule(const Particule &p) {
 	clearAccum();
 }
 
+Vecteur3D Particule::getPos() const
+{ 
+	return Coordinator::getInstance()->getComponent<Transform>(entity).getPosition();
+}
+
 void Particule::setPos(const Vecteur3D pos) {
-	position = pos;
+	Coordinator* coordinator = Coordinator::getInstance();
+	coordinator->getComponent<Transform>(entity).setPosition(pos);
 }
 
 void Particule::setVelocity(const Vecteur3D s) {
@@ -37,23 +41,25 @@ void Particule::setAcceleration(const Vecteur3D a) {
 }
 
 void Particule::update(double h) {
-	std::cout << position << std::endl;
+	//std::cout << position << std::endl;
 	//if (position.get_y() >= sol) {
 
 		acceleration = AccumForce * InverseMasse; //Somme des forces (rpz par AccumForce) = m*acceleration
-		std::cout << "Update with h = " << h << std::endl; //FOR DEBUG
-		std::cout << "Particule at position : " << position << std::endl; //FOR DEBUG
+		//std::cout << "Update with h = " << h << std::endl; //FOR DEBUG
+		//std::cout << "Particule at position : " << position << std::endl; //FOR DEBUG
 		updateVelocity(h);
 		updatePosition(h);
 	//}
 }
 
 void Particule::updatePosition(double frameRate) {
-	position = position +  (frameRate * velocity);
+	Coordinator* coordinator = Coordinator::getInstance();
+	Vecteur3D pos = coordinator->getComponent<Transform>(entity).getPosition();
+	coordinator->getComponent<Transform>(entity).setPosition(pos + (frameRate * velocity));
 }
 
 void Particule::updateVelocity(double frameRate) {
-	std::cout << "Particule velocity is " << velocity.norm() << std::endl; //FOR DEBUG
+	//std::cout << "Particule velocity is " << velocity.norm() << std::endl; //FOR DEBUG
 	velocity = pow(d, frameRate) * velocity + frameRate * acceleration;
 }
 

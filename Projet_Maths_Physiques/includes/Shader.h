@@ -16,9 +16,10 @@ class Shader
 {
     private:
     
-        unsigned int IDProgram_; //L'id du programme
+        GLuint IDProgram_; //L'id du programme
 
     public:
+        Shader() {}
         /// <summary>
         /// Constructeur qui va lire les deux fichiers aux chemins mis en argument et qui va lire puis initialiser les shaders dans un programme
         /// </summary>
@@ -30,7 +31,7 @@ class Shader
         /// Retourne l'id du programme
         /// </summary>
         /// <returns></returns>
-        unsigned int getIDProgram() { return IDProgram_; }
+        GLuint getIDProgram() const { return IDProgram_; }
 
         /// <summary>
         /// Active le programme utilisant ce shader

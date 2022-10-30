@@ -8,7 +8,6 @@ uniform mat3 normalMatrix;
 
 attribute vec3 normal;
 attribute vec3 vPos;
-attribute vec3 vCol;
 
 out vec3 d;
 out vec3 n;

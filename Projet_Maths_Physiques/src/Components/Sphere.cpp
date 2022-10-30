@@ -37,7 +37,7 @@ Sphere::Sphere(float radius, unsigned int sectorCount, unsigned int stackCount):
             t = (float)i / stackCount;
 
 
-            vertices_.push_back({x, y, z, 0.5f, 0.5f, 0.5f, nx, ny, nz, s, t});
+            vertices_.push_back({x, y, z, nx, ny, nz, s, t});
 
        
             

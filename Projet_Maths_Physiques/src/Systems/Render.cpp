@@ -61,8 +61,9 @@ void Render::update(float dt)
 	float ratio;
 	int width, height;
 	Camera& camera = coordinator->getComponent<Camera>(camera_);
+	Light light = coordinator->getComponent<Light>(light_);
 	Vecteur3D lightPosition = coordinator->getComponent<Transform>(light_).getPosition();
-	Vecteur3D lightColor = coordinator->getComponent<Light>(light_).getColor();
+	Vecteur3D lightColor = light.getColor();
 	Matrix4D view = camera.getViewMatrix();
 	Matrix4D projection = camera.projectionMatrix();
 	Vecteur3D posCamera = coordinator->getComponent<Transform>(camera_).getPosition();
@@ -78,29 +79,39 @@ void Render::update(float dt)
 	view.toFloatArray(viewMatrix);
 
 
-	shader_->use();
-	glBindVertexArray(VAO_);
-	//On charge les variables uniforme
-	shader_->setUniformMatrix4fv("viewMatrix", (const GLfloat*)viewMatrix);
-	shader_->setUniform3f("posLumiere", lightPosition.get_x(), lightPosition.get_y(), lightPosition.get_z());
-	shader_->setUniform3f("posCamera", posCamera.get_x(), posCamera.get_y(), posCamera.get_z());
-	shader_->setUniform3f("coulLumiere", lightColor.get_x(), lightColor.get_y(), lightColor.get_z());
-	shader_->setUniform3f("coulObjet", 1.0f, 0.5f, 0.31f);
-	shader_->setUniform3f("specLumiere", 1, 1, 1);
-	shader_->setUniform3f("specObjet", 1, 1, 1);
-	shader_->setUniform1f("alpha", 6);
-
-
-	//On boucle sur tous les gameObjects pour changer la modelMatrix et la mvpMatrix et la normalMatrix
-	int currentIndex = 0;
 
 	for (auto gameObject : entities_)
 	{
+
 		if (coordinator->hasComponent<Object3D>(gameObject))
 		{
+
+			Material material;
+			if (!coordinator->hasComponent<Material>(gameObject))
+			{
+				material = Material::getDefault();
+			}
+			else
+			{
+				material = coordinator->getComponent<Material>(gameObject);
+			}
+			shader_ = material.getShader();
+			shader_.use();
+
+			//On charge les variables uniforme
+			shader_.setUniformMatrix4fv("viewMatrix", (const GLfloat*)viewMatrix);
+			shader_.setUniform3f("posLumiere", lightPosition.get_x(), lightPosition.get_y(), lightPosition.get_z());
+			shader_.setUniform3f("posCamera", posCamera.get_x(), posCamera.get_y(), posCamera.get_z());
+			shader_.setUniform3f("coulLumiere", lightColor.get_x(), lightColor.get_y(), lightColor.get_z());
+			shader_.setUniform3f("coulObjet", material.getAmbient().get_x(), material.getAmbient().get_y(), material.getAmbient().get_z());
+			shader_.setUniform3f("specLumiere", light.getSpecular().get_x(), light.getSpecular().get_y(), light.getSpecular().get_z());
+			shader_.setUniform3f("specObjet", material.getSpecular().get_x(), material.getSpecular().get_y(), material.getSpecular().get_z());
+			shader_.setUniform3f("diffuse", material.getDiffuse().get_x(), material.getDiffuse().get_y(), material.getDiffuse().get_z());
+			shader_.setUniform1f("alpha", material.getAlpha());
+
+
 			auto object = coordinator->getComponent<Object3D>(gameObject);
 			auto transform = coordinator->getComponent<Transform>(gameObject);
-			int length = object.getIndices().size();
 
 			Matrix4D model = transform.getModelMatrix();
 			Matrix4D mvp = (projection * view * model);
@@ -117,12 +128,12 @@ void Render::update(float dt)
 			GLfloat modelMatrix[16];
 			model.toFloatArray(modelMatrix);
 
-			shader_->setUniformMatrix3fv("normalMatrix", (const GLfloat*)normalMat);
-			shader_->setUniformMatrix4fv("MVP", (const GLfloat*)MVP);
-			shader_->setUniformMatrix4fv("modelMatrix", (const GLfloat*)modelMatrix);
+			shader_.setUniformMatrix3fv("normalMatrix", (const GLfloat*)normalMat);
+			shader_.setUniformMatrix4fv("MVP", (const GLfloat*)MVP);
+			shader_.setUniformMatrix4fv("modelMatrix", (const GLfloat*)modelMatrix);
 
-			glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, &indices_[currentIndex]);
-			currentIndex += length;
+			glBindVertexArray(VAO_);
+			glDrawElements(GL_TRIANGLES, lengths_[gameObject], GL_UNSIGNED_INT, &indices_[currentIndexes_[gameObject]]);
 		}
 	}
 
@@ -149,12 +160,6 @@ void Render::insertEntity(Entity entity)
 	}
 }
 
-void Render::setShader(Shader *shader)
-{
-	shader_ = shader;
-	program_ = shader->getIDProgram();
-}
-
 
 void Render::loadMeshes()
 {
@@ -165,6 +170,7 @@ void Render::loadMeshes()
 
 	int currentIndex = 0;
 
+
 	for (auto gameObject : entities_)
 	{
 		if (coordinator->hasComponent<Object3D>(gameObject))
@@ -174,14 +180,18 @@ void Render::loadMeshes()
 			auto verticesObject = meshes.getVertices();
 			auto indicesObject = meshes.getIndices();
 
+			currentIndexes_[gameObject] = indices_.size();
+
 			for (int i = 0; i < indicesObject.size(); i++)
 			{
 				indicesObject[i] += currentIndex;
 			}
 			vertices_.insert(vertices_.end(), verticesObject.begin(), verticesObject.end());
 			indices_.insert(indices_.end(), indicesObject.begin(), indicesObject.end());
+
 			currentIndex = vertices_.size();
 
+			lengths_[gameObject] = indicesObject.size();
 		}
 	}
 
@@ -198,15 +208,29 @@ void Render::loadMeshes()
 	glGenVertexArrays(1, &VAO_);
 	glBindVertexArray(VAO_);
 
+	int currentProgram_;
 
-	vposLocation_ = glGetAttribLocation(program_, "vPos");
-	vcolLocation_ = glGetAttribLocation(program_, "vCol");
-	normalLocation_ = glGetAttribLocation(program_, "normal");
+	for (auto gameObject : entities_)
+	{
+		if (coordinator->hasComponent<Object3D>(gameObject))
+		{
+			if (!coordinator->hasComponent<Material>(gameObject))
+			{
+				currentProgram_ = Material::getDefault().getShader().getIDProgram();
+			}
+			else
+			{
+				currentProgram_ = coordinator->getComponent<Material>(gameObject).getShader().getIDProgram();
+			}
 
-	glEnableVertexAttribArray(vposLocation_);
-	glVertexAttribPointer(vposLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)0);
-	glEnableVertexAttribArray(vcolLocation_);
-	glVertexAttribPointer(vcolLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)(sizeof(float) * 3));
-	glEnableVertexAttribArray(normalLocation_);
-	glVertexAttribPointer(normalLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)(sizeof(float) * 6));
+			vposLocation_ = glGetAttribLocation(currentProgram_, "vPos");
+			normalLocation_ = glGetAttribLocation(currentProgram_, "normal");
+
+			glEnableVertexAttribArray(vposLocation_);
+			glVertexAttribPointer(vposLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)0);
+			glEnableVertexAttribArray(normalLocation_);
+			glVertexAttribPointer(normalLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(vertices_[0]), (void*)(sizeof(float) * 3));
+		}
+	}
+
 }
