@@ -6,7 +6,7 @@ ParticuleContact::~ParticuleContact() {
 }
 
 void ParticuleContact::resolve(float duration) { 
-	resolveVelocity();
+	resolveVelocity(duration);
 	resolveInterpenetration();
 }
 
@@ -14,13 +14,13 @@ float ParticuleContact::calculateSeparatingVelocity() const {
 	//Différence des 2 vitesses
 	Vecteur3D diffVelocity = particules[0]->getVelocity() - (particules[1] ? particules[1]->getVelocity() : 0);
 	//On projette sur la normale
-	Vecteur3D projVec = diffVelocity * contactNormal;
+	float projVec = scalar_product(diffVelocity,contactNormal);
 	//On renvoie la norme
-	return projVec.norm();
+	return projVec;
 }
 
-void ParticuleContact::resolveVelocity() {
-	float k = calculateK();
+void ParticuleContact::resolveVelocity(float duration) {
+	float k = calculateK(duration);
 	Vecteur3D vp1 = particules[0]->getVelocity() - (k * particules[0]->getInverseMasse() * contactNormal);
 	Vecteur3D vp2 = particules[1]->getVelocity() + (k * particules[1]->getInverseMasse() * contactNormal);
 
@@ -42,13 +42,25 @@ void ParticuleContact::resolveInterpenetration() {
 	}
 	particules[0]->setPos(pos1);
 	
-
-	//TODO : Contact au repos ?
 }
 
-float ParticuleContact::calculateK() const {
+float ParticuleContact::calculateK(float duration) const {
 	float vreel = calculateSeparatingVelocity();
-	return ( (restitution + 1) * vreel) / ((particules[0]->getInverseMasse()) + (particules[1]->getInverseMasse()) );
+
+	//resting contacts handling//
+
+	Vecteur3D accCausedVelocity = particules[0]->getAcc();
+	if (particules[1]) accCausedVelocity = accCausedVelocity - particules[1]->getAcc();
+	float accCausedSepVelocity = scalar_product(accCausedVelocity,contactNormal) * duration;
+	if (accCausedSepVelocity < 0) {
+		vreel += accCausedSepVelocity * duration;
+
+		if (vreel < 0) vreel = 0;
+	}
+
+	//--------------------------//
+
+	return ( (restitution + 1) * vreel) / ((particules[0]->getInverseMasse()) + (particules[1] ? particules[1]->getInverseMasse() : 0) );
 }
 
 bool operator<(const ParticuleContact& p1, const ParticuleContact& p2) {

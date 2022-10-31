@@ -29,13 +29,13 @@ public:
 
 private:
 	//Gère les impulsions de la collision
-	void resolveVelocity();
+	void resolveVelocity(float duration);
 
 	//Gère l'interpénétration de la collision
 	void resolveInterpenetration();
 
 	//Renvoie la valeur de k
-	float calculateK() const;
+	float calculateK(float duration) const;
 };
 
 //Opérateurs -> nécessaire à la compilation

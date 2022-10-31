@@ -5,7 +5,11 @@
 #include "ParticuleContactGenerator.h"
 
 class WallContactGenerator : public ParticuleContactGenerator {
-	//TODO
+public:
+	Vecteur3D bottom_left_corner;
+	Vecteur3D up_right_corner;
+
+	unsigned int addContact(ParticuleContact* contact, unsigned int limit) const;
 };
 
 #endif
