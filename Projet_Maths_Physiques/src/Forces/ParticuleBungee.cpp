@@ -1,9 +1,9 @@
 #include "Forces/ParticuleBungee.h"
 
-ParticuleBungee::ParticuleBungee(float kElasticite, Vecteur3D attache, Particule* particule) {
+ParticuleBungee::ParticuleBungee(float kElasticite, Vecteur3D attache, Particule* particule, float l0) {
 	_kElasticite = kElasticite;
 	_attache = attache;
-	_l0 = distance(particule->getPos(), attache);
+	_l0 = l0;
 }
 
 ParticuleBungee::~ParticuleBungee() {
@@ -15,9 +15,9 @@ void ParticuleBungee::updateForce(Particule* particule, float duration) {
 	direction = direction.normalized();
 	float l = distance(particule->getPos(), _attache);
 	if (l < _l0) {
-		return;
+		particule->addForce(Vecteur3D(0,0,0));
 	}
 	else {
-		particule->addForce((_kElasticite * (l - _l0)) * direction);
+		particule->addForce((-_kElasticite * (l - _l0)) * direction);
 	}
 };
