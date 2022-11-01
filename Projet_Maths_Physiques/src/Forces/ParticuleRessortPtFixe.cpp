@@ -12,7 +12,7 @@ ParticuleRessortPtFixe::~ParticuleRessortPtFixe() {
 
 void ParticuleRessortPtFixe::updateForce(Particule* particule, float duration) {
 	std::cout << "On débute update force ressort" << std::endl;
-	Vecteur3D direction = _attache - particule->getPos();
+	Vecteur3D direction = particule->getPos() - _attache;
 	std::cout << "Direction : " << direction << std::endl;
 	direction = direction.normalized();
 	std::cout << "Direction : " << direction << std::endl;
