@@ -18,7 +18,7 @@ void ParticuleRessortPtFixe::updateForce(Particule* particule, float duration) {
 	std::cout << "Direction : " << direction << std::endl;
 	float l = distance(particule->getPos(), _attache);
 	std::cout << "Distance entre les deux particules : " << l << std::endl;
-	std::cout << "Paramètre du add force : " << (_kElasticite * (l - _l0)) * direction << std::endl;
-	particule->addForce((_kElasticite * (l - _l0))*direction);
+	std::cout << "Paramètre du add force : " << (-_kElasticite * (l - _l0)) * direction << std::endl;
+	particule->addForce((-_kElasticite * (l - _l0))*direction);
 	std::cout << "On a fini d'update force ressort" << std::endl;
 };
