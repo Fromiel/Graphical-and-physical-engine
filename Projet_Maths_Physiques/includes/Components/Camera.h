@@ -63,6 +63,10 @@ class Camera
         /// <returns>la distance la plus loin à observer</returns>
         float getFar() const { return far_; }
 
+        //Temporaire
+        void movePosition(Vecteur3D move);
+
+
         /// <summary>
         /// 
         /// </summary>

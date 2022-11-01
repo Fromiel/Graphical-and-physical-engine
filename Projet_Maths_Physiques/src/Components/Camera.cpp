@@ -68,6 +68,16 @@ Matrix4D Camera::projectionMatrix()
 }
 
 
+void Camera::movePosition(Vecteur3D move)
+{
+    Coordinator* coordinator = Coordinator::getInstance();
+    Transform& transform =  coordinator->getComponent<Transform>(cameraEntity_);
+    Vecteur3D newPos = transform.getPosition() + move;
+    transform.setPosition(newPos);
+    viewMatrix_ = Matrix4D::translation(Vecteur3D() - transform.getPosition());
+}
+
+
 void Camera::move(const Vecteur3D &vect)
 {
     //todo

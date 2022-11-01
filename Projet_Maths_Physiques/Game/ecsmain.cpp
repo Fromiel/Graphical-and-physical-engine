@@ -9,7 +9,8 @@
 #include "Forces/ParticuleGravity.h"
 #include "Forces/ParticuleRessortPtPt.h"
 #include "Forces/ParticuleBungee.h"
-#include "Scripts/CreateSphere.h"
+//#include "Scripts/CreateSphere.h"
+#include "Scripts/MoveCamera.h"
 
 struct NoEntity {};
 
@@ -59,15 +60,15 @@ int main(void)
 	Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 	Shader lightShader("./src/Shaders/lightShader.vert", "./src/Shaders/lightShader.frag");
 
-
+ 
 	//set les inputs
 	inputsManager->setupKeyInputs(render->getWindow());
-	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S }));
+	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S, GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_LEFT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_Q }));
 
 
 	//initialisation des entités
 	//Sphere
-	Transform sphereTransform(Vecteur3D(0, -50, 0));
+	Transform sphereTransform(Vecteur3D(0, -20, 0));
 	Sphere sphere(1);
 	Entity sphereEntity = coordinator->createEntity();
 	Material sphereMat(materialShader, Vecteur3D(0.8, 0.5, 0.2), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
@@ -95,7 +96,7 @@ int main(void)
 	coordinator->addComponent(solEntity, sphereMat);
 
 	//Autre ressort
-	/*Transform sphere2Transform(Vecteur3D(-10, 20, 0));
+	Transform sphere2Transform(Vecteur3D(-10, -20, 0));
 	Sphere s2;
 	Cube c2(0.5);
 	Entity sphere2Entity = coordinator->createEntity();
@@ -107,10 +108,10 @@ int main(void)
 	coordinator->addComponent(sphere2Entity, (Object3D)s2);
 	coordinator->addComponent(sphere2Entity, sphereMat);
 
-	Transform c2t(Vecteur3D(0, 35, 0));
+	Transform c2t(Vecteur3D(-10, 50, 0));
 	coordinator->addComponent(cube2Entity, c2t);
 	coordinator->addComponent(cube2Entity, (Object3D)c2);
-	coordinator->addComponent(cube2Entity, sphereMat);*/
+	coordinator->addComponent(cube2Entity, sphereMat);
 
 	//camera
 	Entity cameraEntity = coordinator->createEntity();
@@ -118,6 +119,8 @@ int main(void)
 	coordinator->addComponent(cameraEntity, cameraTransform);
 	Camera camera(cameraEntity, 0.1, 10000, 90);
 	coordinator->addComponent(cameraEntity, camera);
+	MoveCamera moveCamera(cameraEntity);
+	coordinator->addComponent(cameraEntity, (LogicBehaviour)moveCamera);
 
 	//light
 	Transform lightTransform(Vecteur3D(0, 30, 10));
@@ -139,7 +142,7 @@ int main(void)
 	auto registreForce = ParticuleForceRegistry();
 	//ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
 	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81);
-	ParticuleBungee* ptr_bungee = new ParticuleBungee(5, Vecteur3D(0, 50, 0), coordinator->getComponentPtr<Particule>(sphereEntity), 10);
+	ParticuleBungee* ptr_bungee = new ParticuleBungee(5, Vecteur3D(0, 50, 0), coordinator->getComponentPtr<Particule>(sphereEntity), -10);
 	//ParticuleRessortPtPt* ptr_forceRessort2 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphereEntity), coordinator->getComponentPtr<Particule>(sphere2Entity), 5);//(1, Vecteur3D(0, 35, 0), coordinator->getComponent<Particule>(sphere2Entity), 5);
 	//ParticuleRessortPtPt* ptr_forceRessort3 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphere2Entity), coordinator->getComponentPtr<Particule>(sphereEntity), 5);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
@@ -148,6 +151,12 @@ int main(void)
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort2);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceRessort3);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
+
+	ParticuleRessortPtFixe* ptr_ressort = new ParticuleRessortPtFixe(5, Vecteur3D(-10, 50, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_ressort);
+
+
 
 	//Start des LogicBehaviours
 	logic->start();

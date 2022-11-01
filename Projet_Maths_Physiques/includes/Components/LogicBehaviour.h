@@ -29,7 +29,7 @@ class LogicBehaviour
 
 		void start()
 		{
-			start_;
+			start_();
 		}
 
 		void update(float dt)

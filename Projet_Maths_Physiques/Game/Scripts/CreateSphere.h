@@ -4,12 +4,12 @@
 #include "Components.h"
 #include "Systems/KeyInput.h"
 
-void Start()
+void Start(Entity entity)
 {
 	srand(time(NULL));
 }
 
-void Update(float dt)
+void Update(float dt, Entity entity)
 {
 	Coordinator* coordinator = Coordinator::getInstance();
 	if (KeyInput::_instances[0]->getIsKeyDown(GLFW_KEY_S))
@@ -35,9 +35,7 @@ class CreateSphere : public LogicBehaviour
 	public:
 		CreateSphere(Entity entity) : LogicBehaviour(entity)
 		{
-			update_ = Update;
-			start_ = Start;
+			update_ = [this](float dt) {Update(dt, entity_); };
+			start_ = [this]() {Start(entity_); };
 		}
-
-
 };
