@@ -139,7 +139,7 @@ int main(void)
 	auto registreForce = ParticuleForceRegistry();
 	//ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
 	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81);
-	ParticuleBungee* ptr_bungee = new ParticuleBungee(10, Vecteur3D(0, 40, 0), coordinator->getComponentPtr<Particule>(sphereEntity), 20);
+	ParticuleBungee* ptr_bungee = new ParticuleBungee(3, Vecteur3D(0, 55, 0), coordinator->getComponentPtr<Particule>(sphereEntity), -20);
 	//ParticuleRessortPtPt* ptr_forceRessort2 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphereEntity), coordinator->getComponentPtr<Particule>(sphere2Entity), 5);//(1, Vecteur3D(0, 35, 0), coordinator->getComponent<Particule>(sphere2Entity), 5);
 	//ParticuleRessortPtPt* ptr_forceRessort3 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphere2Entity), coordinator->getComponentPtr<Particule>(sphereEntity), 5);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
