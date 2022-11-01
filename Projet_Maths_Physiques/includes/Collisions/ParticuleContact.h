@@ -27,6 +27,9 @@ public:
 	//Renvoie la vélocité de séparation des particules
 	float calculateSeparatingVelocity() const;
 
+	//Clear les valeurs
+	void clear();
+
 private:
 	//Gère les impulsions de la collision
 	void resolveVelocity(float duration);
