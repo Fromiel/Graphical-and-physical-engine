@@ -9,7 +9,6 @@
 #include "Forces/ParticuleGravity.h"
 #include "Forces/ParticuleRessortPtPt.h"
 #include "Forces/ParticuleBungee.h"
-//#include "Scripts/CreateSphere.h"
 #include "Scripts/MoveCamera.h"
 #include "Scripts/Blob.h"
 
@@ -168,7 +167,9 @@ int main(void)
 	//Start des LogicBehaviours
 	logic->start();
 
-	while (!inputsManager->endGame()) //rajouter condition de fin
+
+	//Boucle de jeu
+	while (!inputsManager->endGame())
 	{
 		//update clock
 		time->update();
