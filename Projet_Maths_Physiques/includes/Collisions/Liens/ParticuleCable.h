@@ -6,6 +6,9 @@
 
 class ParticuleCable : public ParticuleLink {
 public:
+	//Constructeur
+	ParticuleCable(float ml, float r, Particule* p1, Particule* p2);
+
 	// On génère un contact seulement si distance(p1,p2) > maxLength
 	float maxLength;
 

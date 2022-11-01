@@ -5,14 +5,16 @@ ParticuleContact::~ParticuleContact() {
 	delete particules[1];
 }
 
-void ParticuleContact::resolve(float duration) { 
-	resolveVelocity(duration);
-	resolveInterpenetration();
+void ParticuleContact::resolve(float duration) {
+	if (particules[0]) {
+		resolveVelocity(duration);
+		resolveInterpenetration();
+	}
 }
 
 float ParticuleContact::calculateSeparatingVelocity() const {
 	//Différence des 2 vitesses
-	Vecteur3D diffVelocity = particules[0]->getVelocity() - (particules[1] ? particules[1]->getVelocity() : 0);
+	Vecteur3D diffVelocity = (particules[0] ? particules[0]->getVelocity() : 0) - (particules[1] ? particules[1]->getVelocity() : 0);
 	//On projette sur la normale
 	float projVec = scalar_product(diffVelocity,contactNormal);
 	//On renvoie la norme
@@ -21,11 +23,12 @@ float ParticuleContact::calculateSeparatingVelocity() const {
 
 void ParticuleContact::resolveVelocity(float duration) {
 	float k = calculateK(duration);
-	Vecteur3D vp1 = particules[0]->getVelocity() - (k * particules[0]->getInverseMasse() * contactNormal);
-	Vecteur3D vp2 = particules[1]->getVelocity() + (k * particules[1]->getInverseMasse() * contactNormal);
+	Vecteur3D vp1, vp2;
+	if (particules[0]) vp1 = particules[0]->getVelocity() - (k * particules[0]->getInverseMasse() * contactNormal);
+	if (particules[1]) vp2 = particules[1]->getVelocity() + (k * particules[1]->getInverseMasse() * contactNormal);
 
-	particules[0]->setVelocity(vp1);
-	particules[1]->setVelocity(vp2);
+	if (particules[0]) particules[0]->setVelocity(vp1);
+	if (particules[1]) particules[1]->setVelocity(vp2);
 
 }
 
@@ -34,10 +37,13 @@ void ParticuleContact::resolveInterpenetration() {
 
 	float ma = 1 / particules[0]->getInverseMasse();
 	float mb = (particules[1] ? 1 / particules[1]->getInverseMasse() : 0);
-	Vecteur3D pos1 = particules[0]->getPos() + ((mb / (ma + mb) ) * penetration * contactNormal) ;
+	Vecteur3D pos1 = particules[0]->getPos() - ((mb / (ma + mb) ) * penetration * contactNormal) ;
+
+	std::cout << "Particule[0] has position " << particules[0]->getPos() << " and will now have position " << pos1 << std::endl;
 
 	if (particules[1]) {
-		Vecteur3D pos2 = particules[1]->getPos() - ((ma / (ma + mb)) * penetration * contactNormal);
+		Vecteur3D pos2 = particules[1]->getPos() + ((ma / (ma + mb)) * penetration * contactNormal);
+		std::cout << "Particule[1] has position " << particules[1]->getPos() << " and will now have position " << pos2 << std::endl;
 		particules[1]->setPos(pos2);
 	}
 	particules[0]->setPos(pos1);
@@ -61,6 +67,14 @@ float ParticuleContact::calculateK(float duration) const {
 	//--------------------------//
 
 	return ( (restitution + 1) * vreel) / ((particules[0]->getInverseMasse()) + (particules[1] ? particules[1]->getInverseMasse() : 0) );
+}
+
+void ParticuleContact::clear() {
+	particules[0] = nullptr;
+	particules[1] = nullptr;
+	restitution = 0;
+	penetration = 0;
+	contactNormal = Vecteur3D();
 }
 
 bool operator<(const ParticuleContact& p1, const ParticuleContact& p2) {
