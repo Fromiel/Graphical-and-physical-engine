@@ -7,6 +7,8 @@
 #include "ParticuleForceRegistry.h"
 #include "Forces/ParticuleRessortPtFixe.h"
 #include "Forces/ParticuleGravity.h"
+#include "Forces/ParticuleRessortPtPt.h"
+#include "Forces/ParticuleBungee.h"
 #include "Scripts/CreateSphere.h"
 
 struct NoEntity {};
@@ -93,7 +95,7 @@ int main(void)
 	coordinator->addComponent(solEntity, sphereMat);
 
 	//Autre ressort
-	Transform sphere2Transform(Vecteur3D(0, 30, 0));
+	Transform sphere2Transform(Vecteur3D(-10, 20, 0));
 	Sphere s2;
 	Cube c2(0.5);
 	Entity sphere2Entity = coordinator->createEntity();
@@ -105,7 +107,7 @@ int main(void)
 	coordinator->addComponent(sphere2Entity, (Object3D)s2);
 	coordinator->addComponent(sphere2Entity, sphereMat);
 
-	Transform c2t(sphere2Transform);
+	Transform c2t(Vecteur3D(0, 35, 0));
 	coordinator->addComponent(cube2Entity, c2t);
 	coordinator->addComponent(cube2Entity, (Object3D)c2);
 	coordinator->addComponent(cube2Entity, sphereMat);
@@ -135,13 +137,17 @@ int main(void)
 
 
 	auto registreForce = ParticuleForceRegistry();
-	ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
+	//ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
 	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81);
-	ParticuleRessortPtFixe* ptr_forceRessort2 = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphere2Entity), 20);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
+	ParticuleBungee* ptr_bungee = new ParticuleBungee(1, Vecteur3D(0, 40, 0), coordinator->getComponentPtr<Particule>(sphereEntity), 5);
+	//ParticuleRessortPtPt* ptr_forceRessort2 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphereEntity), coordinator->getComponentPtr<Particule>(sphere2Entity), 5);//(1, Vecteur3D(0, 35, 0), coordinator->getComponent<Particule>(sphere2Entity), 5);
+	//ParticuleRessortPtPt* ptr_forceRessort3 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphere2Entity), coordinator->getComponentPtr<Particule>(sphereEntity), 5);
+	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
 	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceGravite);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceRessort2);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_bungee);
+	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort2);
+	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceRessort3);
+	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
 
 	//Start des LogicBehaviours
 	logic->start();
@@ -155,8 +161,7 @@ int main(void)
 		//Physical simulation
 		registreForce.updateForces(time->deltaTime());
 		physics->update(time->deltaTime());
-		
-		//Motion
+
 		
 		//render
 		render->update(time->deltaTime());

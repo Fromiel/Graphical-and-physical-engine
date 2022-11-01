@@ -12,7 +12,7 @@ private:
 	float _l0;
 
 public:
-	ParticuleBungee(float kElasticite, Vecteur3D attache, Particule* particule);
+	ParticuleBungee(float kElasticite, Vecteur3D attache, Particule* particule, float l0);
 	~ParticuleBungee();
 	float getkElasticite() { return _kElasticite; };
 	Vecteur3D getAttache() { return _attache; };

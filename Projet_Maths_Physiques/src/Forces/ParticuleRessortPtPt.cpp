@@ -1,9 +1,11 @@
 #include "Forces/ParticuleRessortPtPt.h"
 
-ParticuleRessortPtPt::ParticuleRessortPtPt(float kElasticite, Particule* particule1, Particule* particule2) {
+ParticuleRessortPtPt::ParticuleRessortPtPt(float kElasticite, Particule* particule1, Particule* particule2, float l0) {
 	_kElasticite = kElasticite;
 	_particuleExt = particule2;
-	_l0 = distance(particule1->getPos(), particule2->getPos());
+	_l0 = l0;
+
+
 }
 
 ParticuleRessortPtPt::~ParticuleRessortPtPt() {
