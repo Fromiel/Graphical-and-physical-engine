@@ -15,9 +15,9 @@ void ParticuleBungee::updateForce(Particule* particule, float duration) {
 	direction = direction.normalized();
 	float l = distance(particule->getPos(), _attache);
 	if (l < _l0) {
-		return;
+		particule->addForce(Vecteur3D(0,0,0));
 	}
 	else {
-		particule->addForce((_kElasticite * (l - _l0)) * direction);
+		particule->addForce((-_kElasticite * (l - _l0)) * direction);
 	}
 };

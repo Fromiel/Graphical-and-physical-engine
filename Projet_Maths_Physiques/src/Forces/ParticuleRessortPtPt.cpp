@@ -4,8 +4,6 @@ ParticuleRessortPtPt::ParticuleRessortPtPt(float kElasticite, Particule* particu
 	_kElasticite = kElasticite;
 	_particuleExt = particule2;
 	_l0 = l0;
-
-
 }
 
 ParticuleRessortPtPt::~ParticuleRessortPtPt() {
