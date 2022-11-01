@@ -6,8 +6,13 @@
 
 class WallContactGenerator : public ParticuleContactGenerator {
 public:
-	Vecteur3D bottom_left_corner;
-	Vecteur3D up_right_corner;
+	Vecteur3D center;
+	Vecteur3D normale;
+	Particule* particule;
+	float thickness;
+
+	WallContactGenerator(Particule*, Vecteur3D, Vecteur3D, float);
+	~WallContactGenerator();
 
 	unsigned int addContact(ParticuleContact* contact, unsigned int limit) const;
 };
