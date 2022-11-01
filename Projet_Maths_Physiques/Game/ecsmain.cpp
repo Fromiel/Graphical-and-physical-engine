@@ -11,6 +11,7 @@
 #include "Forces/ParticuleBungee.h"
 //#include "Scripts/CreateSphere.h"
 #include "Scripts/MoveCamera.h"
+#include "Scripts/Blob.h"
 
 struct NoEntity {};
 
@@ -137,6 +138,12 @@ int main(void)
 	CreateSphere createRandomSpheres(logicEntity);
 	coordinator->addComponent(logicEntity, (LogicBehaviour)createRandomSpheres);*/
 
+	//Create blob
+	ParticuleForceRegistry* registry = new ParticuleForceRegistry();
+	Entity blob = coordinator->createEntity();
+	Blob blobScript(blob, registry);
+	coordinator->addComponent(blob, (LogicBehaviour)blobScript);
+
 
 
 	auto registreForce = ParticuleForceRegistry();
@@ -169,6 +176,7 @@ int main(void)
 		logic->update(time->deltaTime());
 		//Physical simulation
 		registreForce.updateForces(time->deltaTime());
+		//registry->updateForces(time->deltaTime());
 		physics->update(time->deltaTime());
 
 		
