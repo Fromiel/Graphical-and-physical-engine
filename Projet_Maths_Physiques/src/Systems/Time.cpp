@@ -11,3 +11,9 @@ void Time::update()
 	dt_ = std::chrono::duration<float, std::chrono::seconds::period>(timeNow - now_).count();
 	now_ = timeNow;
 }
+
+float Time::deltaTime()
+{
+	if (dt_ > 0.1) return 0.1;
+	else return dt_;
+}

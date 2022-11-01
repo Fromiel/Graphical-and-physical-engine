@@ -28,7 +28,7 @@ class Time : public System
         /// <summary>
         /// Temps qui s'est écoulé entre deux appels à update (en secondes)
         /// </summary>
-        float deltaTime() { return dt_; }
+        float deltaTime();
 };
 
 

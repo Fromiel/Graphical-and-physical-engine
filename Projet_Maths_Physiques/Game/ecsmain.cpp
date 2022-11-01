@@ -9,11 +9,11 @@
 #include "Forces/ParticuleGravity.h"
 #include "Forces/ParticuleRessortPtPt.h"
 #include "Forces/ParticuleBungee.h"
-//#include "Scripts/CreateSphere.h"
 #include "Scripts/MoveCamera.h"
 #include "Collisions/ParticuleContactResolver.h"
 #include "Collisions/Liens/ParticuleCable.h"
 #include "Collisions/Liens/ParticuleRod.h"
+#include "Scripts/Blob.h"
 
 struct NoEntity {};
 
@@ -21,7 +21,7 @@ int main(void)
 {
 	Coordinator* coordinator = Coordinator::getInstance();
 
-	//initialisation des systèmes
+	//initialisation des systï¿½mes
 	auto time = coordinator->registerSystem<Time>();
 	auto render = coordinator->registerSystem<Render>();
 	auto inputsManager = coordinator->registerSystem<InputsManager>();
@@ -39,7 +39,7 @@ int main(void)
 	coordinator->registerComponent<Material>();
 
 
-	//Ajoute les signatures des systèmes
+	//Ajoute les signatures des systï¿½mes
 	Signature noEntity;
 	noEntity.set(coordinator->getComponentType<NoEntity>());
 
@@ -69,9 +69,9 @@ int main(void)
 	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S, GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_LEFT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_Q }));
 
 
-	//initialisation des entités
+	//initialisation des entitï¿½s
 	//Sphere
-	Transform sphereTransform(Vecteur3D(0, -20, 0));
+	Transform sphereTransform(Vecteur3D(0, 40, 0));
 	Sphere sphere(1);
 	Entity sphereEntity = coordinator->createEntity();
 	Material sphereMat(materialShader, Vecteur3D(0.8, 0.5, 0.2), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
@@ -99,7 +99,7 @@ int main(void)
 	coordinator->addComponent(solEntity, sphereMat);
 
 	//Autre ressort
-	Transform sphere2Transform(Vecteur3D(-10, -20, 0));
+	/*Transform sphere2Transform(Vecteur3D(-10, -20, 0));
 	Sphere s2;
 	Cube c2(0.5);
 	Entity sphere2Entity = coordinator->createEntity();
@@ -114,7 +114,7 @@ int main(void)
 	Transform c2t(Vecteur3D(-10, 50, 0));
 	coordinator->addComponent(cube2Entity, c2t);
 	coordinator->addComponent(cube2Entity, (Object3D)c2);
-	coordinator->addComponent(cube2Entity, sphereMat);
+	coordinator->addComponent(cube2Entity, sphereMat);*/
 
 	//Test Collisions
 	Transform sphere3Transform(Vecteur3D(-20, 50, 0));
@@ -168,6 +168,12 @@ int main(void)
 	CreateSphere createRandomSpheres(logicEntity);
 	coordinator->addComponent(logicEntity, (LogicBehaviour)createRandomSpheres);*/
 
+	//Create blob
+	/*ParticuleForceRegistry* registry = new ParticuleForceRegistry();
+	Entity blob = coordinator->createEntity();
+	Blob blobScript(blob, registry);
+	coordinator->addComponent(blob, (LogicBehaviour)blobScript);*/
+
 
 
 	auto registreForce = ParticuleForceRegistry();
@@ -178,15 +184,15 @@ int main(void)
 	//ParticuleRessortPtPt* ptr_forceRessort2 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphereEntity), coordinator->getComponentPtr<Particule>(sphere2Entity), 5);//(1, Vecteur3D(0, 35, 0), coordinator->getComponent<Particule>(sphere2Entity), 5);
 	//ParticuleRessortPtPt* ptr_forceRessort3 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphere2Entity), coordinator->getComponentPtr<Particule>(sphereEntity), 5);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceGravite);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_bungee);
+	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceGravite);
+	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_bungee);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort2);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceRessort3);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
 
-	ParticuleRessortPtFixe* ptr_ressort = new ParticuleRessortPtFixe(5, Vecteur3D(-10, 50, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_ressort);
+	ParticuleRessortPtFixe* ptr_ressort = new ParticuleRessortPtFixe(5, coordinator->getComponent<Transform>(cubeEntity).getPosition(), coordinator->getComponent<Particule>(sphereEntity), 20);
+	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_ressort);
 
 	//SPhere 3
 	registreForce.add(coordinator->getComponentPtr<Particule>(sphere3Entity), ptr_lowGravity);
@@ -194,7 +200,9 @@ int main(void)
 	//Start des LogicBehaviours
 	logic->start();
 
-	while (!inputsManager->endGame()) //rajouter condition de fin
+
+	//Boucle de jeu
+	while (!inputsManager->endGame())
 	{
 		all_contacts_in_scene.clear();
 
@@ -204,10 +212,11 @@ int main(void)
 		logic->update(time->deltaTime());
 		//Physical simulation
 		registreForce.updateForces(time->deltaTime());
+		//registry->updateForces(time->deltaTime());
 		physics->update(time->deltaTime());
 
 		
-		//Pour le test, on découpera mieux par la suite
+		//Pour le test, on dï¿½coupera mieux par la suite
 		pc->clear();
 		pcable.addContact(pc, 0);
 		all_contacts_in_scene.push_back(pc);
