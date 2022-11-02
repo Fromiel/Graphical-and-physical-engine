@@ -9,13 +9,13 @@ class Particule
 public:
 	//Constructeurs//
 	Particule() {}
-	Particule(Entity entityParent, Vecteur3D vel_initiale, double r, double m);
+	Particule(Entity entityParent, Vecteur3D vel_initiale, float r, float m);
 	Particule(const Particule &p);
 
 	//Getters//
 
-	double getInverseMasse() const { return InverseMasse; }
-	double getRayon() const { return rayon; }
+	float getInverseMasse() const { return InverseMasse; }
+	float getRayon() const { return rayon; }
 	Vecteur3D getPos() const;
 	Vecteur3D getVelocity() const { return velocity; }
 	Vecteur3D getAcc() const { return acceleration; }
@@ -28,7 +28,7 @@ public:
 	/**
 	* Fonction qui mets à jour la position de la particule en fonction du temps
 	*/
-	void update(double h = 1.0/60.0);
+	void update(float h = 1.0f / 60.0f);
 
 	/*
 	* Fonction d'ajout de force à la particule
@@ -44,30 +44,30 @@ private:
 	Entity entity;
 	Vecteur3D velocity;
 	Vecteur3D acceleration;
-	double rayon;
-	double InverseMasse;
+	float rayon;
+	float InverseMasse;
 
 	//Accumulateur de forces
 	Vecteur3D AccumForce;
 
 	//Constante de gravité
-	static double g;
+	static float g;
 	//Valeur des frottements
-	static double d;
+	static float d;
 	//Hauteur du sol
-	static double sol;
+	static float sol;
 
 	//Fonctions d'update
 
 	/**
 	* Mets à jour la position de la particule en fonction du frame rate
 	*/
-	void updatePosition(double frameRate);
+	void updatePosition(float frameRate);
 
 	/**
 	* Mets à jour la vélocité de la particule en fonction du frame rate
 	*/
-	void updateVelocity(double frameRate);
+	void updateVelocity(float frameRate);
 
 };
 

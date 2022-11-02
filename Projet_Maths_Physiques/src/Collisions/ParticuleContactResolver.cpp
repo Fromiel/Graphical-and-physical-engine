@@ -6,7 +6,7 @@ void ParticuleContactResolver::resolveContacts(std::vector<ParticuleContact*> co
 
 	if (contactArray.size() == 0) return;
 
-	int it = 0;
+	unsigned int it = 0;
 	bool resolved = false;
 
 	while (it < iteration && !resolved) {

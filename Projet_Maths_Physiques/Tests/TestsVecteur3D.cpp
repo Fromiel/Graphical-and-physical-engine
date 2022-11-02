@@ -15,7 +15,7 @@ TEST(norm_squared, TestVecteur3D_1) {
 
 TEST(normalized, TestVecteur3D_1) {
     Vecteur3D result = Vecteur3D(14, 7, 14).normalized();
-    Vecteur3D expected = Vecteur3D(2./3., 1./3., 2./3.);
+    Vecteur3D expected = Vecteur3D(2.0f/3.0f, 1.0f/3.0f, 2.0f/3.0f);
 
     bool testPass = true;
 

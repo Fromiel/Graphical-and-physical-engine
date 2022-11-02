@@ -11,9 +11,9 @@
 class Vecteur3D{
 
     private :
-        double _x;
-        double _y;
-        double _z;
+        float _x;
+        float _y;
+        float _z;
 
     public:
 
@@ -23,7 +23,7 @@ class Vecteur3D{
         /// <param name="x"> Première composante du vecteur </param>
         /// <param name="y"> Seconde composante du vecteur </param>
         /// <param name="z"> Troisième composante du vecteur </param>
-        Vecteur3D(double x=0, double y=0, double z=0);
+        Vecteur3D(float x=0, float y=0, float z=0);
 
         /// <summary>
         /// Constructeur de copie de Vecteur3D
@@ -35,31 +35,31 @@ class Vecteur3D{
         /// Getter de la première composante du vecteur
         /// </summary>
         /// <returns> La valeur de la première composante du vecteur </returns>
-        double get_x() const {return _x;}
+        float get_x() const {return _x;}
 
         /// <summary>
         /// Getter de la seconde composante du vecteur
         /// </summary>
         /// <returns> La valeur de la seconde composante du vecteur </returns>
-        double get_y() const {return _y;}
+        float get_y() const {return _y;}
 
         /// <summary>
         /// Getter de la dernière composante du vecteur
         /// </summary>
         /// <returns> La valeur de la dernière composante du vecteur </returns>
-        double get_z() const {return _z;}
+        float get_z() const {return _z;}
 
         /// <summary>
         /// Calcule la norme du vecteur
         /// </summary>
         /// <returns> Retourne la norme du vecteur </returns>
-        double norm();
+        float norm();
 
         /// <summary>
         /// Calcule la norme au carré du vecteur
         /// </summary>
         /// <returns> Retourne la norme au carré du vecteur </returns>
-        double norm_squared();
+        float norm_squared();
 
         /// <summary>
         /// Normalise le vecteur
@@ -72,7 +72,7 @@ class Vecteur3D{
         /// </summary>
         /// <param name="scalar"> Le scalaire par lequel on souhaite multiplier le vecteur </param>
         /// <returns> Le résultat de la multiplication du scalaire avec le vecteur </returns>
-        Vecteur3D scalar_multiplication(double scalar);
+        Vecteur3D scalar_multiplication(float scalar);
 
 };
 
@@ -114,7 +114,7 @@ Vecteur3D operator*(const Vecteur3D &vect1, const Vecteur3D &vect2);
 /// <param name="d"> Scalaire par lequel on veut multiplier le vecteur </param>
 /// <param name="v"> Vecteur que l'on souhaite multiplier </param>
 /// <returns> Le vecteur résultat de la multiplication </returns>
-Vecteur3D operator*(const double d, const Vecteur3D& v);
+Vecteur3D operator*(const float d, const Vecteur3D& v);
 
 /// <summary>
 /// Surcharge de l'opérateur *
@@ -122,7 +122,7 @@ Vecteur3D operator*(const double d, const Vecteur3D& v);
 /// <param name="v"> Vecteur que l'on souhaite multiplier </param>
 /// <param name="d">Scalaire par lequel on veut multiplier le vecteur </param>
 /// <returns> Le vecteur résultat de la multiplication </returns>
-Vecteur3D operator*(const Vecteur3D& v, const double d);
+Vecteur3D operator*(const Vecteur3D& v, const float d);
 
 /// <summary>
 /// Calcul du produit scalaire
@@ -130,7 +130,7 @@ Vecteur3D operator*(const Vecteur3D& v, const double d);
 /// <param name="vect1"> Premier vecteur </param>
 /// <param name="vect2"> Deuxième vecteur </param>
 /// <returns> Le produit scalaire des deux vecteurs </returns>
-double scalar_product(const Vecteur3D &vect1, const Vecteur3D &vect2);
+float scalar_product(const Vecteur3D &vect1, const Vecteur3D &vect2);
 
 /// <summary>
 /// Calcul du produit vectoriel 

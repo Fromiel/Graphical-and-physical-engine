@@ -7,19 +7,19 @@ Sphere::Sphere(float radius, unsigned int sectorCount, unsigned int stackCount):
     float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normale
     float s, t;                                     // vertex texCoord
 
-    float sectorStep = 2 * M_PI / sectorCount_;
-    float stackStep = M_PI / stackCount_;
+    float sectorStep = 2 * static_cast<float>(M_PI) / sectorCount_;
+    float stackStep = static_cast<float>(M_PI) / stackCount_;
     float sectorAngle, stackAngle;
 
-    for (int i = 0; i <= stackCount_; ++i)
+    for (unsigned int i = 0; i <= stackCount_; ++i)
     {
-        stackAngle = M_PI / 2 - i * stackStep;        // commence de pi/2 à -pi/2
+        stackAngle = static_cast<float>(M_PI) / 2 - i * stackStep;        // commence de pi/2 à -pi/2
         xy = radius_ * cosf(stackAngle);             // r * cos(u)
         z = radius_ * sinf(stackAngle);              // r * sin(u)
 
         // ajoute (sectorCount+1) vertices par latitude
         //les premier et dernier vertices ont la meme position et normale, mais des différentes coordonnées de texture
-        for (int j = 0; j <= sectorCount_; ++j)
+        for (unsigned int j = 0; j <= sectorCount_; ++j)
         {
             sectorAngle = j * sectorStep;           // on commence de 0 à 2pi
 
@@ -45,12 +45,12 @@ Sphere::Sphere(float radius, unsigned int sectorCount, unsigned int stackCount):
     }
 
     int k1, k2;
-    for (int i = 0; i < stackCount_; ++i)
+    for (unsigned int i = 0; i < stackCount_; ++i)
     {
         k1 = i * (sectorCount_ + 1);     // début de la latitude actuelle
         k2 = k1 + sectorCount_ + 1;      // début de la latitude suivante
 
-        for (int j = 0; j < sectorCount_; ++j, ++k1, ++k2)
+        for (unsigned int j = 0; j < sectorCount_; ++j, ++k1, ++k2)
         {
             // 2 triangles par longitude en excluant la première et dernière latitude
             // k1 => k2 => k1+1

@@ -16,7 +16,7 @@ void addParticuleRod(std::vector<Entity>& blob, Vecteur3D position, ParticuleFor
 	Transform transform(position);
 	Sphere sphere(0.5);
 	Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
-	Material sphereMat(materialShader, Vecteur3D(0.15, 0.15, 0.9), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
+	Material sphereMat(materialShader, Vecteur3D(0.15f, 0.15f, 0.9f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 	coordinator->addComponent(newParticule, transform);
 	Particule particule(newParticule, Vecteur3D(0, 0, 0), 1, 1);
 	coordinator->addComponent(newParticule, (Object3D) sphere);
@@ -59,7 +59,7 @@ void moveBlobRod(std::vector<Entity>& blob, Vecteur3D move)
 
 void StartBlobRod(Entity entity, std::vector<Entity>& blob, ParticuleForceRegistry* registry, std::vector<ParticuleRod>& rods)
 {
-	srand(time(NULL));
+	srand(static_cast<unsigned int>(time(NULL)));
 	int nbParticules = 8;
 	for (int i = 0; i < nbParticules; i++)
 	{
@@ -89,7 +89,7 @@ void UpdateBlobRod(float dt, Entity entity, std::vector<Entity>& blob, Particule
 	all_contacts_in_scene.push_back(pc);
 
 
-	contact_resolver.SetIterations(1 + all_contacts_in_scene.size() * 2);
+	contact_resolver.SetIterations(1 + static_cast<unsigned int>(all_contacts_in_scene.size()) * 2);
 	contact_resolver.resolveContacts(all_contacts_in_scene, 1, dt);
 
 	float speed = 5.0f;

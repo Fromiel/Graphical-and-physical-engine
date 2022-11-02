@@ -72,7 +72,7 @@ void Render::update(float dt)
 	ratio = width / (float)height;
 	camera.setRatio(ratio);
 
-	glClearColor(0.13, 0.13, 0.13, 1.);
+	glClearColor(0.13f, 0.13f, 0.13f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	GLfloat viewMatrix[16];
@@ -180,7 +180,7 @@ void Render::loadMeshes()
 			auto verticesObject = meshes.getVertices();
 			auto indicesObject = meshes.getIndices();
 
-			currentIndexes_[gameObject] = indices_.size();
+			currentIndexes_[gameObject] = static_cast<unsigned int>(indices_.size());
 
 			for (int i = 0; i < indicesObject.size(); i++)
 			{
@@ -189,9 +189,9 @@ void Render::loadMeshes()
 			vertices_.insert(vertices_.end(), verticesObject.begin(), verticesObject.end());
 			indices_.insert(indices_.end(), indicesObject.begin(), indicesObject.end());
 
-			currentIndex = vertices_.size();
+			currentIndex = static_cast<int>(vertices_.size());
 
-			lengths_[gameObject] = indicesObject.size();
+			lengths_[gameObject] = static_cast<unsigned int>(indicesObject.size());
 		}
 	}
 

@@ -51,7 +51,7 @@ TEST(viewMatrix, TestsTransformMatrix_1)
 {
 	Vecteur3D position(0.0f, 0.0f, 27.0f);
 	Transform transform(position);
-	Camera camera(transform, 0.1, 100);
+	Camera camera(transform, 0.1f, 100.0f);
 
 	//Create a camera which looks at the center of the world (0, 0, 0)
 	
@@ -98,7 +98,7 @@ TEST(projectionMatrix, TestsTransformMatrix_1)
 {
 	Vecteur3D position(0.0f, 0.0f, 27.0f);
 	Transform transform(position);
-	Camera camera(transform, 0.1, 100, 110);
+	Camera camera(transform, 0.1f, 100.0f, 110.0f);
 
 	Matrix4D projection = camera.projectionMatrix();
 
@@ -111,7 +111,7 @@ TEST(normalMatrix, TestsTransformMatrix_1)
 {
 	Vecteur3D position(0.0f, 0.0f, 27.0f);
 	Transform transformCamera(position);
-	Camera camera(transformCamera, 0.1, 100, 110);
+	Camera camera(transformCamera, 0.1f, 100.0f, 110.0f);
 
 	Transform transform(Vecteur3D(0.0f, 5.0f, 25.0f), Vecteur3D(0.5f, 0.45f, 1.0f));
 

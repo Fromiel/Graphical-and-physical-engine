@@ -75,7 +75,7 @@ int main(void)
 	Transform sphereTransform(Vecteur3D(-10, 40	, 0));
 	Sphere sphere(1);
 	Entity sphereEntity = coordinator->createEntity();
-	Material sphereMat(materialShader, Vecteur3D(0.8, 0.5, 0.2), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
+	Material sphereMat(materialShader, Vecteur3D(0.8f, 0.5f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 	coordinator->addComponent(sphereEntity, (Object3D)sphere);
 	coordinator->addComponent(sphereEntity, sphereTransform);
 	Particule p(sphereEntity, Vecteur3D(0, 0, 0), 1, 1);
@@ -92,7 +92,7 @@ int main(void)
 
 
 	//Sol en y = 0
-	Transform solTransform(Vecteur3D(0, 0, 0), Vecteur3D(100,0.01,100));
+	Transform solTransform(Vecteur3D(0.0f, 0.0f, 0.0f), Vecteur3D(100.0f, 0.01f, 100.0f));
 	Cube sol(1);
 	Entity solEntity = coordinator->createEntity();
 	coordinator->addComponent(solEntity, solTransform);
@@ -149,7 +149,7 @@ int main(void)
 	Entity cameraEntity = coordinator->createEntity();
 	Transform cameraTransform(Vecteur3D(0, 35, 20));
 	coordinator->addComponent(cameraEntity, cameraTransform);
-	Camera camera(cameraEntity, 0.1, 10000, 90);
+	Camera camera(cameraEntity, 0.1f, 10000.0f, 90.0f);
 	coordinator->addComponent(cameraEntity, camera);
 	MoveCamera moveCamera(cameraEntity);
 	coordinator->addComponent(cameraEntity, (LogicBehaviour)moveCamera);
@@ -157,7 +157,7 @@ int main(void)
 	//light
 	Transform lightTransform(Vecteur3D(0, 30, -10));
 	Sphere sun(0.5);
-	Light light(Vecteur3D(0.8,0.8,0.8));
+	Light light(Vecteur3D(0.8f, 0.8f, 0.8f));
 	Entity lightEntity = coordinator->createEntity();
 	coordinator->addComponent(lightEntity, lightTransform);
 	coordinator->addComponent(lightEntity, light);
@@ -181,7 +181,7 @@ int main(void)
 
 
 	auto registreForce = ParticuleForceRegistry();
-	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81);
+	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81f);
 	ParticuleGravity* ptr_lowGravity = new ParticuleGravity(-1.0);
 	ParticuleBungee* ptr_bungee = new ParticuleBungee(5, Vecteur3D(0, 50, 0), coordinator->getComponentPtr<Particule>(sphereEntity), -10);
 	ParticuleRessortPtPt* ptr_forceRessort2 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphereEntity), coordinator->getComponentPtr<Particule>(sphere2Entity), 10);
@@ -225,7 +225,7 @@ int main(void)
 		pcable.addContact(pc2, 0);
 		all_contacts_in_scene.push_back(pc2);
 
-		contact_resolver.SetIterations(1 + all_contacts_in_scene.size() * 2);
+		contact_resolver.SetIterations(1 + static_cast<unsigned int>(all_contacts_in_scene.size()) * 2);
 		contact_resolver.resolveContacts(all_contacts_in_scene, 1, time->deltaTime());
 
 		//render

@@ -1,14 +1,14 @@
 #include "Forces/ParticuleGravity.h"
 
 void ParticuleGravity::updateForce(Particule* particule, float duration) {
-	double imasse = particule->getInverseMasse();
+	float imasse = particule->getInverseMasse();
 	if (imasse < DBL_MAX) {
-		double masse = (imasse == 0 ? 0 : 1 / imasse);
+		float masse = (imasse == 0 ? 0 : 1 / imasse);
 		particule->addForce(masse * gravity);
 	}
 }
 
-ParticuleGravity::ParticuleGravity(const Vecteur3D& g = Vecteur3D(0.0, -9.81, 0.0)) {
+ParticuleGravity::ParticuleGravity(const Vecteur3D& g = Vecteur3D(0.0f, -9.81f, 0.0f)) {
 	gravity = Vecteur3D(g);
 }
 

@@ -14,6 +14,6 @@ void Time::update()
 
 float Time::deltaTime()
 {
-	if (dt_ > 0.1) return 0.1;
+	if (dt_ > 0.1f) return 0.1f;
 	else return dt_;
 }
