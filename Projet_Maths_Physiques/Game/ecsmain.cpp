@@ -73,7 +73,7 @@ int main(void)
 	//initialisation des entit�s
 	//Sphere
 	Transform sphereTransform(Vecteur3D(-10, 40	, 0));
-	Sphere sphere(1);
+	Sphere sphere;
 	Entity sphereEntity = coordinator->createEntity();
 	Material sphereMat(materialShader, Vecteur3D(0.8f, 0.5f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 	coordinator->addComponent(sphereEntity, (Object3D)sphere);
@@ -84,7 +84,7 @@ int main(void)
 
 	//Cube fixe pour centre ressort
 	/*Transform cubeTransform(Vecteur3D(0, 50, 0));
-	Cube cube(0.5);
+	Cube cube;
 	Entity cubeEntity = coordinator->createEntity();
 	coordinator->addComponent(cubeEntity, cubeTransform);
 	coordinator->addComponent(cubeEntity, (Object3D)cube);
@@ -93,7 +93,7 @@ int main(void)
 
 	//Sol en y = 0
 	Transform solTransform(Vecteur3D(0.0f, 0.0f, 0.0f), Vecteur3D(100.0f, 0.01f, 100.0f));
-	Cube sol(1);
+	Cube sol;
 	Entity solEntity = coordinator->createEntity();
 	coordinator->addComponent(solEntity, solTransform);
 	coordinator->addComponent(solEntity, (Object3D)sol);
@@ -156,7 +156,7 @@ int main(void)
 
 	//light
 	Transform lightTransform(Vecteur3D(0, 30, -10));
-	Sphere sun(0.5);
+	Sphere sun;
 	Light light(Vecteur3D(0.8f, 0.8f, 0.8f));
 	Entity lightEntity = coordinator->createEntity();
 	coordinator->addComponent(lightEntity, lightTransform);

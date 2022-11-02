@@ -9,8 +9,6 @@
 class Cube : public Object3D
 {
 	private:
-		//Longueur d'une arrête du cube
-		float length_;
 
 	public:
 		/// <summary>
@@ -19,13 +17,8 @@ class Cube : public Object3D
 		/// <param name="length_">longueur d'un cote du cube</param>
 		/// <param name="position"></param>
 		/// <param name="scale"></param>
-		Cube(float length = 1.0f);
+		Cube();
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns>La longueur d'un coté du cube</returns>
-		float getLength() const { return length_; }
 
 };
 
