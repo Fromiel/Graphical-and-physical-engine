@@ -21,8 +21,8 @@ Le projet peut être recompilé et exécuté via Visual Studio 2022.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Le programme peut être lancé simplement en utilisant le fichier "Projet_Maths_Physique.exe".
-En effet, il s'agit d'un projet CMake. Une des méthodes pour l'exécuter et de l'ouvrir sous Visual Studio, compiler le CMake, puis exécuter "Projet_Maths_Physique.exe"
+Le programme peut être lancé simplement en utilisant le fichier "Projet_Maths_Physique.exe".   
+En effet, il s'agit d'un projet CMake. Une des méthodes pour l'exécuter et de l'ouvrir sous Visual Studio, compiler le CMake, puis exécuter "Projet_Maths_Physique.exe".   
 Le CMake va également générer des exécutables pour des tests, mais cela est non nécessaire au fonctionnement propre du moteur.
 
 Pour déplacer la camera utiliser les touches directionnelles
