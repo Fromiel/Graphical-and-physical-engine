@@ -21,4 +21,8 @@ Le projet peut être recompilé et exécuté via Visual Studio 2022.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Le programme peut être lancé simplement en utilisant le fichier "Projet_Maths_Physique.exe". Il suffit ensuite d'utiliser les touches 1, 2 ou 3 du clavier pour lancer respectivement un projectile normal, rapide ou lent.
+Le programme peut être lancé simplement en utilisant le fichier "Projet_Maths_Physique.exe".
+
+Pour déplacer la camera utiliser les touches directionnelles
+Pour deplacer le blob vert utiliser les touches wasd
+Pour déplacer le blob bleu utiliser les touches tfgh
