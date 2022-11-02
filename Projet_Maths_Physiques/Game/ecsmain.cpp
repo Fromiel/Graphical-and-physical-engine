@@ -118,7 +118,7 @@ int main(void)
 	//coordinator->addComponent(cube2Entity, sphereMat);*/
 
 	//Test Collisions
-	/*Transform sphere3Transform(Vecteur3D(-20, 50, 0));
+	Transform sphere3Transform(Vecteur3D(-20, 50, 0));
 	Sphere s3;
 	Entity sphere3Entity = coordinator->createEntity();
 	coordinator->addComponent(sphere3Entity, sphere3Transform);
@@ -138,10 +138,10 @@ int main(void)
 
 
 	ParticuleContactResolver contact_resolver;
-	ParticuleContact* pc = new ParticuleContact();
+	ParticuleContact* pc2 = new ParticuleContact();
 	//ParticuleRod pr(10, coordinator->getComponentPtr<Particule>(sphere4Entity), coordinator->getComponentPtr<Particule>(sphere3Entity));
 	ParticuleCable pcable(10,0.5, coordinator->getComponentPtr<Particule>(sphere4Entity), coordinator->getComponentPtr<Particule>(sphere3Entity));
-	std::vector<ParticuleContact*> all_contacts_in_scene;*/
+	std::vector<ParticuleContact*> all_contacts_in_scene;
 
 
 
@@ -181,25 +181,25 @@ int main(void)
 
 
 	auto registreForce = ParticuleForceRegistry();
-	//ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
 	ParticuleGravity* ptr_forceGravite = new ParticuleGravity(-9.81);
 	ParticuleGravity* ptr_lowGravity = new ParticuleGravity(-1.0);
 	ParticuleBungee* ptr_bungee = new ParticuleBungee(5, Vecteur3D(0, 50, 0), coordinator->getComponentPtr<Particule>(sphereEntity), -10);
-	ParticuleRessortPtPt* ptr_forceRessort2 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphereEntity), coordinator->getComponentPtr<Particule>(sphere2Entity), 10);//(1, Vecteur3D(0, 35, 0), coordinator->getComponent<Particule>(sphere2Entity), 5);
+	ParticuleRessortPtPt* ptr_forceRessort2 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphereEntity), coordinator->getComponentPtr<Particule>(sphere2Entity), 10);
 	ParticuleRessortPtPt* ptr_forceRessort3 = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(sphere2Entity), coordinator->getComponentPtr<Particule>(sphereEntity), 10);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort2);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceRessort3);
+
+	//ParticuleRessortPtFixe* ptr_forceRessort = new ParticuleRessortPtFixe(1, Vecteur3D(0, 40, 0), coordinator->getComponent<Particule>(sphereEntity), -10);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceGravite);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_bungee);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_forceRessort2);
-	registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceRessort3);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
-
 	//ParticuleRessortPtFixe* ptr_ressort = new ParticuleRessortPtFixe(5, coordinator->getComponent<Transform>(cubeEntity).getPosition(), coordinator->getComponent<Particule>(sphereEntity), 15);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere2Entity), ptr_forceGravite);
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphereEntity), ptr_ressort);
 
 	//SPhere 3
-	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere3Entity), ptr_lowGravity);
+	registreForce.add(coordinator->getComponentPtr<Particule>(sphere3Entity), ptr_lowGravity);
 
 
 	//Start des LogicBehaviours
@@ -209,8 +209,7 @@ int main(void)
 	//Boucle de jeu
 	while (!inputsManager->endGame())
 	{
-		//all_contacts_in_scene.clear();
-
+		all_contacts_in_scene.clear();
 		//update clock
 		time->update();
 		//Logic
@@ -222,29 +221,12 @@ int main(void)
 
 		
 		//Pour le test, on d�coupera mieux par la suite
-		/*pc->clear();
-		pcable.addContact(pc, 0);
-		all_contacts_in_scene.push_back(pc);
-
-		//------ DEBUG -----//
-
-		std::cout << "----- DEBUG COLLISION -----" << std::endl;
-
-		std::cout << "Checking Contacts : " << std::endl;
-		for (auto& entry : all_contacts_in_scene) {
-			std::cout << "Contact has : " << std::endl;
-			std::cout << "Penetration = " << entry->penetration << std::endl;
-			std::cout << "Restitution = " << entry->restitution << std::endl;
-			std::cout << "Particule 01 = " << entry->particules[0] << " of position " << (entry->particules[0] ? entry->particules[0]->getPos() : Vecteur3D(0,0,-1)) << std::endl;
-			std::cout << "Particule 02 = " << entry->particules[1] << " of position " << (entry->particules[1] ? entry->particules[1]->getPos() : Vecteur3D(0, 0, -1)) << std::endl;
-		}
-
-		std::cout << "---------------------" << std::endl;
-
-		//------------------//
+		pc2->clear();
+		pcable.addContact(pc2, 0);
+		all_contacts_in_scene.push_back(pc2);
 
 		contact_resolver.SetIterations(1 + all_contacts_in_scene.size() * 2);
-		contact_resolver.resolveContacts(all_contacts_in_scene, 1, time->deltaTime());*/
+		contact_resolver.resolveContacts(all_contacts_in_scene, 1, time->deltaTime());
 
 		//render
 		render->update(time->deltaTime());

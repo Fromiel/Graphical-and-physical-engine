@@ -9,13 +9,6 @@ ParticuleCable::ParticuleCable(float ml, float r, Particule* p1, Particule* p2) 
 
 unsigned int ParticuleCable::addContact(ParticuleContact* contact, unsigned int limit) const {
 
-	std::cout << "///////CABLE///////" << std::endl;
-
-	std::cout << "currentLength is = " << currentLength() << std::endl;
-	std::cout << "maxLength is = " << maxLength << std::endl;
-
-	std::cout << "///////////////////" << std::endl;
-
 	if (currentLength() < maxLength) return 0; //On ne fait rien tant que le câble n'est pas tendu
 
 	//On ajoute les particules au contact

@@ -39,11 +39,8 @@ void ParticuleContact::resolveInterpenetration() {
 	float mb = (particules[1] ? 1 / particules[1]->getInverseMasse() : 0);
 	Vecteur3D pos1 = particules[0]->getPos() - ((mb / (ma + mb) ) * penetration * contactNormal) ;
 
-	std::cout << "Particule[0] has position " << particules[0]->getPos() << " and will now have position " << pos1 << std::endl;
-
 	if (particules[1]) {
 		Vecteur3D pos2 = particules[1]->getPos() + ((ma / (ma + mb)) * penetration * contactNormal);
-		std::cout << "Particule[1] has position " << particules[1]->getPos() << " and will now have position " << pos2 << std::endl;
 		particules[1]->setPos(pos2);
 	}
 	particules[0]->setPos(pos1);
