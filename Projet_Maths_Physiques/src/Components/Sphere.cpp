@@ -1,10 +1,10 @@
 #include "Components/Sphere.h"
 
 
-Sphere::Sphere(float radius, unsigned int sectorCount, unsigned int stackCount): radius_(radius), sectorCount_(sectorCount), stackCount_(stackCount)
+Sphere::Sphere(unsigned int sectorCount, unsigned int stackCount): sectorCount_(sectorCount), stackCount_(stackCount)
 {
     float x, y, z, xy;                              // vertex position
-    float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normale
+    float nx, ny, nz, lengthInv = 1.0f;    // vertex normale
     float s, t;                                     // vertex texCoord
 
     float sectorStep = 2 * static_cast<float>(M_PI) / sectorCount_;
@@ -14,8 +14,8 @@ Sphere::Sphere(float radius, unsigned int sectorCount, unsigned int stackCount):
     for (unsigned int i = 0; i <= stackCount_; ++i)
     {
         stackAngle = static_cast<float>(M_PI) / 2 - i * stackStep;        // commence de pi/2 à -pi/2
-        xy = radius_ * cosf(stackAngle);             // r * cos(u)
-        z = radius_ * sinf(stackAngle);              // r * sin(u)
+        xy = cosf(stackAngle);             // cos(u)
+        z = sinf(stackAngle);              // sin(u)
 
         // ajoute (sectorCount+1) vertices par latitude
         //les premier et dernier vertices ont la meme position et normale, mais des différentes coordonnées de texture

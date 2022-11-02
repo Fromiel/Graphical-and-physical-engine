@@ -11,7 +11,6 @@
 class Sphere : public Object3D
 {
 	private:
-		float radius_; //rayon
 		unsigned int sectorCount_, stackCount_; //Subdivisions en longitudes (sectors) et latitudes (stacks)
 
 
@@ -23,7 +22,7 @@ class Sphere : public Object3D
 		/// <param name="center"></param>
 		/// <param name="sectorCount"></param>
 		/// <param name="stackCount"></param>
-		Sphere(float radius = 1, unsigned int sectorCount = 36, unsigned int stackCount = 18);
+		Sphere(unsigned int sectorCount = 36, unsigned int stackCount = 18);
 
 
 };

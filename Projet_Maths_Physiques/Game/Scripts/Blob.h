@@ -12,8 +12,8 @@ void addParticule(std::vector<Entity>& blob, Vecteur3D position, ParticuleForceR
 	//On cree la nouvelle particule
 	Coordinator* coordinator = Coordinator::getInstance();
 	Entity newParticule = coordinator->createEntity();
-	Transform transform(position);
-	Sphere sphere(0.5);
+	Transform transform(position, Vecteur3D(0.5, 0.5, 0.5));
+	Sphere sphere;
 	Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 	Material sphereMat(materialShader, Vecteur3D(0.1f, 0.9f, 0.1f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 	coordinator->addComponent(newParticule, transform);
@@ -26,8 +26,8 @@ void addParticule(std::vector<Entity>& blob, Vecteur3D position, ParticuleForceR
 	for (auto particule : blob)
 	{
 		//ressorts
-		ParticuleRessortPtPt* ptr_forceRessort_particule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(particule), coordinator->getComponentPtr<Particule>(newParticule), 1.5);
-		ParticuleRessortPtPt* ptr_forceRessort_newParticule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(newParticule), coordinator->getComponentPtr<Particule>(particule), 1.5);
+		ParticuleRessortPtPt* ptr_forceRessort_particule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(particule), coordinator->getComponentPtr<Particule>(newParticule), 1);
+		ParticuleRessortPtPt* ptr_forceRessort_newParticule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(newParticule), coordinator->getComponentPtr<Particule>(particule), 1);
 
 		registry->add(coordinator->getComponentPtr<Particule>(particule), ptr_forceRessort_particule);
 		registry->add(coordinator->getComponentPtr<Particule>(newParticule), ptr_forceRessort_newParticule);

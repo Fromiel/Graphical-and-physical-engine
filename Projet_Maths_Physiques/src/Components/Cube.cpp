@@ -1,9 +1,9 @@
 #include "Components/Cube.h"
 
 
-Cube::Cube(float length) : length_(length)
+Cube::Cube()
 {
-	float l = length / 2;
+	float l = 0.5f;
 	vertices_ = std::vector<Vertice>(
 		{
 			{-l, -l, -l, 0.0f,  0.0f, -1.0f, 0.5, 0.5},

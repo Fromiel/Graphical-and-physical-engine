@@ -13,12 +13,12 @@ void addParticuleRod(std::vector<Entity>& blob, Vecteur3D position, ParticuleFor
 	//On cree la nouvelle particule
 	Coordinator* coordinator = Coordinator::getInstance();
 	Entity newParticule = coordinator->createEntity();
-	Transform transform(position);
-	Sphere sphere(0.5);
+	Transform transform(position, Vecteur3D(0.5, 0.5, 0.5));
+	Sphere sphere;
 	Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 	Material sphereMat(materialShader, Vecteur3D(0.15f, 0.15f, 0.9f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 	coordinator->addComponent(newParticule, transform);
-	Particule particule(newParticule, Vecteur3D(0, 0, 0), 1, 1);
+	Particule particule(newParticule, Vecteur3D(0, 0, 0), 1, 0.5);
 	coordinator->addComponent(newParticule, (Object3D) sphere);
 	coordinator->addComponent(newParticule, particule);
 	coordinator->addComponent(newParticule, sphereMat);
@@ -27,8 +27,8 @@ void addParticuleRod(std::vector<Entity>& blob, Vecteur3D position, ParticuleFor
 	for (auto particule : blob)
 	{
 		//ressorts
-		ParticuleRessortPtPt* ptr_forceRessort_particule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(particule), coordinator->getComponentPtr<Particule>(newParticule), 1.5);
-		ParticuleRessortPtPt* ptr_forceRessort_newParticule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(newParticule), coordinator->getComponentPtr<Particule>(particule), 1.5);
+		ParticuleRessortPtPt* ptr_forceRessort_particule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(particule), coordinator->getComponentPtr<Particule>(newParticule), 1);
+		ParticuleRessortPtPt* ptr_forceRessort_newParticule = new ParticuleRessortPtPt(1, coordinator->getComponentPtr<Particule>(newParticule), coordinator->getComponentPtr<Particule>(particule), 1);
 
 		registry->add(coordinator->getComponentPtr<Particule>(particule), ptr_forceRessort_particule);
 		registry->add(coordinator->getComponentPtr<Particule>(newParticule), ptr_forceRessort_newParticule);
@@ -63,7 +63,7 @@ void StartBlobRod(Entity entity, std::vector<Entity>& blob, ParticuleForceRegist
 	int nbParticules = 8;
 	for (int i = 0; i < nbParticules; i++)
 	{
-		Vecteur3D position((rand() % 100) / 10.0f, (rand() % 100) / 10.0f + 40, 0);
+		Vecteur3D position((rand() % 100) / 10.0f, (rand() % 100) / 10.0f + 40, (rand() % 100) / 100.0f - 0.5);
 		addParticuleRod(blob, position, registry, rods);
 	}
 
