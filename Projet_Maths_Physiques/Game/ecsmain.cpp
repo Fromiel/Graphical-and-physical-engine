@@ -154,7 +154,7 @@ int main(void)
 	coordinator->addComponent(cameraEntity, (LogicBehaviour)moveCamera);
 
 	//light
-	Transform lightTransform(Vecteur3D(0, 30, 10));
+	Transform lightTransform(Vecteur3D(0, 30, -10));
 	Sphere sun(0.5);
 	Light light(Vecteur3D(0.8,0.8,0.8));
 	Entity lightEntity = coordinator->createEntity();
@@ -163,16 +163,12 @@ int main(void)
 	coordinator->addComponent(lightEntity, (Object3D) sun);
 	coordinator->addComponent(lightEntity, Material(lightShader));
 
-	//Create random spheres
-	/*Entity logicEntity = coordinator->createEntity();
-	CreateSphere createRandomSpheres(logicEntity);
-	coordinator->addComponent(logicEntity, (LogicBehaviour)createRandomSpheres);*/
 
 	//Create blob
-	/*ParticuleForceRegistry* registry = new ParticuleForceRegistry();
+	ParticuleForceRegistry* registry = new ParticuleForceRegistry();
 	Entity blob = coordinator->createEntity();
 	Blob blobScript(blob, registry);
-	coordinator->addComponent(blob, (LogicBehaviour)blobScript);*/
+	coordinator->addComponent(blob, (LogicBehaviour)blobScript);
 
 
 
@@ -212,7 +208,7 @@ int main(void)
 		logic->update(time->deltaTime());
 		//Physical simulation
 		registreForce.updateForces(time->deltaTime());
-		//registry->updateForces(time->deltaTime());
+		registry->updateForces(time->deltaTime());
 		physics->update(time->deltaTime());
 
 		
