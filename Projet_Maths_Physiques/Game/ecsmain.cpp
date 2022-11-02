@@ -14,6 +14,7 @@
 #include "Collisions/Liens/ParticuleCable.h"
 #include "Collisions/Liens/ParticuleRod.h"
 #include "Scripts/Blob.h"
+#include "Scripts/BlobRod.h"
 
 struct NoEntity {};
 
@@ -66,7 +67,7 @@ int main(void)
  
 	//set les inputs
 	inputsManager->setupKeyInputs(render->getWindow());
-	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S, GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_LEFT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_Q }));
+	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S, GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_LEFT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_Q, GLFW_KEY_H , GLFW_KEY_G , GLFW_KEY_F , GLFW_KEY_T }));
 
 
 	//initialisation des entit�s
@@ -164,11 +165,18 @@ int main(void)
 	coordinator->addComponent(lightEntity, Material(lightShader));
 
 
-	//Create blob
+
+	//Create blobs
+	ParticuleContact* pc = new ParticuleContact();
 	ParticuleForceRegistry* registry = new ParticuleForceRegistry();
+
 	Entity blob = coordinator->createEntity();
-	Blob blobScript(blob, registry);
+	Blob blobScript(blob, registry, pc);
 	coordinator->addComponent(blob, (LogicBehaviour)blobScript);
+
+	Entity blobRod = coordinator->createEntity();
+	BlobRod blobRodScript(blob, registry, pc);
+	coordinator->addComponent(blobRod, (LogicBehaviour)blobRodScript);
 
 
 
@@ -192,6 +200,7 @@ int main(void)
 
 	//SPhere 3
 	//registreForce.add(coordinator->getComponentPtr<Particule>(sphere3Entity), ptr_lowGravity);
+
 
 	//Start des LogicBehaviours
 	logic->start();

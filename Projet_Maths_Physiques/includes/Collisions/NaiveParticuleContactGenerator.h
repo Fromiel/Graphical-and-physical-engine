@@ -7,6 +7,7 @@
 
 class NaiveParticuleContactGenerator : public ParticuleContactGenerator {
 public:
+	NaiveParticuleContactGenerator(float r) : radius(r) {}
 	//Rayon des particules
 	float radius;
 
