@@ -41,6 +41,18 @@ public:
 	Rigidbody(const Rigidbody& rb);
 
 	/// <summary>
+	/// Getter inverseMasse
+	/// </summary>
+	/// <returns> inverseMasse </returns>
+	float getinverseMasse() const { return inverseMasse; };
+
+	/// <summary>
+	/// Getter m_linearDamping
+	/// </summary>
+	/// <returns> m_linearDamping </returns>
+	float getLinearDamping() const { return m_linearDamping; };
+
+	/// <summary>
 	/// Getter m_angularDamping
 	/// </summary>
 	/// <returns> m_angularDamping </returns>
