@@ -47,7 +47,6 @@ Render::~Render()
 	glfwDestroyWindow(window_);
 	glDeleteVertexArrays(1, &VAO_);
 	glDeleteBuffers(1, &vertexBuffer_);
-	glDeleteProgram(program_);
 	glfwTerminate();
 }
 
@@ -95,7 +94,7 @@ void Render::update(float dt)
 			{
 				material = coordinator->getComponent<Material>(gameObject);
 			}
-			shader_ = material.getShader();
+			Shader shader_ = material.getShader();
 			shader_.use();
 
 			//On charge les variables uniforme
@@ -132,8 +131,13 @@ void Render::update(float dt)
 			shader_.setUniformMatrix4fv("MVP", (const GLfloat*)MVP);
 			shader_.setUniformMatrix4fv("modelMatrix", (const GLfloat*)modelMatrix);
 
+			auto type = coordinator->getComponent<Object3D>(gameObject).getType();
+
+			auto test = lengths_[type];
+			auto test2 = currentIndexes_[type];
+
 			glBindVertexArray(VAO_);
-			glDrawElements(GL_TRIANGLES, lengths_[gameObject], GL_UNSIGNED_INT, &indices_[currentIndexes_[gameObject]]);
+			glDrawElements(GL_TRIANGLES, lengths_[type], GL_UNSIGNED_INT, &indices_[currentIndexes_[type]]);
 		}
 	}
 
@@ -165,10 +169,10 @@ void Render::loadMeshes()
 {
 	Coordinator* coordinator = Coordinator::getInstance();
 
-	vertices_ = std::vector<Vertice>();
-	indices_ = std::vector<unsigned int>();
-
-	int currentIndex = 0;
+	//vertices_ = std::vector<Vertice>();
+	//indices_ = std::vector<unsigned int>();
+	//currentIndexes_ = std::unordered_map<ObjectTypeEnum, GLuint>();
+	//lengths_ = std::unordered_map<ObjectTypeEnum, GLuint>();
 
 
 	for (auto gameObject : entities_)
@@ -176,22 +180,26 @@ void Render::loadMeshes()
 		if (coordinator->hasComponent<Object3D>(gameObject))
 		{
 			auto meshes = coordinator->getComponent<Object3D>(gameObject);
+			auto type = meshes.getType();
 
-			auto verticesObject = meshes.getVertices();
-			auto indicesObject = meshes.getIndices();
-
-			currentIndexes_[gameObject] = static_cast<unsigned int>(indices_.size());
-
-			for (int i = 0; i < indicesObject.size(); i++)
+			if (!currentIndexes_.count(type))
 			{
-				indicesObject[i] += currentIndex;
+				unsigned int currentIndex = static_cast<int>(vertices_.size());
+				auto verticesObject = meshes.getVertices();
+				auto indicesObject = meshes.getIndices();
+
+				currentIndexes_[type] = static_cast<unsigned int>(indices_.size());
+
+				for (int i = 0; i < indicesObject.size(); i++)
+				{
+					indicesObject[i] += currentIndex;
+				}
+				vertices_.insert(vertices_.end(), verticesObject.begin(), verticesObject.end());
+				indices_.insert(indices_.end(), indicesObject.begin(), indicesObject.end());
+
+
+				lengths_[type] = static_cast<unsigned int>(indicesObject.size());
 			}
-			vertices_.insert(vertices_.end(), verticesObject.begin(), verticesObject.end());
-			indices_.insert(indices_.end(), indicesObject.begin(), indicesObject.end());
-
-			currentIndex = static_cast<int>(vertices_.size());
-
-			lengths_[gameObject] = static_cast<unsigned int>(indicesObject.size());
 		}
 	}
 

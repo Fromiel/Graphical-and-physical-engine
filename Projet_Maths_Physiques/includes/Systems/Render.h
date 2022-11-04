@@ -19,15 +19,14 @@ class Render : public System
 	private:
 		std::vector<Vertice> vertices_; //les points à afficher
 		std::vector<unsigned int> indices_; //les indices des points
-		std::unordered_map<Entity, GLuint> currentIndexes_;
-		std::unordered_map<Entity, GLuint> lengths_;
+		std::unordered_map<ObjectTypeEnum, GLuint> currentIndexes_;
+		std::unordered_map<ObjectTypeEnum, GLuint> lengths_;
 
 		GLFWwindow* window_; //Fenêtre
-		GLuint vertexBuffer_, vertexShader_, fragmentShader_, program_, VAO_, EBO_; //Differents id
+		GLuint vertexBuffer_, vertexShader_, fragmentShader_, VAO_, EBO_; //Differents id
 		GLint vposLocation_, vcolLocation_, normalLocation_; //Id des attributes
 		Entity camera_;
 		Entity light_;
-		Shader shader_;
 
 	public:
 		/// <summary>

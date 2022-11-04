@@ -3,6 +3,7 @@
 
 Sphere::Sphere(unsigned int sectorCount, unsigned int stackCount): sectorCount_(sectorCount), stackCount_(stackCount)
 {
+    objectType_ = SphereMesh;
     float x, y, z, xy;                              // vertex position
     float nx, ny, nz, lengthInv = 1.0f;    // vertex normale
     float s, t;                                     // vertex texCoord
