@@ -3,6 +3,7 @@
 
 Cube::Cube()
 {
+	objectType_ = CubeMesh;
 	float l = 0.5f;
 	vertices_ = std::vector<Vertice>(
 		{
