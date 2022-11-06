@@ -63,7 +63,7 @@ void StartBlobRod(Entity entity, std::vector<Entity>& blob, ParticuleForceRegist
 	int nbParticules = 8;
 	for (int i = 0; i < nbParticules; i++)
 	{
-		Vecteur3D position((rand() % 100) / 10.0f, (rand() % 100) / 10.0f + 40, (rand() % 100) / 100.0f - 0.5);
+		Vecteur3D position((rand() % 100) / 10.0f, (rand() % 100) / 10.0f + 40, (rand() % 100) / 100.0f - 0.5f);
 		addParticuleRod(blob, position, registry, rods);
 	}
 

@@ -18,7 +18,7 @@ Quaternion::~Quaternion() {
 }
 
 void Quaternion::normalize() {
-    float magnitude = sqrt(pow(w, 2) + pow(x, 2) + pow(y, 2) + pow(z, 2));
+    float magnitude = static_cast<float>(sqrt(pow(w, 2) + pow(x, 2) + pow(y, 2) + pow(z, 2)));
     w /= magnitude;
     x /= magnitude;
     y /= magnitude;
