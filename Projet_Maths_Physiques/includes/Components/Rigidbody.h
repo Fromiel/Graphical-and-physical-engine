@@ -10,6 +10,8 @@
 class Rigidbody
 {
 private:
+	Entity entity;
+
 	float inverseMasse;
 	float m_linearDamping;
 	float m_angularDamping;
