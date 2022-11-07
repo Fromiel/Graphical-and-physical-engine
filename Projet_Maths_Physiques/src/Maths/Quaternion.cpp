@@ -1,7 +1,8 @@
 #include "Maths/Quaternion.h"
 
-Quaternion::Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {
-    normalize();
+Quaternion::Quaternion(float w, float x, float y, float z, bool shouldNormalize) : w(w), x(x), y(y), z(z) {
+    if (w == x && x == y && y == z && z == 0) w = 1; 
+    if (shouldNormalize) normalize();
     return;
 };
 
@@ -27,32 +28,41 @@ void Quaternion::normalize() {
 }
 
 void Quaternion::rotateByVector(const Vecteur3D &vector) {
-    float a1 = w;
-    float b1 = x;
-    float c1 = y;
-    float d1 = z;
-
-    float a2 = 0;
-    float b2 = vector.get_x();
-    float c2 = vector.get_y();
-    float d2 = vector.get_z();
-
-    w = a1*a2 - b1*b2 - c1*c2 - d1*d2;
-    x = a1*b2 + b1*a2 + c1*d2 - d1*c2;
-    y = a1*c2 - b1*d2 + c1*a2 + d1*b2;
-    z = a1*d2 + b1*c2 - c1*b2 + d1*a2;
-
+    Quaternion rotation = Quaternion(0, vector.get_x(), vector.get_y(), vector.get_z(), false);
+    Quaternion result = (*this) * rotation;
+    w = result.w;
+    x = result.x;
+    y = result.y;
+    z = result.z;
     normalize();
     return;
 }
 
 void Quaternion::updateByAngularVelocity(const Vecteur3D &vector, float duration) {
-    std::cout << "Error in Quaternion.cpp: idk how to do that" << std::endl;
+    Quaternion rotation = Quaternion(0, vector.get_x() * duration, vector.get_y() * duration, vector.get_z() * duration, false);
+    Quaternion result = rotation * (*this);
+    w += result.w * 0.5f;
+    x += result.x * 0.5f;
+    y += result.y * 0.5f;
+    z += result.z * 0.5f;
     return;
 }
 
-Quaternion Quaternion::operator=(const Quaternion &other) {
-    return Quaternion(other);
+void Quaternion::operator=(const Quaternion &other) {
+    w = other.w;
+    x = other.x;
+    y = other.y;
+    z = other.z;
+    return;
+}
+
+void Quaternion::operator*=(const Quaternion &other) {
+    Quaternion result = (*this) * other;
+    w = result.w;
+    x = result.x;
+    y = result.y;
+    z = result.z;
+    return;
 }
 
 Quaternion operator*(const Quaternion &q1, const Quaternion &q2) {
