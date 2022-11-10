@@ -1,6 +1,6 @@
 #include "Components/Transform.h"
 
-Transform::Transform(Vecteur3D position, Vecteur3D scaling) : rotation_(), scale_(scaling), position_(position)
+Transform::Transform(Vecteur3D position, Vecteur3D scaling, Quaternion orientation) : scale_(scaling), position_(position), orientation_(orientation)
 {
 	modelMatrix_ = Matrix4D::translation(position_) * Matrix4D::scaling(scale_);
 }
@@ -15,6 +15,12 @@ void Transform::setScaling(const Vecteur3D& scale)
 {
 	modelMatrix_ = modelMatrix_ * Matrix4D::scaling(scale) * (Matrix4D::scaling(Vecteur3D(scale_)).invert());
 	scale_ = scale;
+}
+
+void Transform::setOrientation(const Quaternion& orientation)
+{
+	//modelMatrix = ...
+	orientation_ = orientation;
 }
 
 void Transform::move(const Vecteur3D& vect)
