@@ -19,6 +19,8 @@ private:
 	Vecteur3D m_torqueAccum;
 	Vecteur3D velocity;
 	Vecteur3D rotation;
+	Vecteur3D accel_lineaire;
+	Vecteur3D accel_rotation;
 
 	/// <summary>
 	/// Call each frame to calculate the transformMatrix and normalize the orientation

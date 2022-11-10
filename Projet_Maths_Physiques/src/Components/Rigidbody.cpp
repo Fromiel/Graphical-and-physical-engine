@@ -4,6 +4,8 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 	m_angularDamping = angularDamping;
 	m_linearDamping = linearDamping;
 	inverseMasse = invmasse;
+	accel_lineaire = Vecteur3D(0, 0, 0);
+	accel_rotation = Vecteur3D(0, 0, 0);
 	clearAccumulator();
 }
 
@@ -30,7 +32,7 @@ Matrix4D Rigidbody::getModelMatrix() const
 
 
 void Rigidbody::setVelocity(const Vecteur3D Velocity) {
-	velocity = Velocity
+	velocity = Velocity;
 }
 
 void Rigidbody::setRotation(const Vecteur3D Rotation)
@@ -66,12 +68,32 @@ void Rigidbody::CalculateDerivatedData() {
 }
 
 void Rigidbody::Integrate(float duration) {
+	accel_lineaire = inverseMasse * m_forceAccum;
+	// TODO : calculer l'accélération angulaire
+	accel_rotation = 0;
 
+	// Vitesse
+	velocity = velocity + (accel_lineaire * duration);
+	velocity = velocity * pow(m_linearDamping, duration);
+	rotation = rotation + accel_rotation * duration;
+	rotation = rotation * pow(m_angularDamping, duration);
+
+	// Position 
+	Vecteur3D pos_res = getPos();
+	pos_res = pos_res + velocity * duration;
+	Coordinator::getInstance()->getComponent<Transform>(entity).setPosition(pos_res);
+
+	Quaternion ori = getOrientation();
+	ori.updateByAngularVelocity(rotation, duration);
+	Coordinator::getInstance()->getComponent<Transform>(entity).setOrientation(ori);
+
+	CalculateDerivatedData();
+	clearAccumulator();
 }
 
 // TODO : Implémenter cette méthode pour de vrai
-Vecteur3D Ridigbody::convertToWorld(const Vecteur3D& localPoint)
+Vecteur3D Rigidbody::convertToWorld(const Vecteur3D& localPoint)
 {
-	return Vector3D(0, 0, 0);
+	return Vecteur3D(0, 0, 0);
 }
 
