@@ -10,12 +10,13 @@ class Quaternion {
     private:
         float w, x, y, z;
 
-        void normalize();
-
     public:
         Quaternion(float w=1, float x=0, float y=0, float z=0, bool shouldNormalize=true);
         Quaternion(const Quaternion &other);
         ~Quaternion();
+
+        void normalize();
+
 
         void rotateByVector(const Vecteur3D &vector);
         void updateByAngularVelocity(const Vecteur3D &vector, float duration);
