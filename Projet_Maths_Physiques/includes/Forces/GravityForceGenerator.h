@@ -14,7 +14,7 @@ public:
 
 	//Fonctions
 
-	void updateForce(Rigidbody* rigidbody) override;
+	void UpdateForce(Rigidbody* rigidbody) override;
 };
 
 #endif
