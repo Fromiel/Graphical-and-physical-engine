@@ -4,7 +4,8 @@
 #include "Systems/InputsManager.h"
 #include "Systems/Render.h"
 #include "Systems/Time.h"
-#include "Systems/Physics.h"
+#include "Systems/PhysicParticle.h"
+#include "Systems/PhysicRigidBody.h"
 #include "Systems/Logic.h"
 
 #endif

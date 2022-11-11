@@ -10,7 +10,7 @@
 #include "Components/Particule.h"
 #include "Components/LogicBehaviour.h"
 #include "Components/Material.h"
-
+#include "Components/Rigidbody.h"
 
 
 #endif

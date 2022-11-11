@@ -1,4 +1,10 @@
 #include "Components/Particule.h"
+//#include "Forces/ParticuleGravity.h"
+//#include "Forces/ParticuleRessortPtFixe.h"
+//#include "Forces/ParticuleRessortPtPt.h"
+//#include "Forces/ParticuleBungee.h"
+
+
 
 float Particule::g = 9.81f;
 float Particule::d = 0.7f;

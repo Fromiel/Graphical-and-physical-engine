@@ -133,8 +133,6 @@ void Render::update(float dt)
 
 			auto type = coordinator->getComponent<Object3D>(gameObject).getType();
 
-			auto test = lengths_[type];
-			auto test2 = currentIndexes_[type];
 
 			glBindVertexArray(VAO_);
 			glDrawElements(GL_TRIANGLES, lengths_[type], GL_UNSIGNED_INT, &indices_[currentIndexes_[type]]);

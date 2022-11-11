@@ -45,7 +45,8 @@ class ComponentManager
 		{
 			const char* typeName = typeid(T).name();
 
-			assert(componentTypes_.find(typeName) == componentTypes_.end() && "Registering component type more than once.");
+			if (componentTypes_.find(typeName) != componentTypes_.end()) return;
+			//assert(componentTypes_.find(typeName) == componentTypes_.end() && "Registering component type more than once.");
 
 			// Ajoute ce type de component à la map de components
 			componentTypes_.insert({ typeName, nextComponentType_ });
