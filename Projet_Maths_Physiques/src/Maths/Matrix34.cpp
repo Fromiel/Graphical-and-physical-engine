@@ -82,11 +82,16 @@ Matrix34 operator*(const double &multiplier, const Matrix34 &matrix) {
 }
 
 Vecteur3D operator*(const Matrix34 &matrix, const Vecteur3D &vector) {
+    std::vector<float> contentAsFloatVector;
+    std::transform(matrix.content.begin(), matrix.content.end(), contentAsFloatVector.begin(), [](const double &nb) {
+        return static_cast<float>(nb);
+    });
+
     std::vector<double> content = std::vector<double>(9, 0);
     return Vecteur3D(
-        matrix.content[0] * vector.get_x() + matrix.content[1] * vector.get_y() + matrix.content[2] * vector.get_z() + matrix.content[3],
-        matrix.content[4] * vector.get_x() + matrix.content[5] * vector.get_y() + matrix.content[6] * vector.get_z() + matrix.content[7],
-        matrix.content[8] * vector.get_x() + matrix.content[9] * vector.get_y() + matrix.content[10] * vector.get_z() + matrix.content[11]
+        contentAsFloatVector[0] * vector.get_x() + contentAsFloatVector[1] * vector.get_y() + contentAsFloatVector[2] * vector.get_z() + contentAsFloatVector[3],
+        contentAsFloatVector[4] * vector.get_x() + contentAsFloatVector[5] * vector.get_y() + contentAsFloatVector[6] * vector.get_z() + contentAsFloatVector[7],
+        contentAsFloatVector[8] * vector.get_x() + contentAsFloatVector[9] * vector.get_y() + contentAsFloatVector[10] * vector.get_z() + contentAsFloatVector[11]
     );
 }
 
