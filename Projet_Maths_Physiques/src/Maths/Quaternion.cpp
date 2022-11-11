@@ -45,6 +45,7 @@ void Quaternion::updateByAngularVelocity(const Vecteur3D &vector, float duration
     x += result.x * 0.5f;
     y += result.y * 0.5f;
     z += result.z * 0.5f;
+    normalize();
     return;
 }
 
