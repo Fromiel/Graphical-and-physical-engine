@@ -17,6 +17,10 @@ private:
 	float m_angularDamping;
 	Vecteur3D m_forceAccum;
 	Vecteur3D m_torqueAccum;
+	Vecteur3D velocity;
+	Vecteur3D rotation;
+	Vecteur3D accel_lineaire;
+	Vecteur3D accel_rotation;
 
 	/// <summary>
 	/// Call each frame to calculate the transformMatrix and normalize the orientation
@@ -34,7 +38,7 @@ public:
 	/// </summary>
 	/// <param name="entityParent"> Entité parente pour le modèle ECS </param>
 	/// <param name="angularDamping"> La valeur de m_angularDamping </param>
-	Rigidbody(Entity entityParent, float angularDamping);
+	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping);
 
 	/// <summary>
 	/// Constructeur de copie
@@ -73,6 +77,48 @@ public:
 	Vecteur3D getTorqueAccum() const { return m_torqueAccum; };
 
 	/// <summary>
+	/// Getter velocity
+	/// </summary>
+	/// <returns> velocity </returns>
+	Vecteur3D getVelocity() const { return velocity; };
+
+	/// <summary>
+	/// Getter rotation
+	/// </summary>
+	/// <returns> Le vecteur 3D représentant la vitesse angulaire suivant les 3 axes </returns>
+	Vecteur3D getRotation() const { return rotation; };
+
+	/// <summary>
+	/// Getter position
+	/// </summary>
+	/// <returns> Un vecteur 3D représentation la position du rb dans la scène </returns>
+	Vecteur3D getPos() const;
+
+	/// <summary>
+	/// Getter orientation
+	/// </summary>
+	/// <returns> Un quaternion représentant l'orientation de l'objet dans la scène </returns>
+	Quaternion getOrientation() const;
+
+	/// <summary>
+	/// Getter Model Matrix
+	/// </summary>
+	/// <returns> La model Matrix du rb </returns>
+	Matrix4D getModelMatrix() const;
+
+	/// <summary>
+	/// Setter velocity
+	/// </summary>
+	/// <param name="velocity"> Un vecteur 3D de la vitesse à set au rb </param>
+	void setVelocity(const Vecteur3D Velocity);
+
+	/// <summary>
+	/// Setter rotation
+	/// </summary>
+	/// <param name="Rotation"> Un vecteur3D de la vitesse angulaire à set au rb </param>
+	void setRotation(const Vecteur3D Rotation);
+
+	/// <summary>
 	/// Add force on the Center of mass but no torque is generated
 	/// </summary>
 	/// <param name="force"> Vecteur3D de la force </param>
@@ -104,6 +150,13 @@ public:
 	/// </summary>
 	/// <param name="duration"> time->deltaTime() je suppose </param>
 	void Integrate(float duration);
+
+	/// <summary>
+	/// Convertis les coordonnées d'un point en local en global
+	/// </summary>
+	/// <param name="localPoint"> La position du point à convertir </param>
+	/// <returns> La position du point en coordonnées globales </returns>
+	Vecteur3D convertToWorld(const Vecteur3D& localPoint);
 };
 
 #endif

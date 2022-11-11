@@ -3,24 +3,26 @@
 
 #include "Maths/Vecteur3D.h"
 #include "Maths/Matrix4D.h"
+#include "Maths/Quaternion.h"
 
 class Transform
 {
 	private:
 		Vecteur3D position_;
-		Vecteur3D rotation_;
 		Vecteur3D scale_;
+		Quaternion orientation_;
 
 		Matrix4D modelMatrix_;
 
 	public:
 
 		/// <summary>
-		/// Constructeur placant l'entité à la position mise en argument et mettant le scale au scale mis en argument et une rotation nulle (0,0,0)
+		/// Constructeur placant l'entité à la position mise en argument et mettant le scale au scale mis en argument et une rotation au quaterniom passé en argument
 		/// </summary>
 		/// <param name="position"></param>
 		/// <param name="scaling"></param>
-		Transform(Vecteur3D position = Vecteur3D(0, 0, 0), Vecteur3D scaling = Vecteur3D(1, 1, 1));
+		/// <param name="rotation"></param>
+		Transform(Vecteur3D position = Vecteur3D(0, 0, 0), Vecteur3D scaling = Vecteur3D(1, 1, 1), Quaternion orientation = Quaternion());
 
 		/// <summary>
 		/// 
@@ -33,6 +35,12 @@ class Transform
 		/// </summary>
 		/// <returns>L'aggrandissement de l'objet</returns>
 		Vecteur3D getScaling() const { return scale_; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>L'orientation de l'objet</returns>
+		Quaternion getOrientation() const { return orientation_; }
 
 		/// <summary>
 		/// 
@@ -51,6 +59,12 @@ class Transform
 		/// </summary>
 		/// <param name="position">position nouvelle position</param>
 		void setScaling(const Vecteur3D& scale);
+
+		/// <summary>
+		/// Permet de changer l'orientation de l'objet (on modifie la modelMatrix)
+		/// </summary>
+		/// <param name="orientation"></param>
+		void setOrientation(const Quaternion& orientation);
 
 		/// <summary>
 		/// Bouge l'objet du vecteur mis en argument dans ses coordonnées (on modifie la modelMatrix)
