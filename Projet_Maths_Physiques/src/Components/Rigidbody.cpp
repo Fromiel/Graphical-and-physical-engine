@@ -1,11 +1,38 @@
 #include "Components/Rigidbody.h"
 
-Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, float linearDamping) : entity(entityparent) {
+Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet) : entity(entityparent) {
 	m_angularDamping = angularDamping;
 	m_linearDamping = linearDamping;
 	inverseMasse = invmasse;
 	accel_lineaire = Vecteur3D(0, 0, 0);
 	accel_rotation = Vecteur3D(0, 0, 0);
+	std::vector<double> content = {};
+	float scale_x,scale_y,scale_z = 0;
+	switch (type_objet) {
+		case SphereMesh:
+			scale_x = 2/5*(1/inverseMasse)*pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
+			content = { scale_x,0,0,0,scale_x,0,0,0,scale_x };
+			inertie = Matrix3D(content);
+			break;
+		case CubeMesh:
+			scale_x = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
+			scale_y = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_y(), 2);
+			scale_z = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_z(), 2);
+			content = {1/12*(1/inverseMasse)*(scale_y+scale_z),0,0,0,1/12*(1/inverseMasse)*(scale_x+scale_z),0,0,0,1/12*(1/inverseMasse)*(scale_x+scale_y)};
+			inertie = Matrix3D(content);
+			break;
+		//case CylinderMesh:
+		// 			std::vector<double> content = {};
+			//inertie = Matrix3D(content);
+			//break;
+		default:
+			inertie = Matrix3D();
+			std::cout << "Type de rigidbody non reconnu" << std::endl;
+	}
+
+
+
+
 	clearAccumulator();
 }
 
@@ -41,15 +68,17 @@ void Rigidbody::setRotation(const Vecteur3D Rotation)
 }
 
 void Rigidbody::addForce(const Vecteur3D& force) {
-
+	m_forceAccum = m_forceAccum + force;
 }
 
 void Rigidbody::addForceAtPoint(const Vecteur3D& force, const Vecteur3D& worldpoint) {
-
+	m_forceAccum = m_forceAccum + force;
+	m_torqueAccum = m_torqueAccum + vectorial_product(worldpoint,force);
 }
 
 void Rigidbody::addForceAtBodyPoint(const Vecteur3D& force, const Vecteur3D& localpoint) {
-
+	Vecteur3D w_point = convertToWorld(localpoint);
+	addForceAtPoint(force, w_point);
 }
 
 void Rigidbody::clearAccumulator() {
@@ -70,7 +99,7 @@ void Rigidbody::CalculateDerivatedData() {
 void Rigidbody::Integrate(float duration) {
 	accel_lineaire = inverseMasse * m_forceAccum;
 	// TODO : calculer l'accélération angulaire
-	accel_rotation = 0;
+	//accel_rotation = inertie.invert() * m_torqueAccum;
 
 	// Vitesse
 	velocity = velocity + (accel_lineaire * duration);

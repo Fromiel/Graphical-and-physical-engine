@@ -5,6 +5,7 @@
 
 #include "Maths/Vecteur3D.h"
 #include "CoreECS/Coordinator.h"
+#include "Object3D.h"
 
 
 class Rigidbody
@@ -21,6 +22,7 @@ private:
 	Vecteur3D rotation;
 	Vecteur3D accel_lineaire;
 	Vecteur3D accel_rotation;
+	Matrix3D inertie;
 
 	/// <summary>
 	/// Call each frame to calculate the transformMatrix and normalize the orientation
@@ -38,7 +40,7 @@ public:
 	/// </summary>
 	/// <param name="entityParent"> Entité parente pour le modèle ECS </param>
 	/// <param name="angularDamping"> La valeur de m_angularDamping </param>
-	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping);
+	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet);
 
 	/// <summary>
 	/// Constructeur de copie
