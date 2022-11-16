@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include "Vecteur3D.h"
 
@@ -17,9 +18,10 @@ class Quaternion {
 
         void normalize();
 
-
         void rotateByVector(const Vecteur3D &vector);
         void updateByAngularVelocity(const Vecteur3D &vector, float duration);
+
+        std::vector<float> getContentAsStdVector() const;
 
         void operator=(const Quaternion &other);
         void operator*=(const Quaternion &other);

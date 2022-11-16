@@ -24,6 +24,42 @@ std::vector<double> Matrix34::getContentAsStdVector() const {
     return content;
 }
 
+Matrix34 Matrix34::inverse() {
+    // TODO: Implement
+    return;
+}
+
+void Matrix34::setOrientationAndPosition(const Quaternion &orientation, const Vecteur3D &position) {
+    std::vector<float> q = orientation.getContentAsStdVector();
+    content = {
+        1 - (2*q[2]*q[2] + 2*q[3]*q[3]),
+        2*q[1]*q[2] + 2*q[3]*q[0],
+        2*q[1]*q[3] - 2*q[2]*q[0],
+        position.get_x(),
+
+        2*q[1]*q[2] - 2*q[3]*q[0],
+        1 - (2*q[1]*q[1] + 2*q[3]*q[3]),
+        2*q[2]*q[3] + 2*q[1]*q[0],
+        position.get_y(),
+        
+        2*q[1]*q[3] + 2*q[2]*q[0],
+        2*q[2]*q[3] - 2*q[1]*q[0],
+        1 - (2*q[1]*q[1] + 2*q[2]*q[2]),
+        position.get_z()
+    };
+    return;    
+}
+
+Vecteur3D Matrix34::transformPosition(const Vecteur3D &vector) {
+    // TODO: Implement
+    return;    
+}
+
+Vecteur3D Matrix34::transformDirection(const Vecteur3D &vector) {
+    // TODO: Implement
+    return;    
+}
+
 double Matrix34::operator()(const int &line, const int &column) const {
     if (line < 0 || line > 2 || column < 0 || column > 3) {
         throw std::invalid_argument("Matrix3D::Provide line in range 0-2 and column in range 0-3");
@@ -81,13 +117,17 @@ Matrix34 operator*(const double &multiplier, const Matrix34 &matrix) {
     return operator*(matrix, multiplier);
 }
 
+Matrix34 operator*(const Matrix34 &matrix_1, const Matrix34 &matrix_2) {
+    // TODO: Implement
+    return Matrix34();
+}
+
 Vecteur3D operator*(const Matrix34 &matrix, const Vecteur3D &vector) {
     std::vector<float> contentAsFloatVector;
     std::transform(matrix.content.begin(), matrix.content.end(), contentAsFloatVector.begin(), [](const double &nb) {
         return static_cast<float>(nb);
     });
 
-    std::vector<double> content = std::vector<double>(9, 0);
     return Vecteur3D(
         contentAsFloatVector[0] * vector.get_x() + contentAsFloatVector[1] * vector.get_y() + contentAsFloatVector[2] * vector.get_z() + contentAsFloatVector[3],
         contentAsFloatVector[4] * vector.get_x() + contentAsFloatVector[5] * vector.get_y() + contentAsFloatVector[6] * vector.get_z() + contentAsFloatVector[7],
