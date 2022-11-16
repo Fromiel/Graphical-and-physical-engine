@@ -49,6 +49,10 @@ void Quaternion::updateByAngularVelocity(const Vecteur3D &vector, float duration
     return;
 }
 
+std::vector<float> Quaternion::getContentAsStdVector() const {
+    return std::vector<float>({w, x, y, z});
+}
+
 void Quaternion::operator=(const Quaternion &other) {
     w = other.w;
     x = other.x;

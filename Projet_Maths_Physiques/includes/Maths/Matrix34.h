@@ -8,6 +8,7 @@
 #include <functional>
 
 #include "Maths/Vecteur3D.h"
+#include "Maths/Quaternion.h"
 
 class Matrix34 {
     private:
@@ -24,6 +25,11 @@ class Matrix34 {
 
         std::vector<double> getContentAsStdVector() const;
         
+        Matrix34 inverse();
+        void setOrientationAndPosition(const Quaternion &quaternion, const Vecteur3D &vector);
+        Vecteur3D transformPosition(const Vecteur3D &vector);
+        Vecteur3D transformDirection(const Vecteur3D &vector);
+
         double operator()(const int &line, const int &column) const;
         double& operator()(int line, int colonne);
         void operator=(const Matrix34 &matrix);
@@ -37,6 +43,7 @@ class Matrix34 {
         friend Matrix34 operator*(const Matrix34 &matrix, const double &multiplier);
         friend Matrix34 operator*(const double &multiplier, const Matrix34 &matrix);
 
+        friend Matrix34 operator*(const Matrix34 &matrix_1, const Matrix34 &matrix_2);
         friend Vecteur3D operator*(const Matrix34 &matrix, const Vecteur3D &vector);
 
         friend bool operator==(const Matrix34 &matrix_1, const Matrix34 &matrix_2);
