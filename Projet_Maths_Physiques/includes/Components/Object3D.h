@@ -7,7 +7,7 @@
 #include "Vertice.h"
 
 
-enum ObjectTypeEnum {SphereMesh, CubeMesh};
+enum ObjectTypeEnum {SphereMesh, CubeMesh, CylinderMesh};
 
 /// <summary>
 /// Classe représentant les arêtes d'un objet en 3D 
