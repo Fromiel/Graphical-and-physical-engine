@@ -21,18 +21,17 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 			content = {1/12*(1/inverseMasse)*(scale_y+scale_z),0,0,0,1/12*(1/inverseMasse)*(scale_x+scale_z),0,0,0,1/12*(1/inverseMasse)*(scale_x+scale_y)};
 			inertie = Matrix3D(content);
 			break;
-		//case CylinderMesh:
-		// 			std::vector<double> content = {};
-			//inertie = Matrix3D(content);
-			//break;
+		case CylinderMesh:
+			scale_x = 1/12*(1/inverseMasse)* pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_z(), 2);
+			scale_y = 1/2*(1/inverseMasse)* pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
+			scale_z = 1/4 * (1 / inverseMasse) * pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
+			content = {scale_x+scale_z,0,0,0,scale_y,0,0,0,scale_x+scale_z};
+			inertie = Matrix3D(content);
+			break;
 		default:
 			inertie = Matrix3D();
 			std::cout << "Type de rigidbody non reconnu" << std::endl;
 	}
-
-
-
-
 	clearAccumulator();
 }
 
