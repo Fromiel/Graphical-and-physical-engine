@@ -25,8 +25,17 @@ std::vector<double> Matrix34::getContentAsStdVector() const {
 }
 
 Matrix34 Matrix34::inverse() {
-    // TODO: Implement
-    return;
+    std::vector<double> contentPadded = content;
+    contentPadded.push_back(0);
+    contentPadded.push_back(0);
+    contentPadded.push_back(0);
+    contentPadded.push_back(1);
+    std::vector<double> inverseContent = Matrix4D(contentPadded).invert().getContentAsStdVector();
+    std::vector<double> resultContent = {};
+    for (std::vector<double>::iterator it=inverseContent.begin(); it!=inverseContent.begin()+12; ++it) {
+        resultContent.push_back(*it);
+    }
+    return Matrix34(resultContent);
 }
 
 void Matrix34::setOrientationAndPosition(const Quaternion &orientation, const Vecteur3D &position) {
@@ -50,14 +59,14 @@ void Matrix34::setOrientationAndPosition(const Quaternion &orientation, const Ve
     return;    
 }
 
-Vecteur3D Matrix34::transformPosition(const Vecteur3D &vector) {
+Vecteur3D Matrix34::transformPosition(const Vecteur3D &position) {
     // TODO: Implement
-    return;    
+    return Vecteur3D();
 }
 
-Vecteur3D Matrix34::transformDirection(const Vecteur3D &vector) {
+Vecteur3D Matrix34::transformDirection(const Vecteur3D &direction) {
     // TODO: Implement
-    return;    
+    return Vecteur3D();
 }
 
 double Matrix34::operator()(const int &line, const int &column) const {

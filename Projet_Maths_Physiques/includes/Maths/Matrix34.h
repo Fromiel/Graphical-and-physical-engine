@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <functional>
 
+#include "Maths/Matrix4D.h"
 #include "Maths/Vecteur3D.h"
 #include "Maths/Quaternion.h"
 
@@ -27,8 +28,8 @@ class Matrix34 {
         
         Matrix34 inverse();
         void setOrientationAndPosition(const Quaternion &quaternion, const Vecteur3D &vector);
-        Vecteur3D transformPosition(const Vecteur3D &vector);
-        Vecteur3D transformDirection(const Vecteur3D &vector);
+        Vecteur3D transformPosition(const Vecteur3D &position);
+        Vecteur3D transformDirection(const Vecteur3D &direction);
 
         double operator()(const int &line, const int &column) const;
         double& operator()(int line, int colonne);
