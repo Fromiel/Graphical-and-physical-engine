@@ -4,6 +4,7 @@
 #include "Components/Object3D.h"
 #include "Components/Sphere.h"
 #include "Components/Cube.h"
+#include "Components/Cylinder.h"
 #include "Components/Transform.h"
 #include "Components/Camera.h"
 #include "Components/Light.h"
