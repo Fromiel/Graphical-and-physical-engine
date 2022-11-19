@@ -60,13 +60,27 @@ void Matrix34::setOrientationAndPosition(const Quaternion &orientation, const Ve
 }
 
 Vecteur3D Matrix34::transformPosition(const Vecteur3D &position) {
-    // TODO: Implement
-    return Vecteur3D();
+    return *(this) * position;
 }
 
 Vecteur3D Matrix34::transformDirection(const Vecteur3D &direction) {
-    // TODO: Implement
-    return Vecteur3D();
+    std::vector<float> floatContent;
+    std::transform(content.begin(), content.end(), floatContent.begin(), [](const double &element) {
+        return static_cast<float>(element);
+    });
+    return Vecteur3D(
+        direction.get_x() * floatContent[0] +
+        direction.get_y() * floatContent[1] +
+        direction.get_z() * floatContent[2],
+
+        direction.get_x() * floatContent[4] +
+        direction.get_y() * floatContent[5] +
+        direction.get_z() * floatContent[6],
+
+        direction.get_x() * floatContent[8] +
+        direction.get_y() * floatContent[9] +
+        direction.get_z() * floatContent[10]
+    );
 }
 
 double Matrix34::operator()(const int &line, const int &column) const {
