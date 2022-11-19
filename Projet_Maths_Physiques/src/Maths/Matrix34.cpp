@@ -127,8 +127,22 @@ Matrix34 operator*(const double &multiplier, const Matrix34 &matrix) {
 }
 
 Matrix34 operator*(const Matrix34 &matrix_1, const Matrix34 &matrix_2) {
-    // TODO: Implement
-    return Matrix34();
+    std::vector<double> contentPadded_1 = matrix_1.content;
+    contentPadded_1.push_back(0);
+    contentPadded_1.push_back(0);
+    contentPadded_1.push_back(0);
+    contentPadded_1.push_back(1);
+    std::vector<double> contentPadded_2 = matrix_2.content;
+    contentPadded_2.push_back(0);
+    contentPadded_2.push_back(0);
+    contentPadded_2.push_back(0);
+    contentPadded_2.push_back(1);
+    std::vector<double> prodContent = (Matrix4D(contentPadded_1) * Matrix4D(contentPadded_2)).getContentAsStdVector();
+    std::vector<double> resultContent = {};
+    for (std::vector<double>::iterator it=prodContent.begin(); it!=prodContent.begin()+12; ++it) {
+        resultContent.push_back(*it);
+    }
+    return Matrix34(resultContent);
 }
 
 Vecteur3D operator*(const Matrix34 &matrix, const Vecteur3D &vector) {
