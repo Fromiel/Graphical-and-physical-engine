@@ -106,7 +106,7 @@ public:
 	/// Getter Model Matrix
 	/// </summary>
 	/// <returns> La model Matrix du rb </returns>
-	Matrix4D getModelMatrix() const;
+	Matrix34 getModelMatrix() const;
 
 	/// <summary>
 	/// Setter velocity

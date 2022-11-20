@@ -42,17 +42,17 @@ void Matrix34::setOrientationAndPosition(const Quaternion &orientation, const Ve
     std::vector<float> q = orientation.getContentAsStdVector();
     content = {
         1 - (2*q[2]*q[2] + 2*q[3]*q[3]),
-        2*q[1]*q[2] + 2*q[3]*q[0],
-        2*q[1]*q[3] - 2*q[2]*q[0],
+        2*q[1]*q[2] - 2*q[3]*q[0],
+        2*q[1]*q[3] + 2*q[2]*q[0],
         position.get_x(),
 
-        2*q[1]*q[2] - 2*q[3]*q[0],
+        2*q[1]*q[2] + 2*q[3]*q[0],
         1 - (2*q[1]*q[1] + 2*q[3]*q[3]),
-        2*q[2]*q[3] + 2*q[1]*q[0],
+        2*q[2]*q[3] - 2*q[1]*q[0],
         position.get_y(),
         
-        2*q[1]*q[3] + 2*q[2]*q[0],
-        2*q[2]*q[3] - 2*q[1]*q[0],
+        2*q[1]*q[3] - 2*q[2]*q[0],
+        2*q[2]*q[3] + 2*q[1]*q[0],
         1 - (2*q[1]*q[1] + 2*q[2]*q[2]),
         position.get_z()
     };
@@ -181,3 +181,31 @@ std::ostream &operator<<(std::ostream &out, const Matrix34 &matrix) {
     out << matrix.content[matrix.content.size()-1];
     return out;
 }
+
+
+Matrix34 Matrix34::scaling(const Vecteur3D &scale)
+{
+    std::vector<double> elements = { scale.get_x(), 0, 0, 0, 0, scale.get_y(), 0, 0, 0, 0, scale.get_z(), 0};
+    Matrix34 res(elements);
+    return res;
+}
+
+
+void Matrix34::toFloatArray(float* arr)
+{
+    std::vector<double> content = getContentAsStdVector();
+    std::vector<double> contentModif = {content[0], content[4], content[8], content[1], content[5], content[9], content[2], content[6], content[10], content[3], content[7], content[11], 0, 0, 0, 1};
+    std::copy(content.begin(), content.end(), arr);
+}
+
+
+Matrix4D operator*(const Matrix4D& matrix4D, const Matrix34& matrix34)
+{
+    std::vector<double> content = matrix34.getContentAsStdVector();
+    content.push_back(0);
+    content.push_back(0);
+    content.push_back(0);
+    content.push_back(1);
+    return matrix4D * Matrix4D(content);
+}
+

@@ -287,3 +287,4 @@ std::ostream& operator<<(std::ostream& out, const Matrix4D& matrix4D) {
     out << "[ " << content[12] << ", " << content[13] << ", " << content[14] << ", " << content[15] << " ]" << std::endl;
     return out;
 }
+

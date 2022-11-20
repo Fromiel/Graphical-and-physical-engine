@@ -1,34 +1,55 @@
 #include "Components/Transform.h"
 
+
+void Transform::computeModelMatrix()
+{
+	Matrix34 translationOrientation;
+	translationOrientation.setOrientationAndPosition(orientation_, position_);
+	modelMatrix_ = translationOrientation * Matrix34::scaling(scale_);
+}
+
+
 Transform::Transform(Vecteur3D position, Vecteur3D scaling, Quaternion orientation) : scale_(scaling), position_(position), orientation_(orientation)
 {
-	modelMatrix_ = Matrix4D::translation(position_) * Matrix4D::scaling(scale_);
+	computeModelMatrix();
+}
+
+Transform::Transform(Vecteur3D position, Vecteur3D scaling, Vecteur3D orientation) : position_(position), scale_(scaling), orientation_(orientation)
+{
+	computeModelMatrix();
 }
 
 void Transform::setPosition(const Vecteur3D& position)
 {
-	modelMatrix_ = modelMatrix_ * Matrix4D::translation(position) * Matrix4D::translation(Vecteur3D(Vecteur3D() - position_));
 	position_ = position;
+	computeModelMatrix();
 }
 
 void Transform::setScaling(const Vecteur3D& scale)
 {
-	modelMatrix_ = modelMatrix_ * Matrix4D::scaling(scale) * (Matrix4D::scaling(Vecteur3D(scale_)).invert());
 	scale_ = scale;
+	computeModelMatrix();
 }
 
 void Transform::setOrientation(const Quaternion& orientation)
 {
-	//modelMatrix = ...
 	orientation_ = orientation;
+	computeModelMatrix();
 }
 
 void Transform::move(const Vecteur3D& vect)
 {
-	//todo
+	Matrix34 orientation;
+	orientation.setOrientationAndPosition(orientation_, Vecteur3D());
+	Vecteur3D v = orientation.transformDirection(vect);
+
+	position_ = position_ + v;
+
+	computeModelMatrix();
 }
 
 void Transform::rotate(float angle, const Vecteur3D& pivot)
 {
-	//todo
+	orientation_.rotateByVector(angle * pivot);
+	computeModelMatrix();
 }

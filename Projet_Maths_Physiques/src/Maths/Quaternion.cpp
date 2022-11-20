@@ -4,13 +4,28 @@ Quaternion::Quaternion(float w, float x, float y, float z, bool shouldNormalize)
     if (w == x && x == y && y == z && z == 0) w = 1; 
     if (shouldNormalize) normalize();
     return;
-};
+}
+
+Quaternion::Quaternion(const Vecteur3D &orientation)
+{
+    double cr = cos(orientation.get_x() * 0.5);
+    double sr = sin(orientation.get_x() * 0.5);
+    double cp = cos(orientation.get_y() * 0.5);
+    double sp = sin(orientation.get_y() * 0.5);
+    double cy = cos(orientation.get_z() * 0.5);
+    double sy = sin(orientation.get_z() * 0.5);
+
+    w = cr * cp * cy + sr * sp * sy;
+    x = sr * cp * cy - cr * sp * sy;
+    y = cr * sp * cy + sr * cp * sy;
+    z = cr * cp * sy - sr * sp * cy;
+}
 
 Quaternion::Quaternion(const Quaternion &other) {
     this->w = other.w;
     this->x = other.x;
     this->y = other.y;
-    this->w = other.w;
+    this->z = other.z;
     return;
 }
 

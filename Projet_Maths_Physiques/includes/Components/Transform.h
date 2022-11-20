@@ -2,7 +2,7 @@
 #define TRANSFORM_H
 
 #include "Maths/Vecteur3D.h"
-#include "Maths/Matrix4D.h"
+#include "Maths/Matrix34.h"
 #include "Maths/Quaternion.h"
 
 class Transform
@@ -12,17 +12,31 @@ class Transform
 		Vecteur3D scale_;
 		Quaternion orientation_;
 
-		Matrix4D modelMatrix_;
+		Matrix34 modelMatrix_;
+
+
+		/// <summary>
+		/// Method pour recalculer la modelMatrix à partir de la position, de l'orientation et du scale du transform
+		/// </summary>
+		void computeModelMatrix();
 
 	public:
 
 		/// <summary>
-		/// Constructeur placant l'entité à la position mise en argument et mettant le scale au scale mis en argument et une rotation au quaterniom passé en argument
+		/// Constructeur placant l'entité à la position mise en argument et mettant le scale au scale mis en argument et une orientation au quaternion passé en argument
 		/// </summary>
 		/// <param name="position"></param>
 		/// <param name="scaling"></param>
 		/// <param name="rotation"></param>
 		Transform(Vecteur3D position = Vecteur3D(0, 0, 0), Vecteur3D scaling = Vecteur3D(1, 1, 1), Quaternion orientation = Quaternion());
+
+		/// <summary>
+		/// Constructeur placant l'entité à la position mise en argument et mettant le scale au scale mis en argument et une rotation au vecteur3d passé en argument
+		/// </summary>
+		/// <param name="position"></param>
+		/// <param name="scaling"></param>
+		/// <param name="orientation"></param>
+		Transform(Vecteur3D position, Vecteur3D scaling, Vecteur3D orientation);
 
 		/// <summary>
 		/// 
@@ -46,7 +60,7 @@ class Transform
 		/// 
 		/// </summary>
 		/// <returns>La model matrix</returns>
-		Matrix4D getModelMatrix() { return modelMatrix_; }
+		Matrix34 getModelMatrix() { return modelMatrix_; }
 
 		/// <summary>
 		/// Permet de changer la position de l'objet (on modifie la modelMatrix)

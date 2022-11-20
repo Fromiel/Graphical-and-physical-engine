@@ -23,9 +23,14 @@ class Camera
         /**ratio de la caméra*/
         float ratio_;
         /**View matrice permettant de passer des coordonnées du monde au coordonnées de la caméra*/
-        Matrix4D viewMatrix_;
+        Matrix34 viewMatrix_;
         //Lien vers l'entité parente
         Entity cameraEntity_;
+
+        /// <summary>
+        /// Compute the view matrix
+        /// </summary>
+        void computeViewMatrix();
           
     public:
         Camera() {}
@@ -40,16 +45,6 @@ class Camera
         /// <param name="fov">le fov de la caméra</param>
         /// <param name="ratio">le ratio de l'écran</param>
         Camera(Entity entity, float near = 0.1, float far = 100, float fov = 110, float ratio = 640. / 480.0);
-
-        /// <summary>
-        /// Constructeur pour les tests
-        /// </summary>
-        /// <param name="transform"></param>
-        /// <param name=""></param>
-        /// <param name=""></param>
-        /// <param name="fov"></param>
-        /// <param name="ratio"></param>
-        Camera(Transform transform, float near = 0.1, float far = 100, float fov = 110, float ratio = 640. / 480.0);
 
         /// <summary>
         /// 
@@ -89,13 +84,13 @@ class Camera
         /// 
         /// </summary>
         /// <returns>la view matrice</returns>
-        Matrix4D getViewMatrix() const { return viewMatrix_; }
+        Matrix34 getViewMatrix() const { return viewMatrix_; }
 
         /// <summary>
         /// 
         /// </summary>
         ///<returns>la matrice normale</returns>
-        Matrix3D getNormalMatrix(Matrix4D modelMatrix);
+        Matrix3D getNormalMatrix(Matrix34 modelMatrix);
 
         /// <summary>
         /// Matrice de projection de perspective symetrique

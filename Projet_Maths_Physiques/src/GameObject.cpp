@@ -11,6 +11,12 @@ GameObject::GameObject(Vecteur3D position, Vecteur3D scale, Quaternion orientati
 	coordinator_->addComponent(entity_, transform);
 }
 
+GameObject::GameObject(Vecteur3D position, Vecteur3D scale, Vecteur3D orientation) : coordinator_(Coordinator::getInstance()), entity_(coordinator_->createEntity())
+{
+	Transform transform(position, scale, orientation);
+	coordinator_->addComponent(entity_, transform);
+}
+
 
 void GameObject::createParticule(Vecteur3D vel_initiale, float r, float m)
 { 

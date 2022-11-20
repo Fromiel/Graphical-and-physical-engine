@@ -1,6 +1,16 @@
 #include "Components/Camera.h"
 #include "CoreECS/Coordinator.h"
 
+
+void Camera::computeViewMatrix()
+{
+    Transform transform = Coordinator::getInstance()->getComponent<Transform>(cameraEntity_);
+
+    Matrix34 tmp;
+    tmp.setOrientationAndPosition(transform.getOrientation(), transform.getPosition());
+    viewMatrix_ = tmp.inverse();
+}
+
 Camera::Camera(Entity entity, float near, float far, float fov, float ratio) : cameraEntity_(entity), ratio_(ratio)
 {
     Coordinator* coordinator = Coordinator::getInstance();
@@ -12,35 +22,17 @@ Camera::Camera(Entity entity, float near, float far, float fov, float ratio) : c
         throw "fov négatif";
     if (!coordinator->hasComponent<Transform>(cameraEntity_))
         throw "camera a besoin d'un transform";
-
-    Transform transform = coordinator->getComponent<Transform>(cameraEntity_);
     
-
     near_ = near;
     far_ = far;
     fov_ = 2 * ((float) M_PI) * fov / 360; //on passe de degrés en radians
-    viewMatrix_ = Matrix4D::translation(Vecteur3D() - transform.getPosition());
+    computeViewMatrix();
 }
 
 
-Camera::Camera(Transform transform, float near, float far, float fov, float ratio): ratio_(ratio)
+Matrix3D Camera::getNormalMatrix(Matrix34 modelMatrix)
 {
-    Coordinator* coordinator = Coordinator::getInstance();
-    if (near < 0)
-        throw "near négatif";
-    if (far < near)
-        throw "far plus petit que near";
-    if (fov < 0)
-        throw "fov négatif";
-    near_ = near;
-    far_ = far;
-    fov_ = 2 * ((float)M_PI) * fov / 360; //on passe de degrés en radians
-    viewMatrix_ = Matrix4D::translation(Vecteur3D() - transform.getPosition());
-}
-
-Matrix3D Camera::getNormalMatrix(Matrix4D modelMatrix)
-{
-    Matrix4D modelView = viewMatrix_ * modelMatrix;
+    Matrix34 modelView = viewMatrix_ * modelMatrix;
     Matrix3D upperLeftModelView;
     for (int i = 0; i < 3; i++)
     {
@@ -74,7 +66,7 @@ void Camera::movePosition(Vecteur3D move)
     Transform& transform =  coordinator->getComponent<Transform>(cameraEntity_);
     Vecteur3D newPos = transform.getPosition() + move;
     transform.setPosition(newPos);
-    viewMatrix_ = Matrix4D::translation(Vecteur3D() - transform.getPosition());
+    computeViewMatrix();
 }
 
 

@@ -51,7 +51,7 @@ Quaternion Rigidbody::getOrientation() const
 	return Coordinator::getInstance()->getComponent<Transform>(entity).getOrientation();
 }
 
-Matrix4D Rigidbody::getModelMatrix() const
+Matrix34 Rigidbody::getModelMatrix() const
 {
 	return Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
 }

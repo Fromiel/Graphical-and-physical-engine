@@ -21,6 +21,14 @@ class GameObject
 
 
 		/// <summary>
+		/// Constructeur de gameobject prenant l'orientation du gameobject avec un vecteur3d
+		/// </summary>
+		/// <param name="position"></param>
+		/// <param name="scale"></param>
+		/// <param name="orientation"></param>
+		GameObject(Vecteur3D position, Vecteur3D scale, Vecteur3D orientation);
+
+		/// <summary>
 		/// Detruit le gameobject
 		/// </summary>
 		void destroy() { coordinator_->destroyEntity(entity_); }

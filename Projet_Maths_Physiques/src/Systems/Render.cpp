@@ -63,7 +63,7 @@ void Render::update(float dt)
 	Light light = coordinator->getComponent<Light>(light_);
 	Vecteur3D lightPosition = coordinator->getComponent<Transform>(light_).getPosition();
 	Vecteur3D lightColor = light.getColor();
-	Matrix4D view = camera.getViewMatrix();
+	Matrix34 view = camera.getViewMatrix();
 	Matrix4D projection = camera.projectionMatrix();
 	Vecteur3D posCamera = coordinator->getComponent<Transform>(camera_).getPosition();
 
@@ -112,9 +112,9 @@ void Render::update(float dt)
 			auto object = coordinator->getComponent<Object3D>(gameObject);
 			auto transform = coordinator->getComponent<Transform>(gameObject);
 
-			Matrix4D model = transform.getModelMatrix();
-			Matrix4D mvp = (projection * view * model);
-			Matrix4D modelView = view * model;
+			Matrix34 model = transform.getModelMatrix();
+			Matrix34 modelView = view * model;
+			Matrix4D mvp = (projection * modelView);
 
 			Matrix3D normalMatrix = camera.getNormalMatrix(model);
 

@@ -14,6 +14,7 @@ class Quaternion {
     public:
         Quaternion(float w=1, float x=0, float y=0, float z=0, bool shouldNormalize=true);
         Quaternion(const Quaternion &other);
+        Quaternion(const Vecteur3D &orientation);
         ~Quaternion();
 
         void normalize();
