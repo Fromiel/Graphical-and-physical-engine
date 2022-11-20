@@ -171,3 +171,13 @@ std::ostream &operator<<(std::ostream &out, const Matrix3D &matrix3D) {
     out << content[6] << " " << content[7] << " " << content[8] << std::endl;
     return out;
 }
+
+
+Vecteur3D operator*(const Matrix3D& matrix3D, const Vecteur3D& vecteur3D)
+{
+    int x = matrix3D(0, 0) * vecteur3D.get_x() + matrix3D(0, 1) * vecteur3D.get_y() + matrix3D(0, 2) * vecteur3D.get_z();
+    int y = matrix3D(1, 0) * vecteur3D.get_x() + matrix3D(1, 1) * vecteur3D.get_y() + matrix3D(1, 2) * vecteur3D.get_z();
+    int z = matrix3D(2, 0) * vecteur3D.get_x() + matrix3D(2, 1) * vecteur3D.get_y() + matrix3D(2, 2) * vecteur3D.get_z();
+    return Vecteur3D(x, y, z);
+   
+}

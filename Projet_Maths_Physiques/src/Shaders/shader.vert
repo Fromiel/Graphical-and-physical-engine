@@ -5,6 +5,7 @@ uniform mat4 MVP;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat3 normalMatrix;
+uniform mat4 projectionMatrix;
 
 attribute vec3 normal;
 attribute vec3 vPos;
@@ -20,7 +21,6 @@ void main()
     gl_Position = MVP * vec4(vPos, 1.0);
     d = posLumiere - (pos.xyz / pos.w);
     n = normalMatrix * normal;
-    
     v = posCamera - pos.xyz / pos.w;
     r = reflect(-d, n);
 };

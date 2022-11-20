@@ -127,9 +127,15 @@ void Render::update(float dt)
 			GLfloat modelMatrix[16];
 			model.toFloatArray(modelMatrix);
 
+			GLfloat projectionM[16];
+			projection.toFloatArray(projectionM);
+
+
 			shader_.setUniformMatrix3fv("normalMatrix", (const GLfloat*)normalMat);
 			shader_.setUniformMatrix4fv("MVP", (const GLfloat*)MVP);
 			shader_.setUniformMatrix4fv("modelMatrix", (const GLfloat*)modelMatrix);
+			shader_.setUniformMatrix4fv("projectionMatrix", (const GLfloat*)projectionM);
+			shader_.setUniformMatrix4fv("viewMatrix", (const GLfloat*)viewMatrix);
 
 			auto type = coordinator->getComponent<Object3D>(gameObject).getType();
 
@@ -166,11 +172,6 @@ void Render::insertEntity(Entity entity)
 void Render::loadMeshes()
 {
 	Coordinator* coordinator = Coordinator::getInstance();
-
-	//vertices_ = std::vector<Vertice>();
-	//indices_ = std::vector<unsigned int>();
-	//currentIndexes_ = std::unordered_map<ObjectTypeEnum, GLuint>();
-	//lengths_ = std::unordered_map<ObjectTypeEnum, GLuint>();
 
 
 	for (auto gameObject : entities_)

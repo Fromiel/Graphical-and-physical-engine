@@ -194,8 +194,8 @@ Matrix34 Matrix34::scaling(const Vecteur3D &scale)
 void Matrix34::toFloatArray(float* arr)
 {
     std::vector<double> content = getContentAsStdVector();
-    std::vector<double> contentModif = {content[0], content[4], content[8], content[1], content[5], content[9], content[2], content[6], content[10], content[3], content[7], content[11], 0, 0, 0, 1};
-    std::copy(content.begin(), content.end(), arr);
+    std::vector<double> contentModif = {content[0], content[4], content[8], 0,content[1], content[5], content[9], 0, content[2], content[6], content[10], 0, content[3], content[7], content[11], 1};
+    std::copy(contentModif.begin(), contentModif.end(), arr);
 }
 
 

@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include <vector>
+#include "Vecteur3D.h"
 
 #include <algorithm>
 #include <functional>
@@ -47,6 +48,7 @@ Matrix3D operator-(const Matrix3D &matrix3D_1, const Matrix3D &matrix3D_2);
 
 Matrix3D operator*(const Matrix3D &matrix3D, const double &multiplier);
 Matrix3D operator*(const double &multiplier, const Matrix3D &matrix3D);
+Vecteur3D operator*(const Matrix3D& matrix3D, const Vecteur3D &vecteur3D);
 
 Matrix3D operator*(const Matrix3D &matrix3D_1, const Matrix3D &matrix3D_2);
 

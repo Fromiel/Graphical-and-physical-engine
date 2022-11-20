@@ -65,7 +65,7 @@ int main(void)
 	GameObject::addRessortPtPt(1, sphere, sphere2, 10);
 	sphere3.addGravity(-1.0);
 
-	GameObject cylindre(Vecteur3D(0, 10, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 1.57, 0));
+	GameObject cylindre(Vecteur3D(0, 10, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
 	cylindre.addComponent((Object3D)Cylinder());
 	cylindre.addComponent(sMaterial);
 
