@@ -19,7 +19,7 @@ int main(void)
 
 	//---------TODO--------------------
 	//set les inputs
-	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S, GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_LEFT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_Q, GLFW_KEY_H , GLFW_KEY_G , GLFW_KEY_F , GLFW_KEY_T }));
+	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S, GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_LEFT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_Q, GLFW_KEY_H , GLFW_KEY_G , GLFW_KEY_F , GLFW_KEY_T, GLFW_KEY_SPACE }));
 	//-----------------------------------
 
 	//initialisation des entites
@@ -52,7 +52,7 @@ int main(void)
 	sphere4.addComponent(sMaterial);
 
 	//camera
-	GameObject camera(Vecteur3D(0, 35, 20));
+	GameObject camera(Vecteur3D(0, 35, 20), Vecteur3D(1, 1, 1), Vecteur3D(0, 0, 0));
 	camera.addComponent(Camera(camera.getEntity(), 0.1f, 10000.0f, 90.0f));
 	camera.addComponent((LogicBehaviour) MoveCamera(camera.getEntity()));
 

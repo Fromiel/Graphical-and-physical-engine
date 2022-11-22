@@ -11,27 +11,57 @@ void Start(Entity entity)
 
 void Update(float dt, Entity entity)
 {
-	float speed = 5.0f;
+	float speed = 10.0f;
+	float rotationSpeed = 0.2f;
 	Coordinator* coordinator = Coordinator::getInstance();
 	KeyInput* keyInput = KeyInput::_instances[0];
 	Camera &camera = coordinator->getComponent<Camera>(entity);
+
+	Matrix34 viewMatrixInv = camera.getViewMatrix();
+	std::vector<double> content = viewMatrixInv.getContentAsStdVector();
+	std::vector<double> matrix3dContent = { content[0], content[1], content[2], content[4], content[5], content[6], content[8], content[9], content[10] };
+	Matrix3D m3d(matrix3dContent);
+	if (keyInput->getIsKeyDown(GLFW_KEY_W))
+	{
+		camera.move(dt * speed * Vecteur3D(0, 0, -1));
+	}
+	if (keyInput->getIsKeyDown(GLFW_KEY_S))
+	{
+		camera.move(dt * speed * Vecteur3D(0, 0, 1));
+	}
+	if (keyInput->getIsKeyDown(GLFW_KEY_A))
+	{
+		camera.move(dt * speed * Vecteur3D(-1, 0, 0));
+	}
+	if (keyInput->getIsKeyDown(GLFW_KEY_D))
+	{
+		camera.move(dt * speed * Vecteur3D(1, 0, 0));
+	}
+	if (keyInput->getIsKeyDown(GLFW_KEY_SPACE))
+	{
+		camera.move(dt * speed * Vecteur3D(0, 1, 0));
+	}
+	if (keyInput->getIsKeyDown(GLFW_KEY_Q))
+	{
+		camera.move(dt * speed * Vecteur3D(0, -1, 0));
+	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_UP))
 	{
-		camera.movePosition(dt * speed * Vecteur3D(0, 1, 0));
+		camera.rotate(rotationSpeed * dt, Vecteur3D(1, 0, 0));
 	}
-	else if (KeyInput::_instances[0]->getIsKeyDown(GLFW_KEY_DOWN))
+	else if (keyInput->getIsKeyDown(GLFW_KEY_LEFT))
 	{
-		camera.movePosition(dt * speed * Vecteur3D(0, -1, 0));
+		camera.rotate(rotationSpeed * dt, Vecteur3D(0, 1, 0));
 	}
-	else if (KeyInput::_instances[0]->getIsKeyDown(GLFW_KEY_LEFT))
+	else if (keyInput->getIsKeyDown(GLFW_KEY_DOWN))
 	{
-		camera.movePosition(dt * speed * Vecteur3D(-1, 0, 0));
+		camera.rotate(rotationSpeed * dt, Vecteur3D(-1, 0, 0));
 	}
-	else if (KeyInput::_instances[0]->getIsKeyDown(GLFW_KEY_RIGHT))
+	else if (keyInput->getIsKeyDown(GLFW_KEY_RIGHT))
 	{
-		camera.movePosition(dt * speed * Vecteur3D(1, 0, 0));
+		camera.rotate(rotationSpeed * dt, Vecteur3D(0, -1, 0));
 	}
-	else if (KeyInput::_instances[0]->getIsKeyDown(GLFW_KEY_ESCAPE))
+	if (keyInput->getIsKeyDown(GLFW_KEY_ESCAPE))
 	{
 		InputsManager::setEndGame(true);
 	}
