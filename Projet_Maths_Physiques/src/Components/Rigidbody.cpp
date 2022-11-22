@@ -41,11 +41,17 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 	clearAccumulator();
 }
 
-Rigidbody::Rigidbody(const Rigidbody& rb) {
+/*Rigidbody::Rigidbody(const Rigidbody& rb) {
+	m_linearDamping = rb.getLinearDamping();
 	m_angularDamping = rb.getAngularDamping();
 	m_forceAccum = rb.getForceAccum();
 	m_torqueAccum = rb.getTorqueAccum();
-}
+	inverseMasse = rb.getinverseMasse();
+	accel_lineaire = Vecteur3D(0, 0, 0);
+	accel_rotation = Vecteur3D(0, 0, 0);
+	inertie = rb.inertie;
+	inertie_transfo = rb.inertie_transfo;
+}*/
 
 Vecteur3D Rigidbody::getPos() const
 {

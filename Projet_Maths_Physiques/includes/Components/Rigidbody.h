@@ -48,7 +48,7 @@ public:
 	/// Constructeur de copie
 	/// </summary>
 	/// <param name="rb"> Le rigidbody que l'on souhaite copier </param>
-	Rigidbody(const Rigidbody& rb);
+	//Rigidbody(const Rigidbody& rb);
 
 	/// <summary>
 	/// Getter inverseMasse
