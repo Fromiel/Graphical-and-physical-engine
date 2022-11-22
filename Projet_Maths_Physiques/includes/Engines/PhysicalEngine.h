@@ -45,6 +45,13 @@ class PhysicalEngine
 		/// </summary>
 		/// <param name="pr"></param>
 		void addRod(ParticuleRod& pr) { physicParticleSystem_->addRods(pr); }
+
+		/// <summary>
+		/// Getter de physicRigidbodySystem_
+		/// </summary>
+		/// <param name="rb"></param>
+		/// <param name="fg"></param>
+		void addForceRigidbody(Rigidbody* rb, ForceGenerator* fg) { physicRigidBodySystem_->addForce(rb, fg); }
 };
 
 #endif

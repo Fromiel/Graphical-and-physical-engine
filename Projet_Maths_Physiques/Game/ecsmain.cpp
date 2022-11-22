@@ -65,11 +65,18 @@ int main(void)
 	GameObject::addRessortPtPt(1, sphere, sphere2, 10);
 	sphere3.addGravity(-1.0);
 
+	//Cylindre
 	GameObject cylindre(Vecteur3D(0, 10, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
 	cylindre.addComponent((Object3D)Cylinder());
 	cylindre.addComponent(sMaterial);
 
 	sphere4.addCable(10, 0.5, sphere3);
+
+	//Rigidbodies
+	GameObject cube(Vecteur3D(0, 0, 0));
+	cube.addComponent((Object3D)Cube());
+	cube.addComponent(sMaterial);
+	cube.createRigidbody(0, 1, 0, CubeMesh);
 
 	engine->loop();
 

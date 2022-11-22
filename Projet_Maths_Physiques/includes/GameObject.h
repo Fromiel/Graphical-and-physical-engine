@@ -148,9 +148,37 @@ class GameObject
 		void addRod(float l, GameObject& g);
 
 
+		// ------------------------------------------------------------------------------------//
+		// ------- Methodes pour ajouter des forces si le gameobject possede un rigidbody -----//
+		// ------------------------------------------------------------------------------------//
 
-		//Methodes pour ajouter des forces si le gameobject possede un rigidbody
+		/// <summary>
+		/// Methode pour créer puis ajouter un rb comme composant du gameobject (si il y a deja un rb, on le remplace)
+		/// </summary>
+		/// <param name="vel_initiale"></param>
+		/// <param name="r"></param>
+		/// <param name="m"></param>
+		void createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet);
 
+		/// <summary>
+		/// Methode pour savoir si le gameobject est un rb
+		/// </summary>
+		/// <returns>True si c'est un rb, false sinon</returns>
+		bool hasRigidbody() { return coordinator_->hasComponent<Rigidbody>(entity_); }
+
+		/// <summary>
+		/// Methode pour ajouter une force de gravite
+		/// </summary>
+		/// <param name="g"></param>
+		void addGravityRigidbody(float g);
+
+		/// <summary>
+		/// Methode pour ajouter une force de ressort avec un point fixe
+		/// </summary>
+		/// <param name="kElasticite"></param>
+		/// <param name="attache"></param>
+		/// <param name="l0"></param>
+		void addRessortPtPtRigidbody(const Vecteur3D& bodyAnchor, const Vecteur3D otherAnchor, float kElasticite, GameObject& g1, GameObject& g2, float l0);
 };
 
 

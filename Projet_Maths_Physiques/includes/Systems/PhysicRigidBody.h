@@ -2,6 +2,7 @@
 #define PHYSICRIGIDBODY_H
 
 #include "CoreECS/Coordinator.h"
+#include "Forces/ForceRegistry.h"
 
 /// <summary>
 /// Système gérant la physique des rigidBody
@@ -9,7 +10,7 @@
 class PhysicRigidBody : public System
 {
 	private:
-
+		ForceRegistry _registry;
 	public:
 
 		/// <summary>
@@ -17,6 +18,12 @@ class PhysicRigidBody : public System
 		/// </summary>
 		/// <param name="dt"></param>
 		void update(float dt);
+
+		/// <summary>
+		/// Ajoute une force au forceRegistry
+		/// </summary>
+		/// <returns></returns>
+		void addForce(Rigidbody* rb, ForceGenerator* fg) { _registry.add(rb, fg); }
 };
 
 #endif
