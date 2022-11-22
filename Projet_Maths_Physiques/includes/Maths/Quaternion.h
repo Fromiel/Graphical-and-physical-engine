@@ -14,6 +14,10 @@ class Quaternion {
     public:
         Quaternion(float w=1, float x=0, float y=0, float z=0, bool shouldNormalize=true);
         Quaternion(const Quaternion &other);
+        /// <summary>
+        /// Constructeur de Quaternion en mettant en argument des angles d'euler
+        /// </summary>
+        /// <param name="orientation"></param>
         Quaternion(const Vecteur3D &orientation);
         ~Quaternion();
 

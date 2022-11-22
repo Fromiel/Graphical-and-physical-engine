@@ -72,13 +72,19 @@ void Camera::movePosition(Vecteur3D move)
 
 void Camera::move(const Vecteur3D &vect)
 {
-    //todo
+    Coordinator* coordinator = Coordinator::getInstance();
+    Transform& transform = coordinator->getComponent<Transform>(cameraEntity_);
+    transform.move(vect);
+    computeViewMatrix();
 }
 
 
 void Camera::rotate(float angle, const Vecteur3D &pivot)
 {
-    //todo
+    Coordinator* coordinator = Coordinator::getInstance();
+    Transform& transform = coordinator->getComponent<Transform>(cameraEntity_);
+    transform.rotate(angle, pivot);
+    computeViewMatrix();
 }
 
 void Camera::lookAt(const Vecteur3D &eye, const Vecteur3D &center, const Vecteur3D &up)
