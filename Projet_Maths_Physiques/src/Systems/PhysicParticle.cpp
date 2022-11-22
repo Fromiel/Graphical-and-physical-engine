@@ -33,7 +33,10 @@ void PhysicParticle::update(float dt)
 
 	for (auto gameObject : entities_)
 	{
-		coordinator->getComponent<Particule>(gameObject).update(dt);
-		coordinator->getComponent<Particule>(gameObject).clearAccum(); // On clear les accumulateurs de forces car on a pas des forces à ajouter à chaque tour 	}
-	}
+		if (coordinator->hasComponent<Particule>(gameObject)) {
+			coordinator->getComponent<Particule>(gameObject).update(dt);
+			coordinator->getComponent<Particule>(gameObject).clearAccum(); // On clear les accumulateurs de forces car on a pas des forces à ajouter à chaque tour 	}
+		}
+
+		}
 }

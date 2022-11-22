@@ -3,6 +3,8 @@
 #include "Forces/ParticuleGravity.h"
 #include "Forces/ParticuleRessortPtFixe.h"
 #include "Forces/ParticuleRessortPtPt.h"
+#include "Forces/GravityForceGenerator.h"
+#include "Forces/SpringForceGenerator.h"
 #include "Engine.h"
 
 GameObject::GameObject(Vecteur3D position, Vecteur3D scale, Quaternion orientation) : coordinator_(Coordinator::getInstance()), entity_(coordinator_->createEntity())
@@ -79,4 +81,36 @@ void GameObject::addRod(float l, GameObject& g)
 
 	ParticuleRod pRod(l, coordinator_->getComponentPtr<Particule>(entity_), coordinator_->getComponentPtr<Particule>(g.entity_));
 	Engine::getInstance()->getPhysicalEngine()->addRod(pRod);
+}
+
+// ----------------------------------------------------------------- //
+// -------------------------- Rigidbody -----------------------------//
+// ----------------------------------------------------------------- //
+
+void GameObject::createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet)
+{
+	if (hasRigidbody())
+		removeComponent<Rigidbody>();
+
+	addComponent(Rigidbody(entity_, angularDamping, invmasse, linearDamping, type_objet));
+}
+
+void GameObject::addGravityRigidbody(float g)
+{
+	if (!hasRigidbody()) return;
+
+	GravityForceGenerator* ptr_forceGravite = new GravityForceGenerator(g);
+	Engine::getInstance()->getPhysicalEngine()->addForceRigidbody(coordinator_->getComponentPtr<Rigidbody>(entity_), ptr_forceGravite);
+}
+
+void GameObject::addRessortPtPtRigidbody(const Vecteur3D& bodyAnchor, const Vecteur3D otherAnchor, float kElasticite, GameObject& g1, GameObject& g2, float l0)
+{
+	if (!g1.hasRigidbody() || !g2.hasRigidbody()) return;
+
+	auto rb1 = g1.coordinator_->getComponentPtr<Rigidbody>(g1.entity_);
+	auto rb2 = g1.coordinator_->getComponentPtr<Rigidbody>(g2.entity_);
+	SpringForceGenerator* ptr_forceRessort1 = new SpringForceGenerator(bodyAnchor, rb2,otherAnchor, kElasticite, l0);
+	SpringForceGenerator* ptr_forceRessort2 = new SpringForceGenerator(otherAnchor, rb1, bodyAnchor, kElasticite, l0);
+	Engine::getInstance()->getPhysicalEngine()->addForceRigidbody(rb1, ptr_forceRessort1);
+	Engine::getInstance()->getPhysicalEngine()->addForceRigidbody(rb2, ptr_forceRessort2);
 }

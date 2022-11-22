@@ -65,21 +65,21 @@ Vecteur3D Matrix34::transformPosition(const Vecteur3D &position) {
 
 Vecteur3D Matrix34::transformDirection(const Vecteur3D &direction) {
     std::vector<float> floatContent;
-    std::transform(content.begin(), content.end(), floatContent.begin(), [](const double &element) {
+    /*std::transform(content.begin(), content.end(), floatContent.begin(), [](const double& element) {  //Ca fait des erreurs
         return static_cast<float>(element);
-    });
+    });*/
     return Vecteur3D(
-        direction.get_x() * floatContent[0] +
-        direction.get_y() * floatContent[1] +
-        direction.get_z() * floatContent[2],
+        direction.get_x() * (float)content[0] +
+        direction.get_y() * (float)content[1] +
+        direction.get_z() * (float)content[2],
 
-        direction.get_x() * floatContent[4] +
-        direction.get_y() * floatContent[5] +
-        direction.get_z() * floatContent[6],
+        direction.get_x() * (float)content[4] +
+        direction.get_y() * (float)content[5] +
+        direction.get_z() * (float)content[6],
 
-        direction.get_x() * floatContent[8] +
-        direction.get_y() * floatContent[9] +
-        direction.get_z() * floatContent[10]
+        direction.get_x() * (float)content[8] +
+        direction.get_y() * (float)content[9] +
+        direction.get_z() * (float)content[10]
     );
 }
 
@@ -160,10 +160,10 @@ Matrix34 operator*(const Matrix34 &matrix_1, const Matrix34 &matrix_2) {
 }
 
 Vecteur3D operator*(const Matrix34 &matrix, const Vecteur3D &vector) {
-    std::vector<float> contentAsFloatVector;
-    std::transform(matrix.content.begin(), matrix.content.end(), contentAsFloatVector.begin(), [](const double &nb) {
+    std::vector<double> contentAsFloatVector = matrix.getContentAsStdVector();
+    /*std::transform(matrix.content.begin(), matrix.content.end(), contentAsFloatVector.begin(), [](const double& nb) { ca fait crasher
         return static_cast<float>(nb);
-    });
+    });*/
 
     return Vecteur3D(
         contentAsFloatVector[0] * vector.get_x() + contentAsFloatVector[1] * vector.get_y() + contentAsFloatVector[2] * vector.get_z() + contentAsFloatVector[3],

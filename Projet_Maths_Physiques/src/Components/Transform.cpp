@@ -50,6 +50,8 @@ void Transform::move(const Vecteur3D& vect)
 
 void Transform::rotate(float angle, const Vecteur3D& pivot)
 {
-	orientation_.rotateByVector(angle * pivot);
+	//orientation_.rotateByVector(angle * pivot);
+	Quaternion r(angle * pivot);
+	orientation_ = orientation_ * r;
 	computeModelMatrix();
 }

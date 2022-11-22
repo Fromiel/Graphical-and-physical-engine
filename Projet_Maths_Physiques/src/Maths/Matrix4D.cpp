@@ -177,9 +177,16 @@ Matrix4D Matrix4D::invert() const
 
         det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-        if (det == 0)
-            throw "Matrice non inversible";
+        //std::cout << "DEBUG : det = " << det << std::endl;
 
+        if (det == 0) {
+            //throw "Matrice non inversible";
+
+            std::cout << "Matrice non inversible" << std::endl;
+            //throw std::logic_error("Matrice non inversible");
+            return Matrix4D(); //should throw but throw not working
+        }
+            
         det = 1.0 / det;
 
         std::vector<double> invOut;
