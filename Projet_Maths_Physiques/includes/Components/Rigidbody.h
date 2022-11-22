@@ -6,6 +6,7 @@
 #include "Maths/Vecteur3D.h"
 #include "CoreECS/Coordinator.h"
 #include "Object3D.h"
+#include "Maths/Matrix34.h"
 
 
 class Rigidbody
@@ -23,6 +24,7 @@ private:
 	Vecteur3D accel_lineaire;
 	Vecteur3D accel_rotation;
 	Matrix3D inertie;
+	Matrix34 inertie_transfo;
 
 	/// <summary>
 	/// Call each frame to calculate the transformMatrix and normalize the orientation

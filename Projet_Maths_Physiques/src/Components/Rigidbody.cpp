@@ -32,6 +32,12 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 			inertie = Matrix3D();
 			std::cout << "Type de rigidbody non reconnu" << std::endl;
 	}
+	content.push_back(0);
+	content.push_back(0);
+	content.push_back(0);
+	Matrix34 newinertie(content);
+	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
+	inertie_transfo = transfo * newinertie.inverse() * transfo.inverse();
 	clearAccumulator();
 }
 
@@ -93,12 +99,13 @@ void Rigidbody::CalculateDerivatedData() {
 	Coordinator::getInstance()->getComponent<Transform>(entity).setOrientation(recup);
 
 	// TODO : Calculer la nouvelle valeur de I^(-1)
+	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
+	inertie_transfo = transfo * inertie_transfo * transfo.inverse();
 }
 
 void Rigidbody::Integrate(float duration) {
 	accel_lineaire = inverseMasse * m_forceAccum;
-	// TODO : calculer l'accélération angulaire
-	//accel_rotation = inertie.invert() * m_torqueAccum;
+	accel_rotation = inertie_transfo * m_torqueAccum;
 
 	// Vitesse
 	velocity = velocity + (accel_lineaire * duration);
@@ -119,9 +126,8 @@ void Rigidbody::Integrate(float duration) {
 	clearAccumulator();
 }
 
-// TODO : Implémenter cette méthode pour de vrai
 Vecteur3D Rigidbody::convertToWorld(const Vecteur3D& localPoint)
 {
-	return Vecteur3D(0, 0, 0);
+	return Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix() * localPoint;
 }
 
