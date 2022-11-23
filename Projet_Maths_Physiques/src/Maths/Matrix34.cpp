@@ -209,3 +209,14 @@ Matrix4D operator*(const Matrix4D& matrix4D, const Matrix34& matrix34)
     return matrix4D * Matrix4D(content);
 }
 
+Matrix3D operator*(const Matrix34& matrix34, const Matrix3D& matrix3) {
+    std::vector<double> content = { matrix34(0,0), matrix34(0,1), matrix34(0,2), matrix34(1,0), matrix34(1,1), matrix34(1,2), matrix34(2,0), matrix34(2,1), matrix34(2,2) };
+    Matrix3D newMat(content);
+    return newMat * matrix3;
+}
+
+Matrix3D operator*(const Matrix3D& matrix3, const Matrix34& matrix34) {
+    std::vector<double> content = { matrix34(0,0), matrix34(0,1), matrix34(0,2), matrix34(1,0), matrix34(1,1), matrix34(1,2), matrix34(2,0), matrix34(2,1), matrix34(2,2) };
+    Matrix3D newMat(content);
+    return matrix3 * newMat;
+}

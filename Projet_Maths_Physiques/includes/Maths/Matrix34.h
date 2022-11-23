@@ -10,6 +10,7 @@
 #include "Maths/Matrix4D.h"
 #include "Maths/Vecteur3D.h"
 #include "Maths/Quaternion.h"
+#include "Maths/Matrix3D.h"
 
 class Matrix34 {
     private:
@@ -57,6 +58,8 @@ class Matrix34 {
         friend Matrix34 operator*(const Matrix34 &matrix_1, const Matrix34 &matrix_2);
         friend Vecteur3D operator*(const Matrix34 &matrix, const Vecteur3D &vector);
 
+        friend Matrix3D operator*(const Matrix34&, const Matrix3D&);
+        friend Matrix3D operator*(const Matrix3D&, const Matrix34&);
 
         /// <summary>
         /// Surcharge de l'opérateur * pour multiplier une matrice 4D avec une matrice34

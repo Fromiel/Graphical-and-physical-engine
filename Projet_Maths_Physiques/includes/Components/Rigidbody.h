@@ -24,7 +24,7 @@ private:
 	Vecteur3D accel_lineaire;
 	Vecteur3D accel_rotation;
 	Matrix3D inertie;
-	Matrix34 inertie_transfo;
+	Matrix3D inertie_transfo;
 
 	/// <summary>
 	/// Call each frame to calculate the transformMatrix and normalize the orientation

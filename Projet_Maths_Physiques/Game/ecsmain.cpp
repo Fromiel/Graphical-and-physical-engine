@@ -93,7 +93,7 @@ int main(void)
 
 	
 	//Gravity
-	GameObject cylindre(Vecteur3D(0, 40, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
+	GameObject cylindre(Vecteur3D(-10, 40, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
 	cylindre.addComponent((Object3D)Cylinder());
 	cylindre.addComponent(sMaterial);
 	cylindre.createRigidbody(1,1,1,CylinderMesh);
@@ -108,7 +108,8 @@ int main(void)
 
 	//Ressort
 	Vecteur3D center(0, 0, 0);
-	cube2.addRessortPtPtRigidbody(center, center, 0.5, cube, cube2, 25);
+	Vecteur3D kessoku(0, 2.5, 0);
+	cube2.addRessortPtPtRigidbody(center, kessoku, 0.5, cube, cube2, 25);
 
 	engine->loop();
 

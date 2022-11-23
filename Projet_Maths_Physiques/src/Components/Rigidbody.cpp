@@ -10,7 +10,7 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 	float scale_x,scale_y,scale_z = 0;
 	switch (type_objet) {
 		case SphereMesh:
-			scale_x = 2/5*(1/inverseMasse)*pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
+			scale_x = 2.0/5.0*(1/inverseMasse)*pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
 			content = { scale_x,0,0,0,scale_x,0,0,0,scale_x };
 			inertie = Matrix3D(content);
 			break;
@@ -18,13 +18,13 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 			scale_x = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
 			scale_y = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_y(), 2);
 			scale_z = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_z(), 2);
-			content = {1/12*(1/inverseMasse)*(scale_y+scale_z),0,0,0,1/12*(1/inverseMasse)*(scale_x+scale_z),0,0,0,1/12*(1/inverseMasse)*(scale_x+scale_y)};
+			content = {1.0/12.0*(1/inverseMasse)*(scale_y+scale_z),0,0,0,1.0/12.0*(1/inverseMasse)*(scale_x+scale_z),0,0,0,1.0/12.0*(1/inverseMasse)*(scale_x+scale_y)};
 			inertie = Matrix3D(content);
 			break;
 		case CylinderMesh:
-			scale_x = 1/12*(1/inverseMasse)* pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_z(), 2);
-			scale_y = 1/2*(1/inverseMasse)* pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
-			scale_z = 1/4 * (1 / inverseMasse) * pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
+			scale_x = 1.0/12.0*(1/inverseMasse)* pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_z(), 2);
+			scale_y = 1.0/2.0*(1/inverseMasse)* pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
+			scale_z = 1.0/4.0 * (1 / inverseMasse) * pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
 			content = {scale_x+scale_z,0,0,0,scale_y,0,0,0,scale_x+scale_z};
 			inertie = Matrix3D(content);
 			break;
@@ -32,13 +32,13 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 			inertie = Matrix3D();
 			std::cout << "Type de rigidbody non reconnu" << std::endl;
 	}
-	//content.push_back(0);
-	//content.push_back(0);
-	//content.push_back(0);
-	std::vector<double> newcontent = { content[0],content[1],content[2],0,content[3],content[4],content[5],0,content[6],content[7],content[8],0 };
-	Matrix34 newinertie(newcontent);
+	//std::vector<double> newcontent = { content[0],content[1],content[2],0,content[3],content[4],content[5],0,content[6],content[7],content[8],0 };
+	//Matrix34 newinertie(newcontent);
 	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
-	inertie_transfo = transfo * newinertie.inverse() * transfo.inverse();
+	
+	std::cout << "On va inverser inertie : " << inertie << std::endl;
+	inertie_transfo = transfo * inertie.invert() * transfo.inverse();
+	
 	clearAccumulator();
 }
 
@@ -87,7 +87,11 @@ void Rigidbody::addForce(const Vecteur3D& force) {
 
 void Rigidbody::addForceAtPoint(const Vecteur3D& force, const Vecteur3D& worldpoint) {
 	m_forceAccum = m_forceAccum + force;
-	m_torqueAccum = m_torqueAccum + vectorial_product(worldpoint,force);
+
+	Vecteur3D newPoint = worldpoint;
+	newPoint = newPoint - getPos();
+
+	m_torqueAccum = m_torqueAccum + vectorial_product(newPoint,force);
 }
 
 void Rigidbody::addForceAtBodyPoint(const Vecteur3D& force, const Vecteur3D& localpoint) {
@@ -116,14 +120,17 @@ void Rigidbody::CalculateDerivatedData() {
 	//std::cout << "Matric Inverse = " << transfo.inverse() << std::endl;
 
 	//TODO : Faire la formule
-	//inertie_transfo = transfo * inertie.invert() * transfo.inverse();
+	inertie_transfo = transfo * inertie.invert() * transfo.inverse();
 }
 
 void Rigidbody::Integrate(float duration) {
 	accel_lineaire = inverseMasse * m_forceAccum;
 	accel_rotation = inertie_transfo * m_torqueAccum;
 
-	if (m_torqueAccum.get_x() == 0 && m_torqueAccum.get_y() == 0 && m_torqueAccum.get_z() == 0) accel_rotation = Vecteur3D(0, 0, 0);
+	std::cout << "Accel_rotation = " << accel_rotation << std::endl;
+	std::cout << "Torque = " << m_torqueAccum << std::endl;
+
+	//if (m_torqueAccum.get_x() == 0 && m_torqueAccum.get_y() == 0 && m_torqueAccum.get_z() == 0) accel_rotation = Vecteur3D(0, 0, 0);
 
 	//DEBUG ROTATION
 	//std::cout << "torque accum = " << m_torqueAccum << std::endl;
@@ -158,7 +165,7 @@ void Rigidbody::Integrate(float duration) {
 	CalculateDerivatedData();
 	clearAccumulator();
 
-	std::cout << "Nouvelle position du rigidbody : " << getPos() << std::endl;
+	//std::cout << "Nouvelle position du rigidbody : " << getPos() << std::endl;
 	//std::cout << "Nouvelle rotation du rb : " << getRotation() << std::endl;
 }
 
