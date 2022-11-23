@@ -6,6 +6,7 @@
 #include "Scripts/MoveCamera.h"
 #include "Engine.h"
 #include "GameObject.h"
+#include "Scripts/InstantiateCylindre.h"
 
 int main(void)
 {
@@ -98,6 +99,11 @@ int main(void)
 	cylindre.addComponent(sMaterial);
 	cylindre.createRigidbody(1,1,1,CylinderMesh);
 	cylindre.addGravityRigidbody(-1.0);
+
+
+	//Script instantiate camera
+	GameObject instantiateCylindre;
+	instantiateCylindre.addComponent((LogicBehaviour)InstantiateCylindre(instantiateCylindre.getEntity()));
 
 	
 	//Cube 2
