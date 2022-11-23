@@ -74,28 +74,41 @@ int main(void)
 	sphere4.addCable(10, 0.5, sphere3);
 	*/
 	//Rigidbodies
-	GameObject cube(Vecteur3D(0, 0, 0));
+
+	
+	GameObject cube(Vecteur3D(-10, 30, 0), Vecteur3D(5,5,5));
 	cube.addComponent((Object3D)Cube());
 	cube.addComponent(sMaterial);
-	cube.createRigidbody(0, 1, 0, CubeMesh);
+	cube.createRigidbody(1, 1, 1, CubeMesh);
+	
+	/*
+	GameObject sphere_rb(Vecteur3D(0, 0, 0));
+	sphere_rb.addComponent((Object3D)Sphere());
+	sphere_rb.createRigidbody(0, 1, 0, SphereMesh);
+	sphere_rb.addComponent(sMaterial);
+	*/
+	
 
 	//Forces à tester pour quand on aura réglé le pb du GetComponent
 
-	/*
+	
 	//Gravity
-	cube.addGravityRigidbody(-1.0);
+	GameObject cylindre(Vecteur3D(0, 40, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
+	cylindre.addComponent((Object3D)Cylinder());
+	cylindre.addComponent(sMaterial);
+	cylindre.createRigidbody(1,1,1,CylinderMesh);
+	cylindre.addGravityRigidbody(-1.0);
 
+	
 	//Cube 2
-	GameObject cube2(Vecteur3D(10, 0, 0));
+	GameObject cube2(Vecteur3D(10, 30, 0), Vecteur3D(5,5,5));
 	cube2.addComponent((Object3D)Cube());
 	cube2.addComponent(sMaterial);
-	cube2.createRigidbody(0, 1, 0, CubeMesh);
+	cube2.createRigidbody(1, 1, 1, CubeMesh);
 
 	//Ressort
 	Vecteur3D center(0, 0, 0);
-	cube2.addRessortPtPtRigidbody(center, center, 0.5, cube, cube2, 5);
-	*/
-
+	cube2.addRessortPtPtRigidbody(center, center, 0.5, cube, cube2, 25);
 
 	engine->loop();
 

@@ -29,7 +29,7 @@ void SpringForceGenerator::UpdateForce(Rigidbody* rigidbody) {
 
 	//On calcule la norme de la force
 	float forceValue = force.norm();
-	forceValue = abs(forceValue - m_rest_length); //Différence avec notre longueur au repos
+	forceValue = (forceValue - m_rest_length); //Différence avec notre longueur au repos
 	forceValue = forceValue * m_k; //Multipliée par le coefficient k (constante du ressort)
 
 	//On applique finalement la force

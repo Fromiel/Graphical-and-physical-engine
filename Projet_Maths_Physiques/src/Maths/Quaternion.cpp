@@ -35,10 +35,19 @@ Quaternion::~Quaternion() {
 
 void Quaternion::normalize() {
     float magnitude = static_cast<float>(sqrt(pow(w, 2) + pow(x, 2) + pow(y, 2) + pow(z, 2)));
-    w /= magnitude;
-    x /= magnitude;
-    y /= magnitude;
-    z /= magnitude;
+    if (magnitude != 0) {
+        w /= magnitude;
+        x /= magnitude;
+        y /= magnitude;
+        z /= magnitude;
+    }
+    else {
+        w = 0;
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+    
     return;
 }
 
@@ -60,6 +69,7 @@ void Quaternion::updateByAngularVelocity(const Vecteur3D &vector, float duration
     x += result.x * 0.5f;
     y += result.y * 0.5f;
     z += result.z * 0.5f;
+
     normalize();
     return;
 }

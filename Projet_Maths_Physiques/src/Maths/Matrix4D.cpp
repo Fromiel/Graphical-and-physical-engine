@@ -181,7 +181,6 @@ Matrix4D Matrix4D::invert() const
 
         if (det == 0) {
             //throw "Matrice non inversible";
-
             std::cout << "Matrice non inversible" << std::endl;
             //throw std::logic_error("Matrice non inversible");
             return Matrix4D(); //should throw but throw not working
