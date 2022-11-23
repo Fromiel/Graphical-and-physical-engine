@@ -36,7 +36,6 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 	//Matrix34 newinertie(newcontent);
 	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
 	
-	std::cout << "On va inverser inertie : " << inertie << std::endl;
 	inertie_transfo = transfo * inertie.invert() * transfo.inverse();
 	
 	clearAccumulator();
@@ -127,27 +126,13 @@ void Rigidbody::Integrate(float duration) {
 	accel_lineaire = inverseMasse * m_forceAccum;
 	accel_rotation = inertie_transfo * m_torqueAccum;
 
-	std::cout << "Accel_rotation = " << accel_rotation << std::endl;
-	std::cout << "Torque = " << m_torqueAccum << std::endl;
-
 	//if (m_torqueAccum.get_x() == 0 && m_torqueAccum.get_y() == 0 && m_torqueAccum.get_z() == 0) accel_rotation = Vecteur3D(0, 0, 0);
 
-	//DEBUG ROTATION
-	//std::cout << "torque accum = " << m_torqueAccum << std::endl;
-	//std::cout << "inertie_transfo = " << inertie_transfo << std::endl;
-	
 	// Vitesse
 	velocity = velocity + (accel_lineaire * duration);
 	velocity = velocity * pow(m_linearDamping, duration);
 
-	//DEBUG ROTATION
-	//std::cout << "previous rotation : " << rotation << std::endl;
-
 	rotation = rotation + accel_rotation * duration;
-
-
-	//DEBUG ROTATION
-	//std::cout << "new rotation : " << rotation << std::endl;
 
 	rotation = rotation * pow(m_angularDamping, duration);
 
@@ -164,9 +149,6 @@ void Rigidbody::Integrate(float duration) {
 
 	CalculateDerivatedData();
 	clearAccumulator();
-
-	//std::cout << "Nouvelle position du rigidbody : " << getPos() << std::endl;
-	//std::cout << "Nouvelle rotation du rb : " << getRotation() << std::endl;
 }
 
 Vecteur3D Rigidbody::convertToWorld(const Vecteur3D& localPoint)
