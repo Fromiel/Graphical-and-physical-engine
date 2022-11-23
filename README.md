@@ -25,6 +25,6 @@ Le programme peut être lancé simplement en utilisant le fichier "Projet_Maths_
 En effet, il s'agit d'un projet CMake. Une des méthodes pour l'exécuter et de l'ouvrir sous Visual Studio, compiler le CMake, puis exécuter "Projet_Maths_Physique.exe".   
 Le CMake va également générer des exécutables pour des tests, mais cela est non nécessaire au fonctionnement propre du moteur.
 
-Pour déplacer la camera utiliser les touches directionnelles
-Pour deplacer le blob vert utiliser les touches wasd
-Pour déplacer le blob bleu utiliser les touches tfgh
+Pour déplacer la camera, utiliser wasd pour avancer et aller de gauche à droite. Pour descendre, appuyer sur q, pour monter, appuyer sur espace.
+Pour changer l'orientation de la camera, utiliser les touches directionnelles.
+Pour instantier un rigidBody en forme de cylindre avec une gravite (de couleur verte), appuyer sur F.
