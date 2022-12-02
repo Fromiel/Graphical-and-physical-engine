@@ -64,19 +64,19 @@ void Quaternion::rotateByVector(const Vecteur3D &vector) {
 
 void Quaternion::updateByAngularVelocity(const Vecteur3D &vector, float duration) {
     Quaternion rotation = Quaternion(0, vector.get_x() * duration, vector.get_y() * duration, vector.get_z() * duration, false);
-    std::cout << "\nQuaternion new rotation = " << rotation << std::endl;
+    //std::cout << "\nQuaternion new rotation = " << rotation << std::endl;
     Quaternion result = rotation * (*this);
-    std::cout << "Quaternion result = " << result << std::endl;
+    //std::cout << "Quaternion result = " << result << std::endl;
     w += result.w * 0.5f;
     x += result.x * 0.5f;
     y += result.y * 0.5f;
     z += result.z * 0.5f;
 
-    std::cout << "Quaternion nouvelle valeur = " << (*this) << std::endl;
+    //std::cout << "Quaternion nouvelle valeur = " << (*this) << std::endl;
 
     normalize();
 
-    std::cout << "Quaternion nouvelle valeur2 = " << (*this) << std::endl << std::endl;
+    //std::cout << "Quaternion nouvelle valeur2 = " << (*this) << std::endl << std::endl;
     return;
 }
 

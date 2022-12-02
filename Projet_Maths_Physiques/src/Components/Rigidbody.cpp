@@ -123,7 +123,7 @@ void Rigidbody::CalculateDerivatedData() {
 
 void Rigidbody::Integrate(float duration) {
 
-	std::cout << "Orientation au depart de Integrate = " << getOrientation() << std::endl;
+	//std::cout << "Orientation au depart de Integrate = " << getOrientation() << std::endl;
 
 	accel_lineaire = inverseMasse * m_forceAccum;
 	accel_rotation = inertie_transfo * m_torqueAccum;
