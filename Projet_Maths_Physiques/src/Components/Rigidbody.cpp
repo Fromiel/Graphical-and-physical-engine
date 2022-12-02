@@ -18,7 +18,7 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 			scale_x = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_x(), 2);
 			scale_y = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_y(), 2);
 			scale_z = pow(Coordinator::getInstance()->getComponent<Transform>(entity).getScaling().get_z(), 2);
-			content = {1.0/12.0*(1/inverseMasse)*(scale_y+scale_z),0,0,0,1.0/12.0*(1/inverseMasse)*(scale_x+scale_z),0,0,0,1.0/12.0*(1/inverseMasse)*(scale_x+scale_y)};
+			content = {1.0/12.0*(1.0/inverseMasse)*(scale_y+scale_z),0,0,0,1.0/12.0*(1.0/inverseMasse)*(scale_x+scale_z),0,0,0,1.0/12.0*(1.0/inverseMasse)*(scale_x+scale_y)};
 			inertie = Matrix3D(content);
 			break;
 		case CylinderMesh:
@@ -105,7 +105,6 @@ void Rigidbody::clearAccumulator() {
 
 void Rigidbody::CalculateDerivatedData() {
 	// On normalise l'orientation
-
 	Quaternion recup = getOrientation();
 	recup.normalize();
 
@@ -123,6 +122,9 @@ void Rigidbody::CalculateDerivatedData() {
 }
 
 void Rigidbody::Integrate(float duration) {
+
+	std::cout << "Orientation au depart de Integrate = " << getOrientation() << std::endl;
+
 	accel_lineaire = inverseMasse * m_forceAccum;
 	accel_rotation = inertie_transfo * m_torqueAccum;
 
@@ -136,6 +138,7 @@ void Rigidbody::Integrate(float duration) {
 
 	rotation = rotation * pow(m_angularDamping, duration);
 
+
 	// Position 
 	Vecteur3D pos_res = getPos();
 	pos_res = pos_res + velocity * duration;
@@ -143,13 +146,28 @@ void Rigidbody::Integrate(float duration) {
 
 	Quaternion ori = getOrientation();
 
+	/**/
+	//std::cout << "ori = " << ori << std::endl;
+	//std::cout << "rotation =  " << rotation << std::endl;
+	/**/
+
 	ori.updateByAngularVelocity(rotation, duration);
+
+	//std::cout << "ori after update = " << ori << std::endl;
 
 	Coordinator::getInstance()->getComponent<Transform>(entity).setOrientation(ori);
 
+	/**/
+	//std::cout << "ori avant derived = " << ori << std::endl;
+	//std::cout << "orientation avant = " << getOrientation() << std::endl;
+	/**/
+
 	CalculateDerivatedData();
 	clearAccumulator();
-}
+
+	//std::cout << "Orientation a la fin = " << getOrientation() << std::endl;
+
+	}
 
 Vecteur3D Rigidbody::convertToWorld(const Vecteur3D& localPoint)
 {

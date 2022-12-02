@@ -63,5 +63,6 @@ void Transform::rotate(float angle, const Vecteur3D& pivot)
 	Quaternion r(angle * pivot);
 	orientation_ = orientation_ * r;
 
+
 	computeModelMatrix();
 }

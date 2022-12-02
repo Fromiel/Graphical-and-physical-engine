@@ -64,13 +64,19 @@ void Quaternion::rotateByVector(const Vecteur3D &vector) {
 
 void Quaternion::updateByAngularVelocity(const Vecteur3D &vector, float duration) {
     Quaternion rotation = Quaternion(0, vector.get_x() * duration, vector.get_y() * duration, vector.get_z() * duration, false);
+    std::cout << "\nQuaternion new rotation = " << rotation << std::endl;
     Quaternion result = rotation * (*this);
+    std::cout << "Quaternion result = " << result << std::endl;
     w += result.w * 0.5f;
     x += result.x * 0.5f;
     y += result.y * 0.5f;
     z += result.z * 0.5f;
 
+    std::cout << "Quaternion nouvelle valeur = " << (*this) << std::endl;
+
     normalize();
+
+    std::cout << "Quaternion nouvelle valeur2 = " << (*this) << std::endl << std::endl;
     return;
 }
 
@@ -106,12 +112,17 @@ Quaternion operator*(const Quaternion &q1, const Quaternion &q2) {
     float c2 = q2.y;
     float d2 = q2.z;
 
+    //std::cout << "\n q1*q2" << std::endl;
+    //std::cout << "q1 = " << q1 << " q2 = " << q2 << std::endl;
+
     Quaternion result;
     result.w = a1*a2 - b1*b2 - c1*c2 - d1*d2;
     result.x = a1*b2 + b1*a2 + c1*d2 - d1*c2;
     result.y = a1*c2 - b1*d2 + c1*a2 + d1*b2;
     result.z = a1*d2 + b1*c2 - c1*b2 + d1*a2;
-    result.normalize();
+    //std::cout << "result = " << result << std::endl;
+    //result.normalize();
+    //std::cout << "result normalize = " << result << std::endl;
 
     return result;
 }
