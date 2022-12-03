@@ -21,6 +21,12 @@ public:
 	//Size
 	float getSize() const override;
 
+	//Growth
+	float getGrowth(const BoundingSphere&) const;
+
+	//Disaply
+	std::string display() const;
+
 	float getRadius() const { return radius; }
 protected:
 	float radius;

@@ -1,7 +1,9 @@
 #include "Bounding/BoundingSphere.h"
+#include <string>
 
 BoundingSphere::BoundingSphere(const BoundingSphere& bs1, const BoundingSphere& bs2) {
-	Vecteur3D center_offset = bs1.center - bs2.center;
+
+	Vecteur3D center_offset = bs2.center - bs1.center;
 	float distance = center_offset.norm_squared();
 	float radiusDiff = bs2.radius - bs1.radius;
 
@@ -37,6 +39,13 @@ bool BoundingSphere::overlaps(const BoundingSphere* other) const {
 }
 
 float BoundingSphere::getSize() const {
-	//TODO
-	return 0;
+	return radius;
+}
+
+float BoundingSphere::getGrowth(const BoundingSphere& newVolume) const {
+	return abs(radius - newVolume.getRadius());
+}
+
+std::string BoundingSphere::display() const {
+	return "Sphere { center = (" + std::to_string(center.get_x()) + ", " + std::to_string(center.get_y()) + ", " + std::to_string(center.get_z()) + " )" + " ; radius = " + std::to_string(radius) + " }";
 }

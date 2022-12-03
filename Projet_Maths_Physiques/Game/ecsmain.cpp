@@ -120,9 +120,18 @@ int main(void)
 	cube2.addRessortPtPtRigidbody(center, kessoku, 0.5, cube, cube2, 25);
 
 	//Bounding 
-	BoundingSphere bSphere(Vecteur3D(10, 30, 0), 1);
+	BoundingSphere bSphere2(Vecteur3D(10, 30, 0), 5);
 	Rigidbody* cube2_rb = cube2.getComponentPtr<Rigidbody>();
-	BVHNode<BoundingSphere> node(cube2_rb, nullptr, nullptr, bSphere);
+	BVHNode<BoundingSphere> node2(cube2_rb, nullptr, nullptr, bSphere2);
+
+	BoundingSphere bSphere(Vecteur3D(-10, 30, 0), 5);
+	Rigidbody* cube_rb = cube.getComponentPtr<Rigidbody>();
+	BVHNode<BoundingSphere> node(cube_rb, nullptr, nullptr, bSphere);
+
+	node.insert(cube2_rb, bSphere2);
+	node.display();
+	node.children[0]->display();
+	node.children[1]->display();
 
 	engine->loop();
 
