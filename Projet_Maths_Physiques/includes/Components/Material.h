@@ -3,6 +3,7 @@
 
 #include "CoreECS/Coordinator.h"
 #include "Shader.h"
+#include "Maths/Vecteur3D.h"
 
 /// <summary>
 /// Component représentant le matériaux d'un objet

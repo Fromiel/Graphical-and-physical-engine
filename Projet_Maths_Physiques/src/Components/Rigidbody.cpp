@@ -1,4 +1,5 @@
 #include "Components/Rigidbody.h"
+#include "Components/Transform.h"
 
 Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet) : entity(entityparent) {
 	m_angularDamping = angularDamping;

@@ -4,6 +4,7 @@
 #include "CoreECS/Coordinator.h"
 #include "Systems/PhysicParticle.h"
 #include "Systems/PhysicRigidBody.h"
+#include "Systems/Collisions.h"
 
 /// <summary>
 /// Classe gérant la physique du jeu (déplacer les objets en fonction des forces qui leur sont appliquées)
@@ -15,6 +16,7 @@ class PhysicalEngine
 
 		std::shared_ptr<PhysicParticle> physicParticleSystem_; //Pointeur vers le systeme de gestion de la physique des particules
 		std::shared_ptr<PhysicRigidBody> physicRigidBodySystem_; //Pointeur vers le systeme de gestion de la physique des rigidBody
+		std::shared_ptr<Collisions> collisionsSystem_; //Pointeur vers le systeme de gestion de collisions
 
 	public:
 		/// <summary>

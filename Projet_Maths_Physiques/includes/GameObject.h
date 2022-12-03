@@ -3,6 +3,8 @@
 
 #include "CoreECS/Coordinator.h"
 #include "Maths/Quaternion.h"
+#include "Components/Particule.h"
+#include "Components/Rigidbody.h"
 
 class GameObject
 {

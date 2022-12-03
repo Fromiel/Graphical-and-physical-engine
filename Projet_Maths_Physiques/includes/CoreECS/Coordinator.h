@@ -4,7 +4,7 @@
 #include "SystemManager.h"
 #include "EntityManager.h"
 #include "ComponentManager.h"
-#include "Components.h"
+//#include "Components.h"
 
 /// <summary>
 /// Classe servant d'interface pour manipuler les entités, components et systèmes

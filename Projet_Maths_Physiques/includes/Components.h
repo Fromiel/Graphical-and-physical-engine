@@ -12,6 +12,7 @@
 #include "Components/LogicBehaviour.h"
 #include "Components/Material.h"
 #include "Components/Rigidbody.h"
+#include "Components/Colliders.h"
 
 
 #endif

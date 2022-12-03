@@ -2,7 +2,6 @@
 #include <ostream>
 #include "Components.h"
 #include "Systems.h"
-#include "ParticuleForceRegistry.h"
 #include "Scripts/MoveCamera.h"
 #include "Engine.h"
 #include "GameObject.h"
@@ -65,6 +64,7 @@ int main(void)
 	light.addComponent((Object3D)Sphere());
 	light.addComponent(Light(Vecteur3D(0.8f, 0.8f, 0.8f)));
 	light.addComponent(Material(lightShader));
+
 	/*
 	GameObject::addRessortPtPt(1, sphere, sphere2, 10);
 	sphere3.addGravity(-1.0);

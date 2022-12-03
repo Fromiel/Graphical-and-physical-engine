@@ -1,4 +1,5 @@
 #include "Components/Particule.h"
+#include "Components/Transform.h"
 //#include "Forces/ParticuleGravity.h"
 //#include "Forces/ParticuleRessortPtFixe.h"
 //#include "Forces/ParticuleRessortPtPt.h"

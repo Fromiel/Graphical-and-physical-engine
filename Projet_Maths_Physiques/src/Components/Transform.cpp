@@ -1,48 +1,40 @@
 #include "Components/Transform.h"
 
-
 void Transform::computeModelMatrix()
 {
-	//std::cout << "On compute la nouvelle model matrix" << std::endl;
-
 	Matrix34 translationOrientation;
-
 	translationOrientation.setOrientationAndPosition(orientation_, position_);
-	
-	//std::cout << "scale = " << Matrix34::scaling(scale_) << " (scale = " << scale_ << ")" << std::endl;
-
 	modelMatrix_ = translationOrientation * Matrix34::scaling(scale_);
-
-	//std::cout << "Nouvelle matrice = " << modelMatrix_ << std::endl;
+	modelChanged_ = false;
 }
 
 
-Transform::Transform(Vecteur3D position, Vecteur3D scaling, Quaternion orientation) : scale_(scaling), position_(position), orientation_(orientation)
+Transform::Transform(Vecteur3D position, Vecteur3D scaling, Quaternion orientation) : scale_(scaling), position_(position), orientation_(orientation), modelChanged_(true)
 {
-	computeModelMatrix();
+	
 }
 
-Transform::Transform(Vecteur3D position, Vecteur3D scaling, Vecteur3D orientation) : position_(position), scale_(scaling), orientation_(orientation)
+Transform::Transform(Vecteur3D position, Vecteur3D scaling, Vecteur3D orientation) : position_(position), scale_(scaling), orientation_(orientation), modelChanged_(true)
 {
-	computeModelMatrix();
+	
 }
 
 void Transform::setPosition(const Vecteur3D& position)
 {
 	position_ = position;
-	computeModelMatrix();
+	modelChanged_ = true;
 }
 
 void Transform::setScaling(const Vecteur3D& scale)
 {
 	scale_ = scale;
-	computeModelMatrix();
+	modelChanged_ = true;
 }
 
 void Transform::setOrientation(const Quaternion& orientation)
 {
 	orientation_ = orientation;
-	computeModelMatrix();
+	modelChanged_ = true;
 }
 
 void Transform::move(const Vecteur3D& vect)
@@ -54,15 +46,21 @@ void Transform::move(const Vecteur3D& vect)
 
 	position_ = position_ + v;
 
-	computeModelMatrix();
+	modelChanged_ = true;
 }
 
 void Transform::rotate(float angle, const Vecteur3D& pivot)
 {
-	//orientation_.rotateByVector(angle * pivot);
 	Quaternion r(angle * pivot);
 	orientation_ = orientation_ * r;
 
+	modelChanged_ = true;
+}
 
-	computeModelMatrix();
+Matrix34 Transform::getModelMatrix()
+{
+	if (modelChanged_)
+		computeModelMatrix();
+
+	return modelMatrix_;
 }

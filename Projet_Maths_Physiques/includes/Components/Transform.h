@@ -5,6 +5,9 @@
 #include "Maths/Matrix34.h"
 #include "Maths/Quaternion.h"
 
+/// <summary>
+/// Classe gérant les valeurs de l'objet dans le monde en 3d (position, orientation, scale)
+/// </summary>
 class Transform
 {
 	private:
@@ -14,6 +17,8 @@ class Transform
 
 		Matrix34 modelMatrix_;
 
+		//booleen permettant de recalculer les matrices seulement quand cela est necessaire (optimisation)
+		bool modelChanged_;
 
 		/// <summary>
 		/// Method pour recalculer la modelMatrix à partir de la position, de l'orientation et du scale du transform
@@ -60,7 +65,8 @@ class Transform
 		/// 
 		/// </summary>
 		/// <returns>La model matrix</returns>
-		Matrix34 getModelMatrix() { return modelMatrix_; }
+		Matrix34 getModelMatrix();
+
 
 		/// <summary>
 		/// Permet de changer la position de l'objet (on modifie la modelMatrix)

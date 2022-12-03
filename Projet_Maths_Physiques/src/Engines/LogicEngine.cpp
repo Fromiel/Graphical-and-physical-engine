@@ -1,4 +1,5 @@
 #include "Engines/LogicEngine.h"
+#include "Components/LogicBehaviour.h"
 
 LogicEngine::LogicEngine() : coordinator_(Coordinator::getInstance()), logicSystem_(coordinator_->registerSystem<Logic>())
 {
