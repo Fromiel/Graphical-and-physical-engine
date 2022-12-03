@@ -7,6 +7,8 @@
 #include "Engine.h"
 #include "GameObject.h"
 #include "Scripts/InstantiateCylindre.h"
+#include "Bounding/BVHNode.h"
+#include "Bounding/BoundingSphere.h"
 
 int main(void)
 {
@@ -116,6 +118,11 @@ int main(void)
 	Vecteur3D center(0, 0, 0);
 	Vecteur3D kessoku(0, 2.5, 0);
 	cube2.addRessortPtPtRigidbody(center, kessoku, 0.5, cube, cube2, 25);
+
+	//Bounding 
+	BoundingSphere bSphere(Vecteur3D(10, 30, 0), 1);
+	Rigidbody* cube2_rb = cube2.getComponentPtr<Rigidbody>();
+	BVHNode<BoundingSphere> node(cube2_rb, nullptr, nullptr, bSphere);
 
 	engine->loop();
 

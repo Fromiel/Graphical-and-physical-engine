@@ -2,7 +2,7 @@
 #ifndef BVHNODE_H
 #define BVHNODE_H
 
-#include "Rigidbody.h"
+#include "Components/Rigidbody.h"
 #include "Bounding.h"
 
 struct PotentialContact {
@@ -34,7 +34,7 @@ public:
 	///--------------- Methods ---------------///
 
 	//Indique si ce noeud est une feuille
-	bool isLeaf() const { return body != null; }
+	bool isLeaf() const { return body != NULL; }
 
 	//Rempli le tableau de contact potentiel passé en paramètre en descendant l'arbre, puis renvoi leur nombre
 	int getPotentialContacts(PotentialContact* contacts, unsigned int limit) const;
@@ -85,10 +85,10 @@ BVHNode<T>::~BVHNode() {
 		parent->children[1] = sibling->children[1];
 
 		//On supprime le voisin
-		sibling->volume = NULL;
-		sibling->body = NULL;
-		sibling->children[0] = NULL;
-		sibling->children[1] = NULL;
+		//sibling->volume = NULL;
+		//sibling->body = NULL;
+		sibling->children[0] = nullptr;
+		sibling->children[1] = nullptr;
 		delete sibling;
 
 		//Puis on recalcule le volume englobant
