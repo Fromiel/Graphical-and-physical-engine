@@ -159,7 +159,7 @@ int BVHNode<T>::getPotentialContacts(PotentialContact* contacts, unsigned int li
 	}
 
 	//On récupère les contacts potentiels de nos enfants
-	return 0;
+	return children[0]->getPotentialContactsWith(children[1], contacts, limit);
 }
 
 template<class T>

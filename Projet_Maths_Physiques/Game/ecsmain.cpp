@@ -119,7 +119,7 @@ int main(void)
 	Vecteur3D kessoku(0, 2.5, 0);
 	cube2.addRessortPtPtRigidbody(center, kessoku, 0.5, cube, cube2, 25);
 
-	//Bounding 
+	//Bounding //Test => à terme il faudra probablement mettre à jour ces volumes dans la boucle de jeu, au moins pour le BVH
 	BoundingSphere bSphere2(Vecteur3D(10, 30, 0), 5);
 	Rigidbody* cube2_rb = cube2.getComponentPtr<Rigidbody>();
 	BVHNode<BoundingSphere> node2(cube2_rb, nullptr, nullptr, bSphere2);
@@ -132,6 +132,10 @@ int main(void)
 	node.display();
 	node.children[0]->display();
 	node.children[1]->display();
+
+	PotentialContact* potential_contacts;
+
+	//Loop
 
 	engine->loop();
 
