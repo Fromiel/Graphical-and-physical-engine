@@ -68,6 +68,7 @@ BVHNode<T>::BVHNode(Rigidbody* rb, BVHNode* fg, BVHNode* fd, const T& vol) {
 	children[0] = fg;
 	children[1] = fd;
 	volume = vol;
+	parent = nullptr;
 }
 
 template<class T>
