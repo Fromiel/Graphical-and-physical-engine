@@ -133,7 +133,9 @@ int main(void)
 	node.children[0]->display();
 	node.children[1]->display();
 
-	PotentialContact* potential_contacts;
+	PotentialContact* potential_contacts = new PotentialContact();
+	int count_contacts = node.getPotentialContacts(potential_contacts, 10000);
+	std::cout << "\nPotential contacts = " << count_contacts << std::endl;
 
 	//Loop
 

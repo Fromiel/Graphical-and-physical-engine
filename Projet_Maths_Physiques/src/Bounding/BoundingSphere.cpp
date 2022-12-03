@@ -32,9 +32,9 @@ BoundingSphere::BoundingSphere(const BoundingSphere& bs1, const BoundingSphere& 
 	}
 }
 
-bool BoundingSphere::overlaps(const BoundingSphere* other) const {
-	float distanceCarre = (center - (other)->center).norm_squared();
-	float sumRadius = radius + (other)->radius;
+bool BoundingSphere::overlaps(const BoundingSphere& other) const {
+	float distanceCarre = (center - other.center).norm_squared();
+	float sumRadius = radius + other.radius;
 	return distanceCarre < (sumRadius * sumRadius);
 }
 

@@ -16,7 +16,7 @@ public:
 	BoundingSphere(const BoundingSphere&, const BoundingSphere&);
 
 	//Overlaps
-	bool overlaps(const BoundingSphere* other) const;
+	bool overlaps(const BoundingSphere& other) const;
 
 	//Size
 	float getSize() const override;
@@ -24,10 +24,16 @@ public:
 	//Growth
 	float getGrowth(const BoundingSphere&) const;
 
-	//Disaply
+	//Display
 	std::string display() const;
 
+	//Getter du rayon
 	float getRadius() const { return radius; }
+
+	//Opérateur de pointeur
+	//BoundingSphere* operator->() {
+	//	return this;
+	//}
 protected:
 	float radius;
 };

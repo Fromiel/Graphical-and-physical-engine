@@ -41,8 +41,8 @@ public:
 	int getPotentialContacts(PotentialContact* contacts, unsigned int limit) const;
 
 	//Indique si on a superposition de notre volume avec celui passé en paramètre
-	bool overlaps(const BVHNode<T>* other) {
-		return volume->overlaps(other);
+	bool overlaps(BVHNode<T>* other) const {
+		return volume.overlaps(other->volume);
 	}
 
 	//Ajoute un volume dans notre hiérarchie
@@ -54,7 +54,7 @@ public:
 private:
 
 	//Fonction auxiliaire de getPotentialContacts
-	int getPotentialContactsWith(const BVHNode<T>* other, PotentialContact* contacts, unsigned int limit) const;
+	int getPotentialContactsWith(BVHNode<T>* other, PotentialContact* contacts, unsigned int limit) const;
 
 	//
 	void recalculateBoundingVolume();
@@ -163,10 +163,10 @@ int BVHNode<T>::getPotentialContacts(PotentialContact* contacts, unsigned int li
 }
 
 template<class T>
-int BVHNode<T>::getPotentialContactsWith(const BVHNode<T>* other, PotentialContact* contacts, unsigned int limit) const{
+int BVHNode<T>::getPotentialContactsWith(BVHNode<T>* other, PotentialContact* contacts, unsigned int limit) const {
 
 	//Si par de superposition : on sort
-	if (!overlaps(other) || limit == 0) return 0;
+	if ( !overlaps(other) || limit == 0) return 0;
 
 	//Si on a 2 feuilles : contact potentiel
 	if (isLeaf() && other->isLeaf()) {
@@ -176,7 +176,7 @@ int BVHNode<T>::getPotentialContactsWith(const BVHNode<T>* other, PotentialConta
 	}
 
 	//Boucle récursive
-	if (other->isLeaf() || !isLeaf() && volume->getSize() >= other->volume->getSize()) {
+	if (other->isLeaf() || !isLeaf() && volume.getSize() >= other->volume.getSize()) {
 		int count = children[0]->getPotentialContactsWith(other, contacts, limit);
 
 		if (limit > count) {
