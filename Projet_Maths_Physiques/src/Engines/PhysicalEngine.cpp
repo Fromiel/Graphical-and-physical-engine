@@ -1,11 +1,12 @@
 #include "Engines/PhysicalEngine.h"
 #include "Components/Transform.h"
 
-PhysicalEngine::PhysicalEngine() : coordinator_(Coordinator::getInstance()), physicParticleSystem_(coordinator_->registerSystem<PhysicParticle>()), physicRigidBodySystem_(coordinator_->registerSystem<PhysicRigidBody>()), collisionsSystem_(coordinator_->registerSystem<Collisions>())
+PhysicalEngine::PhysicalEngine() : coordinator_(Coordinator::getInstance()), physicParticleSystem_(coordinator_->registerSystem<PhysicParticle>()), physicRigidBodySystem_(coordinator_->registerSystem<PhysicRigidBody>()), collisionsSystem_(coordinator_->registerSystem<CollisionsSystem>())
 {
 	coordinator_->registerComponent<Transform>();
 	coordinator_->registerComponent<Particule>();
 	coordinator_->registerComponent<Rigidbody>();
+	coordinator_->registerComponent<Collider>();
 
 	Signature physicParticleSignature;
 	physicParticleSignature.set(coordinator_->getComponentType<Transform>());
@@ -17,11 +18,11 @@ PhysicalEngine::PhysicalEngine() : coordinator_(Coordinator::getInstance()), phy
 
 	Signature collisionsSignature;
 	collisionsSignature.set(coordinator_->getComponentType<Transform>());
-	//collisionsSignature.set(coordinator_->getComponentType<Collider>());
+	collisionsSignature.set(coordinator_->getComponentType<Collider>());
 
 	coordinator_->setSystemSignature<PhysicParticle>(physicParticleSignature);
 	coordinator_->setSystemSignature<PhysicRigidBody>(physicRigidBodySignature);
-	coordinator_->setSystemSignature<Collisions>(collisionsSignature);
+	coordinator_->setSystemSignature<CollisionsSystem>(collisionsSignature);
 }
 
 void PhysicalEngine::update(float dt)

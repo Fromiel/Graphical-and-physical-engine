@@ -2,7 +2,11 @@
 #define COLLIDER_H
 
 #include "Components/Rigidbody.h"
+#include "CollisionData.h"
 
+/// <summary>
+/// Composant de base représentant un collider pour détecter les collisions entre deux objets
+/// </summary>
 class Collider
 {
 	private:
@@ -10,7 +14,9 @@ class Collider
 		Matrix34 offset_;
 
 	public:
-		//Collider(Entity entity, Matrix34 offset);
+		Collider(Vecteur3D position = Vecteur3D(), Vecteur3D scale = Vecteur3D(1.0f, 1.0f, 1.0f), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
+
+		void onCollision(const CollisionData& data) const;
 
 };
 

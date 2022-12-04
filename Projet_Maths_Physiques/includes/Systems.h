@@ -7,6 +7,6 @@
 #include "Systems/PhysicParticle.h"
 #include "Systems/PhysicRigidBody.h"
 #include "Systems/Logic.h"
-#include "Systems/Collisions.h"
+#include "Systems/CollisionsSystem.h"
 
 #endif
