@@ -1,6 +1,7 @@
 #include "Systems/CollisionsSystem.h"
 #include "Bounding/BVHNode.h"
 #include "Bounding/BoundingSphere.h"
+#include "Components/Transform.h"
 
 void CollisionsSystem::update(float dt)
 {
@@ -15,14 +16,16 @@ void CollisionsSystem::update(float dt)
 	{
 		auto collider = coordinator->getComponent<Collider>(gameObject);
 		colliders.push_back(collider);
-		// todo inserer ce collider dans le bvh
-
+		// Inserer ce collider dans le bvh
+		Transform t = coordinator->getComponent<Transform>(gameObject);
+		BoundingSphere bs(t.getPosition(), t.maxScale());
+		bvh.insert(collider.getRigidbody(), bs);
 	}
 
 	// 2) Detecter les collisions possibles
 	PotentialContact potentialContacts[100];
 
-	int nbPotentialContact = 0;// bvh.getPotentialContacts(potentialContacts, 100);
+	int nbPotentialContact = bvh.getPotentialContacts(potentialContacts, 100);
 
 	// 3) Calculer vrai collisions
 	for (int i = 0; i < nbPotentialContact; i++)

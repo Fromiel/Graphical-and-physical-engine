@@ -82,7 +82,7 @@ int main(void)
 	GameObject cube(Vecteur3D(-10, 30, 0), Vecteur3D(5,5,5));
 	cube.addComponent((Object3D)Cube());
 	cube.addComponent(sMaterial);
-	cube.createRigidbody(1, 1, 1, CubeMesh);
+	cube.createRigidbody(1, 1 / 1000.0f, 1, CubeMesh);
 	
 	/*
 	GameObject sphere_rb(Vecteur3D(0, 0, 0));
@@ -99,7 +99,7 @@ int main(void)
 	GameObject cylindre(Vecteur3D(-10, 40, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
 	cylindre.addComponent((Object3D)Cylinder());
 	cylindre.addComponent(sMaterial);
-	cylindre.createRigidbody(1,1,1,CylinderMesh);
+	cylindre.createRigidbody(1, 1 / 1000.0f,1,CylinderMesh);
 	cylindre.addGravityRigidbody(-1.0);
 
 
@@ -112,7 +112,7 @@ int main(void)
 	GameObject cube2(Vecteur3D(10, 30, 0), Vecteur3D(5,5,5));
 	cube2.addComponent((Object3D)Cube());
 	cube2.addComponent(sMaterial);
-	cube2.createRigidbody(1, 1, 1, CubeMesh);
+	cube2.createRigidbody(1, 1 / 1000.0f, 1, CubeMesh);
 
 	//Ressort
 	Vecteur3D center(0, 0, 0);
@@ -133,7 +133,7 @@ int main(void)
 	node.children[0]->display();
 	node.children[1]->display();
 
-	PotentialContact* potential_contacts = new PotentialContact();
+	PotentialContact potential_contacts[10000];// = new PotentialContact();
 	int count_contacts = node.getPotentialContacts(potential_contacts, 10000);
 	std::cout << "\nPotential contacts = " << count_contacts << std::endl;
 

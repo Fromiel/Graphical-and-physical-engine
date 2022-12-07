@@ -18,6 +18,8 @@ class Collider
 
 		void onCollision(const CollisionData& data) const;
 
+		Rigidbody* getRigidbody() { return rigidbody_; }
+
 };
 
 #endif

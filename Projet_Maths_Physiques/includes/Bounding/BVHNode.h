@@ -35,7 +35,7 @@ public:
 	///--------------- Methods ---------------///
 
 	//Indique si ce noeud est une feuille
-	bool isLeaf() const { return body != NULL; }
+	bool isLeaf() const { return body != nullptr; }
 
 	//Rempli le tableau de contact potentiel passé en paramètre en descendant l'arbre, puis renvoi leur nombre
 	int getPotentialContacts(PotentialContact* contacts, unsigned int limit) const;
@@ -153,6 +153,9 @@ void BVHNode<T>::recalculateBoundingVolume() {
 template<class T>
 int BVHNode<T>::getPotentialContacts(PotentialContact* contacts, unsigned int limit) const {
 	
+	if (body == nullptr && children[0] == nullptr && children[1] == nullptr)
+		return 0;
+
 	//Si on est une feuille pas de contacts
 	if (isLeaf()) {
 		return 0;

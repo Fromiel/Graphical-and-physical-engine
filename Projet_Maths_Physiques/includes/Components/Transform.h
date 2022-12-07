@@ -67,6 +67,12 @@ class Transform
 		/// <returns>La model matrix</returns>
 		Matrix34 getModelMatrix();
 
+		/// <summary>
+		/// Valeur maximum du scale
+		/// </summary>
+		/// <returns></returns>
+		float maxScale();
+
 
 		/// <summary>
 		/// Permet de changer la position de l'objet (on modifie la modelMatrix)

@@ -64,3 +64,14 @@ Matrix34 Transform::getModelMatrix()
 
 	return modelMatrix_;
 }
+
+
+float Transform::maxScale()
+{
+	float m = scale_.get_x();
+	if (m < scale_.get_y())
+		m = scale_.get_y();
+	if (m < scale_.get_z())
+		m = scale_.get_z();
+	return m;
+}
