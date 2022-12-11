@@ -8,6 +8,7 @@ class SphereCollider : public Collider
 	private:
 
 	public:
+		float radius;
 };
 
 #endif

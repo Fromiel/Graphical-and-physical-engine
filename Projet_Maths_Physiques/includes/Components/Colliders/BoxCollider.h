@@ -8,6 +8,7 @@ class BoxCollider : public Collider
 	private:
 
 	public:
+		Vecteur3D halfsize;
 };
 
 #endif

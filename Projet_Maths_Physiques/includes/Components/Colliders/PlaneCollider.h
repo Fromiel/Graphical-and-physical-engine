@@ -8,6 +8,8 @@ class PlaneCollider : public Collider
 	private:
 
 	public:
+		Vecteur3D normal;
+		float offset;
 };
 
 #endif
