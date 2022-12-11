@@ -6,6 +6,7 @@
 #include "Forces/GravityForceGenerator.h"
 #include "Forces/SpringForceGenerator.h"
 #include "Engine.h"
+#include "Components/Colliders.h"
 
 GameObject::GameObject(Vecteur3D position, Vecteur3D scale, Quaternion orientation) : coordinator_(Coordinator::getInstance()), entity_(coordinator_->createEntity())
 {
@@ -113,4 +114,18 @@ void GameObject::addRessortPtPtRigidbody(const Vecteur3D& bodyAnchor, const Vect
 	SpringForceGenerator* ptr_forceRessort2 = new SpringForceGenerator(otherAnchor, rb1, bodyAnchor, kElasticite, l0);
 	Engine::getInstance()->getPhysicalEngine()->addForceRigidbody(rb1, ptr_forceRessort1);
 	Engine::getInstance()->getPhysicalEngine()->addForceRigidbody(rb2, ptr_forceRessort2);
+}
+
+
+// ----------------------------------------------------------------- //
+// -------------------------- Colliders -----------------------------//
+// ----------------------------------------------------------------- //
+
+void GameObject::addSphereCollider(float radius, Vecteur3D position)
+{
+	Rigidbody* r = NULL;
+	if (coordinator_->hasComponent<Rigidbody>(entity_))
+		r = coordinator_->getComponentPtr<Rigidbody>(entity_);
+	std::shared_ptr<Collider> c(new SphereCollider(entity_, radius, position, Vecteur3D(), r));
+	coordinator_->addComponent(entity_, c);
 }

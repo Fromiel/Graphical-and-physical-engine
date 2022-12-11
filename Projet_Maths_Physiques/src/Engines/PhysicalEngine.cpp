@@ -6,7 +6,7 @@ PhysicalEngine::PhysicalEngine() : coordinator_(Coordinator::getInstance()), phy
 	coordinator_->registerComponent<Transform>();
 	coordinator_->registerComponent<Particule>();
 	coordinator_->registerComponent<Rigidbody>();
-	coordinator_->registerComponent<Collider>();
+	coordinator_->registerComponent<std::shared_ptr<Collider>>();
 
 	Signature physicParticleSignature;
 	physicParticleSignature.set(coordinator_->getComponentType<Transform>());
@@ -18,7 +18,7 @@ PhysicalEngine::PhysicalEngine() : coordinator_(Coordinator::getInstance()), phy
 
 	Signature collisionsSignature;
 	collisionsSignature.set(coordinator_->getComponentType<Transform>());
-	collisionsSignature.set(coordinator_->getComponentType<Collider>());
+	collisionsSignature.set(coordinator_->getComponentType<std::shared_ptr<Collider>>());
 
 	coordinator_->setSystemSignature<PhysicParticle>(physicParticleSignature);
 	coordinator_->setSystemSignature<PhysicRigidBody>(physicRigidBodySignature);

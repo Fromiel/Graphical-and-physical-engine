@@ -12,10 +12,10 @@
 class CollisionsSystem : public System
 {
 	private:
-		int generateContactsSphereSphere(const SphereCollider& Sphere1, const SphereCollider& Sphere2, CollisionData* data);
-		int generateContactsSpherePlane(const SphereCollider& Sphere, const PlaneCollider& Plan, CollisionData* data);
-		int generateContactsBoxPlane(const BoxCollider& Box, const PlaneCollider& Plan, CollisionData* data);
-		int generateContactsBoxSphere(const BoxCollider& Box, const SphereCollider& Sphere, CollisionData* data);
+		int generateContactsSphereSphere(const SphereCollider* Sphere1, const SphereCollider* Sphere2, CollisionData* data);
+		int generateContactsSpherePlane(const SphereCollider* Sphere, const PlaneCollider* Plan, CollisionData* data);
+		int generateContactsBoxPlane(const BoxCollider* Box, const PlaneCollider* Plan, CollisionData* data);
+		int generateContactsBoxSphere(const BoxCollider* Box, const SphereCollider* Sphere, CollisionData* data);
 		//int generateContactsBoxBox(const BoxCollider& Box1, const BoxCollider& Box2, CollisionData* data);
 
 	public:
@@ -31,7 +31,7 @@ class CollisionsSystem : public System
 		/// </summary>
 		/// <param name="firstCollider"></param>
 		/// <param name="secondCollider"></param>
-		int generateContacts(const Collider& firstCollider, const Collider& secondCollider, CollisionData *data);
+		int generateContacts(Collider* firstCollider, Collider* secondCollider, CollisionData *data);
 
 };
 

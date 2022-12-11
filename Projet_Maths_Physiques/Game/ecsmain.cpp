@@ -139,6 +139,21 @@ int main(void)
 
 	if(count_contacts > 0) std::cout << "Contact potentiel : " << potential_contacts->body[0]->getPos() << " with " << potential_contacts->body[1]->getPos() << std::endl;
 
+
+	//Test collider
+	GameObject sphereC1;
+	sphereC1.addSphereCollider(1);
+
+	//Test collider
+	GameObject sphereC2(Vecteur3D(0, 0.5, 0));
+	sphereC2.addSphereCollider(1);
+
+	CollisionsSystem s;
+	CollisionData cd[100];
+	int size = s.generateContacts(sphereC1.getComponent<std::shared_ptr<Collider>>().get(), sphereC2.getComponent<std::shared_ptr<Collider>>().get(), cd);
+
+
+
 	//Loop
 
 	engine->loop();

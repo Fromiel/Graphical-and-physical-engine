@@ -181,6 +181,19 @@ class GameObject
 		/// <param name="attache"></param>
 		/// <param name="l0"></param>
 		void addRessortPtPtRigidbody(const Vecteur3D& bodyAnchor, const Vecteur3D otherAnchor, float kElasticite, GameObject& g1, GameObject& g2, float l0);
+
+
+		// ------------------------------------------------------------------------------------//
+		// ------- Methodes pour ajouter des colliders au gameobject --------------------------//
+		// ------------------------------------------------------------------------------------//
+
+
+		/// <summary>
+		/// Methode pour ajouter un sphere collider au gameobject
+		/// </summary>
+		/// <param name="radius">rayon du collider</param>
+		/// <param name="position">Position par rapport au gameobject du centre du collider</param>
+		void addSphereCollider(float radius, Vecteur3D position = Vecteur3D());
 };
 
 

@@ -3,9 +3,9 @@
 
 
 
-Collider::Collider(Entity entity, Vecteur3D position, Vecteur3D scale, Vecteur3D orientation, Rigidbody* rigidbody) : rigidbody_(rigidbody)
+Collider::Collider(Entity entity, Vecteur3D position, Vecteur3D orientation, Rigidbody* rigidbody) : entity_(entity), rigidbody_(rigidbody), offset_(Matrix34())
 {
-
+	offset_.setOrientationAndPosition(Quaternion(orientation), position);
 }
 
 Vecteur3D Collider::getPosition() const {

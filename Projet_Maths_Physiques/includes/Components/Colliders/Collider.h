@@ -16,7 +16,7 @@ enum typeColliderEnum
 /// </summary>
 class Collider
 {
-	private:
+	protected:
 		Entity entity_;
 		Rigidbody *rigidbody_;
 		Matrix34 offset_;
@@ -26,7 +26,7 @@ class Collider
 
 		Collider() {}
 
-		Collider(Entity entity, Vecteur3D position = Vecteur3D(), Vecteur3D scale = Vecteur3D(1.0f, 1.0f, 1.0f), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
+		Collider(Entity entity, Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
 
 		void onCollision(const CollisionData& data) const;
 
