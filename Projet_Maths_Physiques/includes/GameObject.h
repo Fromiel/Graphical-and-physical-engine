@@ -86,6 +86,7 @@ class GameObject
 		bool hasComponent() { return coordinator_->hasComponent<T>(entity_); }
 
 
+
 		//Methodes pour ajouter des forces si le gameobject possede une particule
 
 		/// <summary>
@@ -201,14 +202,14 @@ class GameObject
 		/// <param name="offset"></param>
 		/// <param name="normal"></param>
 		/// <param name="position"></param>
-		void addPlaneCollider(float offset, Vecteur3D normal);
+		void addPlaneCollider(float offset = 0.0f, Vecteur3D normal = Vecteur3D(0, 1, 0));
 
 		/// <summary>
 		/// Methode pour ajouter un boxCollider au gameobject
 		/// </summary>
 		/// <param name="halfsize"></param>
 		/// <param name="position"></param>
-		void addBoxCollider(Vecteur3D halfsize, Vecteur3D position, Vecteur3D orientation);
+		void addBoxCollider(Vecteur3D halfsize = Vecteur3D(1, 1, 1), Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D());
 };
 
 

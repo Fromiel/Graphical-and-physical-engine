@@ -124,7 +124,7 @@ int main(void)
 	Rigidbody* cube2_rb = cube2.getComponentPtr<Rigidbody>();
 	Element<Rigidbody> e2;
 	e2.rb = cube2_rb;
-	BVHNode<BoundingSphere, Rigidbody> node2(&e2, nullptr, nullptr, bSphere2);
+	//BVHNode<BoundingSphere, Rigidbody> node2(&e2, nullptr, nullptr, bSphere2);
 
 	BoundingSphere bSphere(Vecteur3D(-9, 30, 0), 10);
 	Rigidbody* cube_rb = cube.getComponentPtr<Rigidbody>();
@@ -137,8 +137,8 @@ int main(void)
 	//node.children[0]->display();
 	//node.children[1]->display();
 
-	PotentialContact<Rigidbody> potential_contacts[10000];// = new PotentialContact();
-	int count_contacts = node.getPotentialContacts(potential_contacts, 10000);
+	PotentialContact<Rigidbody> potential_contacts[100];// = new PotentialContact();
+	int count_contacts = node.getPotentialContacts(potential_contacts, 100);
 	std::cout << "\nPotential contacts = " << count_contacts << std::endl;
 
 	//if(count_contacts > 0) std::cout << "Contact potentiel : " << potential_contacts->body[0]->getPos() << " with " << potential_contacts->body[1]->getPos() << std::endl;
@@ -148,13 +148,26 @@ int main(void)
 	GameObject sphereC1;
 	sphereC1.addSphereCollider(1);
 
-	//Test collider
-	GameObject sphereC2(Vecteur3D(0, 0.5, 0));
+	GameObject sphereC2(Vecteur3D(0, 1.2, 0));
 	sphereC2.addSphereCollider(1);
 
-	CollisionsSystem s;
+	GameObject plane;
+	plane.addPlaneCollider(0.2);
+
+	GameObject cubeC(Vecteur3D(0, 0.6, 0));
+	cubeC.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
+
+
+	/*CollisionsSystem s;
 	CollisionData cd[100];
-	int size = s.generateContacts(sphereC1.getComponent<std::shared_ptr<Collider>>().get(), sphereC2.getComponent<std::shared_ptr<Collider>>().get(), cd);
+	CollisionData* t = cd;
+	int size = s.generateContacts(sphereC1.getComponent<std::shared_ptr<Collider>>().get(), sphereC2.getComponent<std::shared_ptr<Collider>>().get(), t);
+	t++;
+	int size2 = s.generateContacts(sphereC2.getComponent<std::shared_ptr<Collider>>().get(), plane.getComponent<std::shared_ptr<Collider>>().get(), t);
+	t++;
+	int size3 = s.generateContacts(cubeC.getComponent<std::shared_ptr<Collider>>().get(), sphereC2.getComponent<std::shared_ptr<Collider>>().get(), t);
+	t++;
+	int size4 = s.generateContacts(cubeC.getComponent<std::shared_ptr<Collider>>().get(), plane.getComponent<std::shared_ptr<Collider>>().get(), t);*/
 
 
 
