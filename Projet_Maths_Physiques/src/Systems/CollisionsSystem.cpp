@@ -8,22 +8,23 @@ void CollisionsSystem::update(float dt)
 	Coordinator* coordinator = Coordinator::getInstance();
 
 	//Colliders
-	std::vector<Collider> colliders;
+	std::vector<std::shared_ptr<Collider>> colliders;
 	
 	// 1) Construire BVH
-	BVHNode<BoundingSphere> bvh;
+	BVHNode<BoundingSphere, Rigidbody> bvh;
 	for (auto gameObject : entities_)
 	{
-		auto collider = coordinator->getComponent<Collider>(gameObject);
+		auto collider = coordinator->getComponent<std::shared_ptr<Collider>>(gameObject);
 		colliders.push_back(collider);
 		// Inserer ce collider dans le bvh
 		Transform t = coordinator->getComponent<Transform>(gameObject);
 		BoundingSphere bs(t.getPosition(), t.maxScale());
-		bvh.insert(collider.getRigidbody(), bs);
+		Element<Rigidbody> e = { collider->getRigidbody() };
+		bvh.insert(&e, bs);
 	}
 
 	// 2) Detecter les collisions possibles
-	PotentialContact potentialContacts[100];
+	PotentialContact<Rigidbody> potentialContacts[100];
 
 	int nbPotentialContact = bvh.getPotentialContacts(potentialContacts, 100);
 

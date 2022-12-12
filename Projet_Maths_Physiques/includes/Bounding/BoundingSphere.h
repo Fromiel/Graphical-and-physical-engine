@@ -7,7 +7,7 @@
 class BoundingSphere : public Bounding {
 public:
 	//Constructeur par défaut
-	BoundingSphere()=default;
+	BoundingSphere() : Bounding(), radius(0) {}
 
 	//Constructeur par valeurs
 	BoundingSphere(const Vecteur3D& cent, float r) : Bounding(cent), radius(r) {};

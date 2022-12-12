@@ -194,6 +194,21 @@ class GameObject
 		/// <param name="radius">rayon du collider</param>
 		/// <param name="position">Position par rapport au gameobject du centre du collider</param>
 		void addSphereCollider(float radius, Vecteur3D position = Vecteur3D());
+
+		/// <summary>
+		/// Methode pour ajouter un planeCollider au gameobject
+		/// </summary>
+		/// <param name="offset"></param>
+		/// <param name="normal"></param>
+		/// <param name="position"></param>
+		void addPlaneCollider(float offset, Vecteur3D normal);
+
+		/// <summary>
+		/// Methode pour ajouter un boxCollider au gameobject
+		/// </summary>
+		/// <param name="halfsize"></param>
+		/// <param name="position"></param>
+		void addBoxCollider(Vecteur3D halfsize, Vecteur3D position, Vecteur3D orientation);
 };
 
 

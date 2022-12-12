@@ -120,24 +120,28 @@ int main(void)
 	cube2.addRessortPtPtRigidbody(center, kessoku, 0.5, cube, cube2, 25);
 
 	//Bounding //Test => à terme il faudra probablement mettre à jour ces volumes dans la boucle de jeu, au moins pour le BVH
-	BoundingSphere bSphere2(Vecteur3D(10, 30, 0), 10);
+	BoundingSphere bSphere2(Vecteur3D(9, 30, 0), 10);
 	Rigidbody* cube2_rb = cube2.getComponentPtr<Rigidbody>();
-	BVHNode<BoundingSphere> node2(cube2_rb, nullptr, nullptr, bSphere2);
+	Element<Rigidbody> e2;
+	e2.rb = cube2_rb;
+	BVHNode<BoundingSphere, Rigidbody> node2(&e2, nullptr, nullptr, bSphere2);
 
-	BoundingSphere bSphere(Vecteur3D(-10, 30, 0), 10);
+	BoundingSphere bSphere(Vecteur3D(-9, 30, 0), 10);
 	Rigidbody* cube_rb = cube.getComponentPtr<Rigidbody>();
-	BVHNode<BoundingSphere> node(cube_rb, nullptr, nullptr, bSphere);
+	Element<Rigidbody> e;
+	e.rb = cube_rb;
+	BVHNode<BoundingSphere, Rigidbody> node(&e, nullptr, nullptr, bSphere);
 
-	node.insert(cube2_rb, bSphere2);
-	node.display();
-	node.children[0]->display();
-	node.children[1]->display();
+	node.insert(&e2, bSphere2);
+	//node.display();
+	//node.children[0]->display();
+	//node.children[1]->display();
 
-	PotentialContact potential_contacts[10000];// = new PotentialContact();
+	PotentialContact<Rigidbody> potential_contacts[10000];// = new PotentialContact();
 	int count_contacts = node.getPotentialContacts(potential_contacts, 10000);
 	std::cout << "\nPotential contacts = " << count_contacts << std::endl;
 
-	if(count_contacts > 0) std::cout << "Contact potentiel : " << potential_contacts->body[0]->getPos() << " with " << potential_contacts->body[1]->getPos() << std::endl;
+	//if(count_contacts > 0) std::cout << "Contact potentiel : " << potential_contacts->body[0]->getPos() << " with " << potential_contacts->body[1]->getPos() << std::endl;
 
 
 	//Test collider

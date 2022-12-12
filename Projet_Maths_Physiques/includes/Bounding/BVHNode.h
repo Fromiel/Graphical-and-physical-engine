@@ -2,14 +2,21 @@
 #ifndef BVHNODE_H
 #define BVHNODE_H
 
-#include "Components/Rigidbody.h"
 #include "Bounding.h"
 
-struct PotentialContact {
-	Rigidbody* body[2];
+template<class RIGIDBODY>
+struct Element
+{
+	RIGIDBODY* rb;
 };
 
-template<class T> //T should extends Bounding
+template<class RIGIDBODY>
+struct PotentialContact {
+	Element<RIGIDBODY>* body[2];
+};
+
+
+template<class T, class RIGIDBODY> //T should extends Bounding
 class BVHNode {
 public:
 	///--------------- Constructeurs/Destructeurs ---------------///
@@ -17,8 +24,8 @@ public:
 	//Constructeur
 
 	BVHNode();
-	BVHNode(Rigidbody* rb, BVHNode* fg, BVHNode* fd, const T& vol);
-	BVHNode(BVHNode* parent, Rigidbody* rb, const T& vol);
+	BVHNode(Element<RIGIDBODY>* rb, BVHNode* fg, BVHNode* fd, const T& vol);
+	BVHNode(BVHNode* parent, Element<RIGIDBODY>* rb, const T& vol);
 
 	//Destructeur
 
@@ -27,7 +34,7 @@ public:
 	///--------------- Attributes ---------------///
 	//En tant que noeud de structure arborescente on peut les avoir en tant que membres public
 
-	Rigidbody* body;
+	Element<RIGIDBODY>* body;
 	BVHNode* children[2];
 	T volume;
 	BVHNode* parent;
@@ -38,23 +45,23 @@ public:
 	bool isLeaf() const { return body != nullptr; }
 
 	//Rempli le tableau de contact potentiel passé en paramètre en descendant l'arbre, puis renvoi leur nombre
-	int getPotentialContacts(PotentialContact* contacts, unsigned int limit) const;
+	int getPotentialContacts(PotentialContact<RIGIDBODY>* contacts, unsigned int limit) const;
 
 	//Indique si on a superposition de notre volume avec celui passé en paramètre
-	bool overlaps(BVHNode<T>* other) const {
+	bool overlaps(BVHNode<T, RIGIDBODY>* other) const {
 		return volume.overlaps(other->volume);
 	}
 
 	//Ajoute un volume dans notre hiérarchie
-	void insert(Rigidbody*, const T&);
+	void insert(Element<RIGIDBODY>*, const T&);
 
 	//Décris le noeud, utilse au debug
-	void display() const;
+	//void display() const;
 
 private:
 
 	//Fonction auxiliaire de getPotentialContacts
-	int getPotentialContactsWith(BVHNode<T>* other, PotentialContact* contacts, unsigned int limit) const;
+	int getPotentialContactsWith(BVHNode<T, RIGIDBODY>* other, PotentialContact<RIGIDBODY>* contacts, unsigned int limit) const;
 
 	//
 	void recalculateBoundingVolume();
@@ -66,8 +73,8 @@ private:
 //---------------------------------------            Implementation             -------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//
 
-template<class T>
-BVHNode<T>::BVHNode() {
+template<class T, class RIGIDBODY>
+BVHNode<T, RIGIDBODY>::BVHNode() {
 	body = nullptr;
 	parent = nullptr;
 	children[0] = nullptr;
@@ -75,8 +82,8 @@ BVHNode<T>::BVHNode() {
 	volume = T();
 }
 
-template<class T>
-BVHNode<T>::BVHNode(BVHNode* parent, Rigidbody* rb, const T& vol) {
+template<class T, class RIGIDBODY>
+BVHNode<T, RIGIDBODY>::BVHNode(BVHNode* parent, Element<RIGIDBODY>* rb, const T& vol) {
 	this->parent = parent;
 	this->body = rb;
 	this->volume = vol;
@@ -84,8 +91,8 @@ BVHNode<T>::BVHNode(BVHNode* parent, Rigidbody* rb, const T& vol) {
 	children[1] = nullptr;
 }
 
-template<class T>
-BVHNode<T>::BVHNode(Rigidbody* rb, BVHNode* fg, BVHNode* fd, const T& vol) {
+template<class T, class RIGIDBODY>
+BVHNode<T, RIGIDBODY>::BVHNode(Element<RIGIDBODY>* rb, BVHNode* fg, BVHNode* fd, const T& vol) {
 	body = rb;
 	children[0] = fg;
 	children[1] = fd;
@@ -93,11 +100,11 @@ BVHNode<T>::BVHNode(Rigidbody* rb, BVHNode* fg, BVHNode* fd, const T& vol) {
 	parent = nullptr;
 }
 
-template<class T>
-BVHNode<T>::~BVHNode() {
+template<class T, class RIGIDBODY>
+BVHNode<T, RIGIDBODY>::~BVHNode() {
 	if (parent) {
 		//On récupère le noeud voisin
-		BVHNode<T>* sibling;
+		BVHNode<T, RIGIDBODY>* sibling;
 
 		if (parent->children[0] == this) { 
 			sibling = parent->children[1];
@@ -133,8 +140,8 @@ BVHNode<T>::~BVHNode() {
 	}
 }
 
-template<class T>
-void BVHNode<T>::recalculateBoundingVolume() {
+template<class T, class RIGIDBODY>
+void BVHNode<T, RIGIDBODY>::recalculateBoundingVolume() {
 	if (children[0] && children[1]) {
 		volume = T(children[0]->volume, children[1]->volume);
 	}
@@ -150,8 +157,8 @@ void BVHNode<T>::recalculateBoundingVolume() {
 	
 }
 
-template<class T>
-int BVHNode<T>::getPotentialContacts(PotentialContact* contacts, unsigned int limit) const {
+template<class T, class RIGIDBODY>
+int BVHNode<T, RIGIDBODY>::getPotentialContacts(PotentialContact<RIGIDBODY>* contacts, unsigned int limit) const {
 	
 	if (body == nullptr && children[0] == nullptr && children[1] == nullptr)
 		return 0;
@@ -165,8 +172,8 @@ int BVHNode<T>::getPotentialContacts(PotentialContact* contacts, unsigned int li
 	return children[0]->getPotentialContactsWith(children[1], contacts, limit);
 }
 
-template<class T>
-int BVHNode<T>::getPotentialContactsWith(BVHNode<T>* other, PotentialContact* contacts, unsigned int limit) const {
+template<class T, class RIGIDBODY>
+int BVHNode<T, RIGIDBODY>::getPotentialContactsWith(BVHNode<T, RIGIDBODY>* other, PotentialContact<RIGIDBODY>* contacts, unsigned int limit) const {
 
 	//Si par de superposition : on sort
 	if ( !overlaps(other) || limit == 0) return 0;
@@ -201,15 +208,22 @@ int BVHNode<T>::getPotentialContactsWith(BVHNode<T>* other, PotentialContact* co
 	}
 };
 
-template<class T>
-void BVHNode<T>::insert(Rigidbody* newBody, const T& newVolume) {
+
+template<class T, class RIGIDBODY>
+void BVHNode<T, RIGIDBODY>::insert(Element<RIGIDBODY>* newBody, const T& newVolume) {
+	if ((body == nullptr && children[0] == nullptr && children[1] == nullptr))
+	{
+		body = newBody;
+		volume = newVolume;
+		return;
+	}
 	//Cas feuille : on insère à gauche
 	if (isLeaf()) {
 		//Notre fils gauche devient copie de nous-même
-		children[0] = new BVHNode<T>(this, body, volume);
+		children[0] = new BVHNode<T, RIGIDBODY>(this, body, volume);
 
 		//Notre fils droit récupère le nouveau body
-		children[1] = new BVHNode<T>(this, newBody, newVolume);
+		children[1] = new BVHNode<T, RIGIDBODY>(this, newBody, newVolume);
 
 		//On n'est plus une feuille donc on perd notre body
 		this->body = nullptr;
@@ -227,6 +241,7 @@ void BVHNode<T>::insert(Rigidbody* newBody, const T& newVolume) {
 	}
 }
 
+/*
 template<class T>
 void BVHNode<T>::display() const {
 	std::cout << "\nNode : " << std::endl;
@@ -237,6 +252,6 @@ void BVHNode<T>::display() const {
 	if (children[1]) std::cout << "Children[1] is at pos" << (children[1]->body ? children[1]->body->getPos() : Vecteur3D(-1,-1,-1)) << std::endl;
 	std::cout << "Parent is : " << (parent ? (parent->body ? parent->body->getPos() : Vecteur3D(-1,-1,-1)) : Vecteur3D(-2,-2,-2)) << std::endl;
 	std::cout << "Volume is : " << volume.display() << std::endl;
-}
+}*/
 
 #endif

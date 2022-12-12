@@ -129,3 +129,22 @@ void GameObject::addSphereCollider(float radius, Vecteur3D position)
 	std::shared_ptr<Collider> c(new SphereCollider(entity_, radius, position, Vecteur3D(), r));
 	coordinator_->addComponent(entity_, c);
 }
+
+
+void GameObject::addPlaneCollider(float offset, Vecteur3D normal)
+{
+	Rigidbody* r = NULL;
+	if (coordinator_->hasComponent<Rigidbody>(entity_))
+		r = coordinator_->getComponentPtr<Rigidbody>(entity_);
+	std::shared_ptr<Collider> c(new PlaneCollider(entity_, offset, normal, Vecteur3D(), Vecteur3D(), r));
+	coordinator_->addComponent(entity_, c);
+}
+
+void GameObject::addBoxCollider(Vecteur3D halfsize, Vecteur3D position, Vecteur3D orientation)
+{
+	Rigidbody* r = NULL;
+	if (coordinator_->hasComponent<Rigidbody>(entity_))
+		r = coordinator_->getComponentPtr<Rigidbody>(entity_);
+	std::shared_ptr<Collider> c(new BoxCollider(entity_, halfsize, position, orientation, r));
+	coordinator_->addComponent(entity_, c);
+}
