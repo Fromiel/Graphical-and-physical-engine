@@ -2,6 +2,7 @@
 #include "Bounding/BVHNode.h"
 #include "Bounding/BoundingSphere.h"
 #include "Components/Transform.h"
+#include "Systems/InputsManager.h"
 
 void CollisionsSystem::update(float dt)
 {
@@ -44,11 +45,22 @@ void CollisionsSystem::update(float dt)
 	{
 		//genere tous les contacts pour tous les contacts potentiels
 		int n = generateContacts(potentialContacts[i].body[0]->rb, potentialContacts[i].body[1]->rb, currentData);
+		n += generateContacts(potentialContacts[i].body[1]->rb, potentialContacts[i].body[0]->rb, currentData);
 		nbDatas += n;
 		currentData += n;
 	}
 
 	// 4) Resoudre les collisions
+
+	if (nbDatas > 0)
+	{
+		std::cout << "Nombre de contacts : " << nbDatas << std::endl;
+		for (int i = 0; i < nbDatas; i++)
+		{
+			std::cout << datas[i] << std::endl;
+		}
+		InputsManager::setEndGame(true);
+	}
 
 
 }

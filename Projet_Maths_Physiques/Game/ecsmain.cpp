@@ -81,8 +81,9 @@ int main(void)
 	GameObject cubeBall(Vecteur3D(0, 15, 0));
 	cubeBall.addComponent((Object3D)Cube());
 	cubeBall.addComponent(greenMaterial);
-	cubeBall.addComponent(Rigidbody(cubeBall.getEntity(), 1, 1 / 10.0f, 1, CubeMesh));
-
+	cubeBall.createRigidbody(1, 1 / 10.0f, 1, CubeMesh);
+	cubeBall.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
+	cubeBall.addGravityRigidbody(-1.0f);
 
 	/*GameObject sphereC1;
 	sphereC1.addSphereCollider(1);
