@@ -17,135 +17,74 @@ int main(void)
 	Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 	Shader lightShader("./src/Shaders/lightShader.vert", "./src/Shaders/lightShader.frag");
 
-	Material sMaterial(materialShader, Vecteur3D(0.8f, 0.5f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
+	Material sMaterial(materialShader, Vecteur3D(0.8f, 0.5f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f), 200);
+	Material greenMaterial(materialShader, Vecteur3D(0.4f, 0.9f, 0.1f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 
 	//---------TODO--------------------
 	//set les inputs
 	KeyInput keyInput(std::vector<int>({ GLFW_KEY_ESCAPE, GLFW_KEY_S, GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_LEFT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_Q, GLFW_KEY_H , GLFW_KEY_G , GLFW_KEY_F , GLFW_KEY_T, GLFW_KEY_SPACE }));
 	//-----------------------------------
 
-	//initialisation des entites
-	/*
-	//Sphere
-	GameObject sphere(Vecteur3D(-10, 40, 0));
-	sphere.addComponent((Object3D)Sphere());
-	sphere.addComponent(sMaterial);
-	sphere.createParticule(Vecteur3D(0, 0, 0), 1, 1);
-	*/
 	//Sol en y = 0
-	GameObject sol(Vecteur3D(0.0f, 0.0f, 0.0f), Vecteur3D(100.0f, 0.01f, 100.0f));
-	sol.addComponent((Object3D)Cube());
-	sol.addComponent(sMaterial);
-	/*
-	//Autre ressort
-	GameObject sphere2(Vecteur3D(10, 40, 0));
-	sphere2.addComponent((Object3D)Sphere());
-	sphere2.createParticule(Vecteur3D(0, 0, 0), 1, 1);
-	sphere2.addComponent(sMaterial);
-	
-	//Test Collisions
-	GameObject sphere3(Vecteur3D(-20, 50, 0));
-	sphere3.addComponent((Object3D)Sphere());
-	sphere3.createParticule(Vecteur3D(0, 0, 0), 1, 1);
-	sphere3.addComponent(sMaterial);
+	//GameObject sol(Vecteur3D(0.0f, 0.0f, 0.0f), Vecteur3D(100.0f, 0.01f, 100.0f));
+	//sol.addComponent((Object3D)Cube());
+	//sol.addComponent(sMaterial);
 
-	GameObject sphere4(Vecteur3D(-20, 55, 0));
-	sphere4.addComponent((Object3D)Sphere());
-	sphere4.createParticule(Vecteur3D(0, 0, 0), 1, 1);
-	sphere4.addComponent(sMaterial);
-	*/
 	//camera
-	GameObject camera(Vecteur3D(0, 35, 20), Vecteur3D(1, 1, 1), Vecteur3D(0, 0, 0));
+	GameObject camera(Vecteur3D(0, 15, 10), Vecteur3D(1, 1, 1), Vecteur3D(0, 0, 0));
 	camera.addComponent(Camera(camera.getEntity(), 0.1f, 10000.0f, 90.0f));
 	camera.addComponent((LogicBehaviour) MoveCamera(camera.getEntity()));
 
 	//light
-	GameObject light(Vecteur3D(0, 30, -10));
+	GameObject light(Vecteur3D(0, 36, 45));
 	light.addComponent((Object3D)Sphere());
 	light.addComponent(Light(Vecteur3D(0.8f, 0.8f, 0.8f)));
 	light.addComponent(Material(lightShader));
 
-	/*
-	GameObject::addRessortPtPt(1, sphere, sphere2, 10);
-	sphere3.addGravity(-1.0);
-
-	//Cylindre
-	GameObject cylindre(Vecteur3D(0, 10, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
-	cylindre.addComponent((Object3D)Cylinder());
-	cylindre.addComponent(sMaterial);
-
-	sphere4.addCable(10, 0.5, sphere3);
-	*/
-	//Rigidbodies
-
-	
-	GameObject cube(Vecteur3D(-10, 30, 0), Vecteur3D(5,5,5));
-	cube.addComponent((Object3D)Cube());
-	cube.addComponent(sMaterial);
-	cube.createRigidbody(1, 1 / 1000.0f, 1, CubeMesh);
-	
-	/*
-	GameObject sphere_rb(Vecteur3D(0, 0, 0));
-	sphere_rb.addComponent((Object3D)Sphere());
-	sphere_rb.createRigidbody(0, 1, 0, SphereMesh);
-	sphere_rb.addComponent(sMaterial);
-	*/
-	
-
-	//Forces à tester pour quand on aura réglé le pb du GetComponent
-
-	
-	//Gravity
-	GameObject cylindre(Vecteur3D(-10, 40, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
-	cylindre.addComponent((Object3D)Cylinder());
-	cylindre.addComponent(sMaterial);
-	cylindre.createRigidbody(1, 1 / 1000.0f,1,CylinderMesh);
-	cylindre.addGravityRigidbody(-1.0);
 
 
-	//Script instantiate camera
-	GameObject instantiateCylindre;
-	instantiateCylindre.addComponent((LogicBehaviour)InstantiateCylindre(instantiateCylindre.getEntity()));
-
-	
-	//Cube 2
-	GameObject cube2(Vecteur3D(10, 30, 0), Vecteur3D(5,5,5));
-	cube2.addComponent((Object3D)Cube());
-	cube2.addComponent(sMaterial);
-	cube2.createRigidbody(1, 1 / 1000.0f, 1, CubeMesh);
-
-	//Ressort
-	Vecteur3D center(0, 0, 0);
-	Vecteur3D kessoku(0, 2.5, 0);
-	cube2.addRessortPtPtRigidbody(center, kessoku, 0.5, cube, cube2, 25);
-
-	//Bounding //Test => à terme il faudra probablement mettre à jour ces volumes dans la boucle de jeu, au moins pour le BVH
-	BoundingSphere bSphere2(Vecteur3D(9, 30, 0), 10);
-	Rigidbody* cube2_rb = cube2.getComponentPtr<Rigidbody>();
-	Element<Rigidbody> e2;
-	e2.rb = cube2_rb;
-	//BVHNode<BoundingSphere, Rigidbody> node2(&e2, nullptr, nullptr, bSphere2);
-
-	BoundingSphere bSphere(Vecteur3D(-9, 30, 0), 10);
-	Rigidbody* cube_rb = cube.getComponentPtr<Rigidbody>();
-	Element<Rigidbody> e;
-	e.rb = cube_rb;
-	BVHNode<BoundingSphere, Rigidbody> node(&e, nullptr, nullptr, bSphere);
-
-	node.insert(&e2, bSphere2);
-	//node.display();
-	//node.children[0]->display();
-	//node.children[1]->display();
-
-	PotentialContact<Rigidbody> potential_contacts[100];// = new PotentialContact();
-	int count_contacts = node.getPotentialContacts(potential_contacts, 100);
-	std::cout << "\nPotential contacts = " << count_contacts << std::endl;
-
-	//if(count_contacts > 0) std::cout << "Contact potentiel : " << potential_contacts->body[0]->getPos() << " with " << potential_contacts->body[1]->getPos() << std::endl;
 
 
 	//Test collider
-	GameObject sphereC1;
+
+	//Creation d'une boite avec 6 plans
+	GameObject wall1(Vecteur3D(), Vecteur3D(30, 0.01, 30));
+	wall1.addComponent((Object3D)Cube());
+	wall1.addComponent(sMaterial);
+	wall1.addPlaneCollider(0, Vecteur3D(0, 1, 0));
+
+	GameObject wall2(Vecteur3D(0, 30, 0), Vecteur3D(30, 0.01, 30));
+	wall2.addComponent((Object3D)Cube());
+	wall2.addComponent(sMaterial);
+	wall2.addPlaneCollider(0, Vecteur3D(0, -1, 0));
+
+	GameObject wall3(Vecteur3D(-15, 15, 0), Vecteur3D(0.01, 30, 30));
+	wall3.addComponent((Object3D)Cube());
+	wall3.addComponent(sMaterial);
+	wall3.addPlaneCollider(0, Vecteur3D(1, 0, 0));
+
+	GameObject wall4(Vecteur3D(15, 15, 0), Vecteur3D(0.01, 30, 30));
+	wall4.addComponent((Object3D)Cube());
+	wall4.addComponent(sMaterial);
+	wall4.addPlaneCollider(0, Vecteur3D(-1, 0, 0));
+
+	GameObject wall5(Vecteur3D(0, 15, -15), Vecteur3D(30, 30, 0.01));
+	wall5.addComponent((Object3D)Cube());
+	wall5.addComponent(sMaterial);
+	wall5.addPlaneCollider(0, Vecteur3D(0, 0, 1));
+
+	GameObject wall6(Vecteur3D(0, 15, 15), Vecteur3D(30, 30, 0.01));
+	wall6.addComponent((Object3D)Cube());
+	wall6.addComponent(sMaterial);
+	wall6.addPlaneCollider(0, Vecteur3D(0, 0, -1));
+
+	GameObject cubeBall(Vecteur3D(0, 15, 0));
+	cubeBall.addComponent((Object3D)Cube());
+	cubeBall.addComponent(greenMaterial);
+	cubeBall.addComponent(Rigidbody(cubeBall.getEntity(), 1, 1 / 10.0f, 1, CubeMesh));
+
+
+	/*GameObject sphereC1;
 	sphereC1.addSphereCollider(1);
 
 	GameObject sphereC2(Vecteur3D(0, 1.2, 0));
@@ -155,7 +94,7 @@ int main(void)
 	plane.addPlaneCollider(0.2);
 
 	GameObject cubeC(Vecteur3D(0, 0.6, 0));
-	cubeC.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
+	cubeC.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));*/
 
 
 	/*CollisionsSystem s;
@@ -167,9 +106,12 @@ int main(void)
 	t++;
 	int size3 = s.generateContacts(cubeC.getComponent<std::shared_ptr<Collider>>().get(), sphereC2.getComponent<std::shared_ptr<Collider>>().get(), t);
 	t++;
-	int size4 = s.generateContacts(cubeC.getComponent<std::shared_ptr<Collider>>().get(), plane.getComponent<std::shared_ptr<Collider>>().get(), t);*/
+	int size4 = s.generateContacts(cubeC.getComponent<std::shared_ptr<Collider>>().get(), plane.getComponent<std::shared_ptr<Collider>>().get(), t);
 
-
+	for (int i = 0; i < 7; i++)
+	{
+		std::cout << cd[i] << std::endl;
+	}*/
 
 	//Loop
 

@@ -29,7 +29,7 @@ public:
 
 	//Destructeur
 
-	~BVHNode();
+	//~BVHNode();
 
 	///--------------- Attributes ---------------///
 	//En tant que noeud de structure arborescente on peut les avoir en tant que membres public
@@ -100,7 +100,7 @@ BVHNode<T, RIGIDBODY>::BVHNode(Element<RIGIDBODY>* rb, BVHNode* fg, BVHNode* fd,
 	parent = nullptr;
 }
 
-template<class T, class RIGIDBODY>
+/*template<class T, class RIGIDBODY>
 BVHNode<T, RIGIDBODY>::~BVHNode() {
 	if (parent) {
 		//On récupère le noeud voisin
@@ -138,7 +138,7 @@ BVHNode<T, RIGIDBODY>::~BVHNode() {
 		//children[1]->parent = nullptr;
 		delete children[1];
 	}
-}
+}*/
 
 template<class T, class RIGIDBODY>
 void BVHNode<T, RIGIDBODY>::recalculateBoundingVolume() {
