@@ -40,9 +40,13 @@ public:
 	/// <summary>
 	/// Constructeur valué
 	/// </summary>
-	/// <param name="entityParent"> Entité parente pour le modèle ECS </param>
-	/// <param name="angularDamping"> La valeur de m_angularDamping </param>
-	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet,Vecteur3D vitesse);
+	/// <param name="entityParent">Entité parente pour le modèle ECS</param>
+	/// <param name="angularDamping">La valeur de m_angularDamping</param>
+	/// <param name="invmasse"></param>
+	/// <param name="linearDamping"></param>
+	/// <param name="type_objet"></param>
+	/// <param name="vitesse"></param>
+	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet,Vecteur3D vitesse = Vecteur3D());
 
 	/// <summary>
 	/// Constructeur de copie

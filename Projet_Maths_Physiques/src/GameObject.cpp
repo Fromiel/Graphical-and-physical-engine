@@ -88,12 +88,12 @@ void GameObject::addRod(float l, GameObject& g)
 // -------------------------- Rigidbody -----------------------------//
 // ----------------------------------------------------------------- //
 
-void GameObject::createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet)
+void GameObject::createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D initialSpeed)
 {
 	if (hasRigidbody())
 		removeComponent<Rigidbody>();
 
-	addComponent(Rigidbody(entity_, angularDamping, invmasse, linearDamping, type_objet));
+	addComponent(Rigidbody(entity_, angularDamping, invmasse, linearDamping, type_objet, initialSpeed));
 }
 
 void GameObject::addGravityRigidbody(float g)
