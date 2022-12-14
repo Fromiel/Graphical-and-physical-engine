@@ -3,6 +3,7 @@
 
 #include "CoreECS/System.h"
 #include "KeyInput.h"
+#include "MouseInputs.h"
 #include <map>
 #include <iostream>
 
@@ -22,6 +23,7 @@ class InputsManager : public System
 		/// </summary>
 		void setupKeyInputs(GLFWwindow* window) { 
 			KeyInput::setupKeyInputs(window);
+			MouseInputs::setWindow(window);
 			window_ = window;
 		};
 

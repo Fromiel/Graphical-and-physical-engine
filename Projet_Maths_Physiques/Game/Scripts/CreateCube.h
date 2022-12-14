@@ -11,12 +11,12 @@ void StartC(Entity entity)
 	//iSecret = rand() % 10 + 1; entre 1 et 10
 }
 
-void UpdateC(float dt, Entity entity)
+void UpdateC(float dt, Entity entity, GameObject camera)
 {
 	Coordinator* coordinator = Coordinator::getInstance();
 	KeyInput* keyInput = KeyInput::_instances[0];
 
-	if (keyInput->getIsKeyPressed(GLFW_KEY_F))
+	if (keyInput->getIsKeyPressed(GLFW_KEY_F) || MouseInputs::IsLeftMouseDown())
 	{
 		Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 
@@ -36,7 +36,7 @@ void UpdateC(float dt, Entity entity)
 		cube.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
 
 	}
-	else if (keyInput->getIsKeyPressed(GLFW_KEY_W))
+	/*else if (MouseInputs::IsLeftMouseDown())
 	{
 		Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 
@@ -48,24 +48,31 @@ void UpdateC(float dt, Entity entity)
 
 		Vecteur3D randomSpeed(randX, randY, randZ);
 
-		GameObject cube(Vecteur3D(0, 15, 0));
-		cube.addComponent((Object3D)Cube());
-		cube.addComponent(sMaterial);
-		cube.createRigidbody(1, 1, 1, CubeMesh, randomSpeed);
-		cube.addGravityRigidbody(0);
-		cube.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
+		Transform cameraTransform = camera.getComponent<Transform>();
+		GameObject sphere(cameraTransform.getPosition(), Vecteur3D(0.3, 0.3, 0.3));
+		sphere.addComponent((Object3D)Sphere());
+		sphere.addComponent(sMaterial);
 
-	}
+		Matrix34 mat;
+		mat.setOrientationAndPosition(cameraTransform.getOrientation(), Vecteur3D());
+		Vecteur3D speed = mat * Vecteur3D(0, 0, -15);
+		sphere.createRigidbody(1, 1, 1, SphereMesh, speed);
+		sphere.addGravityRigidbody(-3);
+		sphere.addSphereCollider(0.3f);
+
+	}*/
 }
 
 class CreateCube : public LogicBehaviour
 {
 private:
+	GameObject camera_;
 
 public:
-	CreateCube(Entity entity) : LogicBehaviour(entity)
+	CreateCube(Entity entity, GameObject camera) : LogicBehaviour(entity)
 	{
-		update_ = [this](float dt) {UpdateC(dt, entity_); };
+		camera_ = camera;
+		update_ = [this](float dt) {UpdateC(dt, entity_, camera_); };
 		start_ = [this]() {StartC(entity_); };
 	}
 };

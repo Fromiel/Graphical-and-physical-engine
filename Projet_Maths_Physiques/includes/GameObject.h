@@ -62,7 +62,6 @@ class GameObject
 		/// Retourne une référence vers un component T du gameobject
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
-		/// <param name="entity"></param>
 		/// <returns></returns>
 		template<typename T>
 		T& getComponent() { return coordinator_->getComponent<T>(entity_); }

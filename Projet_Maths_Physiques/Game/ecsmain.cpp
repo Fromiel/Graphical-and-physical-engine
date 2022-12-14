@@ -77,7 +77,7 @@ int main(void)
 
 
 	GameObject createCubeHolder;
-	createCubeHolder.addComponent((LogicBehaviour)CreateCube(createCubeHolder.getEntity()));
+	createCubeHolder.addComponent((LogicBehaviour)CreateCube(createCubeHolder.getEntity(), camera));
 
 
 	//Loop
