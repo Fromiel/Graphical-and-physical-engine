@@ -5,7 +5,7 @@
 #include "Scripts/MoveCamera.h"
 #include "Engine.h"
 #include "GameObject.h"
-#include "Scripts/InstantiateCylindre.h"
+#include "Scripts/CreateCube.h"
 #include "Bounding/BVHNode.h"
 #include "Bounding/BoundingSphere.h"
 
@@ -74,12 +74,9 @@ int main(void)
 	wall6.addComponent(sMaterial);
 	wall6.addPlaneCollider(0, Vecteur3D(0, 0, -1));
 
-	GameObject cubeBall(Vecteur3D(0, 15, 0));
-	cubeBall.addComponent((Object3D)Cube());
-	cubeBall.addComponent(greenMaterial);
-	cubeBall.createRigidbody(1, 1 / 10.0f, 1, CubeMesh, Vecteur3D(0, 0, 2));
-	cubeBall.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
-	cubeBall.addGravityRigidbody(0);
+
+	GameObject createCubeHolder;
+	createCubeHolder.addComponent((LogicBehaviour)CreateCube(createCubeHolder.getEntity()));
 
 
 	//Loop
