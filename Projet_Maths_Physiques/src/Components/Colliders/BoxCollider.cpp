@@ -5,3 +5,8 @@ BoxCollider::BoxCollider(Entity entity, Vecteur3D halfS, Vecteur3D position, Vec
 {
 	type_ = BoxC;
 }
+
+float BoxCollider::getMaxSize() const
+{
+	return halfsize.maxValue();
+}

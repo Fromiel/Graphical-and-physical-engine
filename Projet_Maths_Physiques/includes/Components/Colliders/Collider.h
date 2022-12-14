@@ -23,9 +23,18 @@ class Collider
 		typeColliderEnum type_;
 
 	public:
-
+		/// <summary>
+		/// Constructeur non valué
+		/// </summary>
 		Collider() {}
 
+		/// <summary>
+		/// Constructeur de collider
+		/// </summary>
+		/// <param name="entity"></param>
+		/// <param name="position"></param>
+		/// <param name="orientation"></param>
+		/// <param name="rigidbody"></param>
 		Collider(Entity entity, Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
 
 		void onCollision(const CollisionData& data) const;
@@ -35,6 +44,10 @@ class Collider
 		Entity getEntity() const { return entity_; }
 
 		Matrix34 getOffset() const { return offset_; }
+
+		Matrix34 getWorldPositionOrientation() const;
+
+		virtual float getMaxSize() const = 0;
 
 		Vecteur3D getPosition() const;
 

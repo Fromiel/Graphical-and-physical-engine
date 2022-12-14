@@ -11,6 +11,8 @@ class SphereCollider : public Collider
 		float radius;
 
 		SphereCollider(Entity entity, float r = 1.0f, Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
+
+		float getMaxSize() const override { return radius; }
 };
 
 #endif

@@ -8,13 +8,21 @@ void Transform::computeModelMatrix()
 	modelChanged_ = false;
 }
 
+void Transform::computeWorldMatrix()
+{
+	Matrix34 translationOrientation;
+	translationOrientation.setOrientationAndPosition(orientation_, position_);
+	toWorldMatrix_ = translationOrientation;
+	worldChanged_ = false;
+}
 
-Transform::Transform(Vecteur3D position, Vecteur3D scaling, Quaternion orientation) : scale_(scaling), position_(position), orientation_(orientation), modelChanged_(true)
+
+Transform::Transform(Vecteur3D position, Vecteur3D scaling, Quaternion orientation) : scale_(scaling), position_(position), orientation_(orientation), modelChanged_(true), worldChanged_(true)
 {
 	
 }
 
-Transform::Transform(Vecteur3D position, Vecteur3D scaling, Vecteur3D orientation) : position_(position), scale_(scaling), orientation_(orientation), modelChanged_(true)
+Transform::Transform(Vecteur3D position, Vecteur3D scaling, Vecteur3D orientation) : position_(position), scale_(scaling), orientation_(orientation), modelChanged_(true), worldChanged_(true)
 {
 	
 }
@@ -23,6 +31,7 @@ void Transform::setPosition(const Vecteur3D& position)
 {
 	position_ = position;
 	modelChanged_ = true;
+	worldChanged_ = true;
 }
 
 void Transform::setScaling(const Vecteur3D& scale)
@@ -35,6 +44,7 @@ void Transform::setOrientation(const Quaternion& orientation)
 {
 	orientation_ = orientation;
 	modelChanged_ = true;
+	worldChanged_ = true;
 }
 
 void Transform::move(const Vecteur3D& vect)
@@ -47,6 +57,7 @@ void Transform::move(const Vecteur3D& vect)
 	position_ = position_ + v;
 
 	modelChanged_ = true;
+	worldChanged_ = true;
 }
 
 void Transform::rotate(float angle, const Vecteur3D& pivot)
@@ -55,6 +66,7 @@ void Transform::rotate(float angle, const Vecteur3D& pivot)
 	orientation_ = orientation_ * r;
 
 	modelChanged_ = true;
+	worldChanged_ = true;
 }
 
 Matrix34 Transform::getModelMatrix()
@@ -66,12 +78,10 @@ Matrix34 Transform::getModelMatrix()
 }
 
 
-float Transform::maxScale()
+Matrix34 Transform::getWorldMatrix()
 {
-	float m = scale_.get_x();
-	if (m < scale_.get_y())
-		m = scale_.get_y();
-	if (m < scale_.get_z())
-		m = scale_.get_z();
-	return m;
+	if (worldChanged_)
+		computeWorldMatrix();
+
+	return toWorldMatrix_;
 }

@@ -16,14 +16,21 @@ class Transform
 		Quaternion orientation_;
 
 		Matrix34 modelMatrix_;
+		Matrix34 toWorldMatrix_;
 
-		//booleen permettant de recalculer les matrices seulement quand cela est necessaire (optimisation)
+		//booleens permettant de recalculer les matrices seulement quand cela est necessaire (optimisation)
 		bool modelChanged_;
+		bool worldChanged_;
 
 		/// <summary>
 		/// Method pour recalculer la modelMatrix à partir de la position, de l'orientation et du scale du transform
 		/// </summary>
 		void computeModelMatrix();
+
+		/// <summary>
+		/// Method pour recalculer la modelMatrix à partir de la position, de l'orientation et du scale du transform
+		/// </summary>
+		void computeWorldMatrix();
 
 	public:
 
@@ -68,10 +75,10 @@ class Transform
 		Matrix34 getModelMatrix();
 
 		/// <summary>
-		/// Valeur maximum du scale
+		/// 
 		/// </summary>
-		/// <returns></returns>
-		float maxScale();
+		/// <returns>La matrice de changement de coordonnées vers les coordonnées du monde</returns>
+		Matrix34 getWorldMatrix();
 
 
 		/// <summary>

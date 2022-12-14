@@ -82,9 +82,21 @@ Vecteur3D operator*(const float d, const Vecteur3D& v) {
 
 Vecteur3D operator*(const Vecteur3D& v, const float d) { return d * v; }
 
-float distance(const Vecteur3D& vect1, const Vecteur3D& vect2) {
+float distance(const Vecteur3D& vect1, const Vecteur3D& vect2) 
+{
     float dist_x = static_cast<float>(pow(vect1.get_x() - vect2.get_x(), 2));
     float dist_y = static_cast<float>(pow(vect1.get_y() - vect2.get_y(), 2));
     float dist_z = static_cast<float>(pow(vect1.get_z() - vect2.get_z(), 2));
     return sqrt(dist_x + dist_y + dist_z);
+}
+
+
+float Vecteur3D::maxValue() const
+{
+    float m = _x;
+    if (m < _y)
+        m = _y;
+    if (m < _z)
+        m = _z;
+    return m;
 }

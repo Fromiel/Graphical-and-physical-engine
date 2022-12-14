@@ -42,7 +42,7 @@ void CollisionsSystem::update(float dt)
 			transforms[i].getPosition().get_x(),
 			transforms[i].getPosition().get_y(),
 			transforms[i].getPosition().get_z(),
-			transforms[i].maxScale()
+			colliders[i]->getMaxSize()
 		});
 	}
 
@@ -54,17 +54,17 @@ void CollisionsSystem::update(float dt)
 
 		// Inserer les colliders dans le bvh
 		BVHNode<BoundingSphere, Collider> bvh;
-		bvh.insert(&element.first.element, BoundingSphere(element.first.transform.getPosition(), element.first.transform.maxScale()));
-		bvh.insert(&element.second.element, BoundingSphere(element.second.transform.getPosition(), element.second.transform.maxScale()));
+		bvh.insert(&element.first.element, BoundingSphere(element.first.transform.getPosition(), element.first.collider->getMaxSize()));
+		bvh.insert(&element.second.element, BoundingSphere(element.second.transform.getPosition(), element.second.collider->getMaxSize()));
 
 		// Determiner la possibilite de collision
-		PotentialContact<Collider> potentialContact[10];
-		int nbpc = bvh.getPotentialContacts(potentialContact, 10);
+		PotentialContact<Collider> potentialContact[100];
+		int nbpc = bvh.getPotentialContacts(potentialContact, 100);
 
 		// Affiner le calcul pour valider la collision
 		if (!nbpc) continue;
 
-		CollisionData datas[10000];
+		CollisionData datas[100];
 		CollisionData* currentData = datas;
 		int nbDatas = 0;
 		int n = generateContacts(potentialContact[0].body[0]->rb, potentialContact[0].body[1]->rb, currentData);
@@ -103,8 +103,8 @@ int CollisionsSystem::generateContactsSpherePlane(const SphereCollider* Sphere, 
 	// Cache the sphere position. 
 	Vecteur3D position = Sphere->getPosition();
 	// Find the distance from the plane. 
-	float ballDistance = scalar_product(Plan->normal, position) - Sphere->radius - Plan->offset;
-	if (ballDistance >= 0) {
+	float ballDistance = scalar_product(Plan->normal * Plan->getPosition(), position) - Sphere->radius;
+	if (ballDistance >= 0 || ballDistance < -Sphere->radius) {
 		return 0;
 	}
 	// Create the contact; it has a normal in the plane direction. 
@@ -142,12 +142,15 @@ int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const Pla
 	for(auto vertexPos : vertices) {
 
 		// Calculate the distance from the plane. 
-		float vertexDistance = scalar_product(vertexPos,Plan->normal) - Plan->offset;
+		float vertexDistance = scalar_product(vertexPos,Plan->normal);
 		// Compare this to the plane�s distance. 
 		if (vertexDistance < 0) {
 			// Create the contact data. 
 			// The contact point is halfway between the vertex and the plane. We multiply the direction by half the separation distance and add the vertex location. 
 			data->ptContact = vertexPos - Plan->normal * vertexDistance;
+			Matrix34 mat;
+			mat.setOrientationAndPosition(Quaternion(), Plan->getPosition());
+			data->ptContact = mat * data->ptContact;
 			data->normalContact = Plan->normal;
 			data->penetration = -vertexDistance;
 			nbContact++;

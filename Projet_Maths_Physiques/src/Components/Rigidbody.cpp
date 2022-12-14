@@ -36,7 +36,7 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 	}
 	//std::vector<double> newcontent = { content[0],content[1],content[2],0,content[3],content[4],content[5],0,content[6],content[7],content[8],0 };
 	//Matrix34 newinertie(newcontent);
-	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
+	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getWorldMatrix();
 	
 	inertie_transfo = transfo * inertie.invert() * transfo.inverse();
 	
@@ -67,7 +67,7 @@ Quaternion Rigidbody::getOrientation() const
 
 Matrix34 Rigidbody::getModelMatrix() const
 {
-	return Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
+	return Coordinator::getInstance()->getComponent<Transform>(entity).getWorldMatrix();
 }
 
 
@@ -113,7 +113,7 @@ void Rigidbody::CalculateDerivatedData() {
 	Coordinator::getInstance()->getComponent<Transform>(entity).setOrientation(recup);
 
 	// TODO : Calculer la nouvelle valeur de I^(-1)
-	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix();
+	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getWorldMatrix();
 
 	//std::cout << "Matric de transfo = " << transfo << std::endl;
 	//std::cout << "inertie_transfo init = " << inertie_transfo << std::endl;
@@ -173,6 +173,6 @@ void Rigidbody::Integrate(float duration) {
 
 Vecteur3D Rigidbody::convertToWorld(const Vecteur3D& localPoint)
 {
-	return Coordinator::getInstance()->getComponent<Transform>(entity).getModelMatrix() * localPoint;
+	return Coordinator::getInstance()->getComponent<Transform>(entity).getWorldMatrix() * localPoint;
 }
 

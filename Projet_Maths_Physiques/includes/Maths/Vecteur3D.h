@@ -50,6 +50,12 @@ class Vecteur3D{
         float get_z() const {return _z;}
 
         /// <summary>
+        /// Valeur maximum du vecteur3d
+        /// </summary>
+        /// <returns></returns>
+        float maxValue() const;
+
+        /// <summary>
         /// Calcule la norme du vecteur
         /// </summary>
         /// <returns> Retourne la norme du vecteur </returns>
