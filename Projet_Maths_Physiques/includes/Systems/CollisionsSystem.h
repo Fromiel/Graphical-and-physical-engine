@@ -7,21 +7,21 @@
 
 
 /// <summary>
-/// Système gérant les collisions (todo)
+/// Systï¿½me gï¿½rant les collisions (todo)
 /// </summary>
 class CollisionsSystem : public System
 {
 	private:
-		int generateContactsSphereSphere(const SphereCollider* Sphere1, const SphereCollider* Sphere2, CollisionData* data);
-		int generateContactsSpherePlane(const SphereCollider* Sphere, const PlaneCollider* Plan, CollisionData* data);
-		int generateContactsBoxPlane(const BoxCollider* Box, const PlaneCollider* Plan, CollisionData* data);
-		int generateContactsBoxSphere(const BoxCollider* Box, const SphereCollider* Sphere, CollisionData* data);
-		//int generateContactsBoxBox(const BoxCollider& Box1, const BoxCollider& Box2, CollisionData* data);
+		int generateContactsSphereSphere(const SphereCollider* Sphere1, const SphereCollider* Sphere2, std::vector<CollisionData>* data);
+		int generateContactsSpherePlane(const SphereCollider* Sphere, const PlaneCollider* Plan, std::vector<CollisionData>* data);
+		int generateContactsBoxPlane(const BoxCollider* Box, const PlaneCollider* Plan, std::vector<CollisionData>* data);
+		int generateContactsBoxSphere(const BoxCollider* Box, const SphereCollider* Sphere, std::vector<CollisionData>* data);
+		//int generateContactsBoxBox(const BoxCollider& Box1, const BoxCollider& Box2, std::vector<CollisionData>* data);
 
 	public:
 
 		/// <summary>
-		/// Methode gérant les collisions dans la boucle de jeu
+		/// Methode gï¿½rant les collisions dans la boucle de jeu
 		/// </summary>
 		/// <param name="dt"></param>
 		void update(float dt);
@@ -31,7 +31,7 @@ class CollisionsSystem : public System
 		/// </summary>
 		/// <param name="firstCollider"></param>
 		/// <param name="secondCollider"></param>
-		int generateContacts(Collider* firstCollider, Collider* secondCollider, CollisionData *data);
+		int generateContacts(Collider* firstCollider, Collider* secondCollider, std::vector<CollisionData> *data);
 
 };
 
