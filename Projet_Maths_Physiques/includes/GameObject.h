@@ -160,7 +160,7 @@ class GameObject
 		/// <param name="vel_initiale"></param>
 		/// <param name="r"></param>
 		/// <param name="m"></param>
-		void createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D initialSpeed = Vecteur3D());
+		void createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D initialSpeed = Vecteur3D(), Vecteur3D angularSpeed = Vecteur3D());
 
 		/// <summary>
 		/// Methode pour savoir si le gameobject est un rb

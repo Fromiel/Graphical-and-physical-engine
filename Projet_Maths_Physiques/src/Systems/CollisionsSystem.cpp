@@ -88,16 +88,29 @@ int CollisionsSystem::generateContactsSphereSphere(const SphereCollider* Sphere1
 int CollisionsSystem::generateContactsSpherePlane(const SphereCollider* Sphere, const PlaneCollider* Plan, std::vector<CollisionData>* data) {
 	// Cache the sphere position. 
 	Vecteur3D position = Sphere->getPosition();
-	// Find the distance from the plane. 
-	float ballDistance = scalar_product(Vecteur3D(0, 1, 0) * Plan->getPosition(), position) - Sphere->radius;
-	if (ballDistance >= 0 || ballDistance < -Sphere->radius) {
+
+	//Position de la sphere dans les coordonnées du plan
+	Matrix34 planToWorldPosition = Plan->getWorldPositionOrientation();
+	Matrix34 sphereToPlan = planToWorldPosition.inverse();
+
+	Vecteur3D positionInPlaneCoord = sphereToPlan * position;
+
+	// Trouve la distance au plan
+	float ballDistance = scalar_product(Vecteur3D(0, 1, 0), positionInPlaneCoord) - Sphere->radius;
+
+	if (ballDistance >= 0 
+		|| (positionInPlaneCoord.get_x() > Plan->halfSizeX && distance(positionInPlaneCoord, Vecteur3D(Plan->halfSizeX, 0, positionInPlaneCoord.get_z())) > 0)
+		|| (positionInPlaneCoord.get_z() > Plan->halfSizeZ && distance(positionInPlaneCoord, Vecteur3D(positionInPlaneCoord.get_x(), 0, Plan->halfSizeZ)) > 0)
+		)
+	{
 		return 0;
 	}
-	// Create the contact; it has a normal in the plane direction. 
+
+	// Creer le contact 
 	CollisionData newData;
-	newData.normalContact = Vecteur3D(0, 1, 0);
+	newData.normalContact = planToWorldPosition.transformDirection(Vecteur3D(0, 1, 0));
 	newData.penetration = -ballDistance; 
-	newData.ptContact = position - Vecteur3D(0, 1, 0) * (ballDistance + Sphere->radius);
+	newData.ptContact = planToWorldPosition * (positionInPlaneCoord - newData.normalContact * (ballDistance - Sphere->radius));
 	data->push_back(newData);
 
 	return 1;
@@ -105,6 +118,7 @@ int CollisionsSystem::generateContactsSpherePlane(const SphereCollider* Sphere, 
 
 int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const PlaneCollider* Plan, std::vector<CollisionData>* data) {
 	Vecteur3D halfSize = Box->halfsize;
+	//On cree les points de la boite
 	Vecteur3D vertices[8] = { 
 		Vecteur3D(-halfSize.get_x(), - halfSize.get_y(), - halfSize.get_z()), 
 		Vecteur3D(-halfSize.get_x(), - halfSize.get_y(), + halfSize.get_z()),
@@ -115,6 +129,8 @@ int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const Pla
 		Vecteur3D(+halfSize.get_x(), + halfSize.get_y(), - halfSize.get_z()),
 		Vecteur3D(+halfSize.get_x(), + halfSize.get_y(), + halfSize.get_z())
 	};
+
+	//On va passer les points dans les coordonnees du plan
 	Matrix34 boxToWorld = Box->getWorldPositionOrientation();
 	Matrix34 planToWorldPosition = Plan->getWorldPositionOrientation();
 	Matrix34 boxToPlan = planToWorldPosition.inverse() * boxToWorld;
@@ -124,15 +140,14 @@ int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const Pla
 	}
 	
 	int nbContact = 0;
-	Vecteur3D normal = planToWorldPosition.transformDirection(Vecteur3D(0, 1, 0));
+	Vecteur3D normal = planToWorldPosition.transformDirection(Vecteur3D(0, 1, 0)); //Normale du plan dans les coordonnees du monde (par defaut un plan a sa normale = (0, 1, 0))
 
 	for(auto vertexPos : vertices) {
-		// Calculate the distance from the plane. 
+		// Calcule la distance au plan
 		float vertexDistance = scalar_product(vertexPos,Vecteur3D(0, 1, 0));
-		// Compare this to the planes distance. 
-		if ((vertexPos.get_x() < Plan->halfSizeX && vertexPos.get_x() > -Plan->halfSizeX) && (vertexPos.get_z() < Plan->halfSizeY && vertexPos.get_z() > -Plan->halfSizeY) && vertexDistance < 0) {
+		// On regarde si le point coupe la plan
+		if ((vertexPos.get_x() < Plan->halfSizeX && vertexPos.get_x() > -Plan->halfSizeX) && (vertexPos.get_z() < Plan->halfSizeZ && vertexPos.get_z() > -Plan->halfSizeZ) && vertexDistance < 0) {
 			// Create the contact data. 
-			// The contact point is halfway between the vertex and the plane. We multiply the direction by half the separation distance and add the vertex location. 
 			CollisionData newData;
 			newData.ptContact = planToWorldPosition * (vertexPos - normal * vertexDistance);
 			newData.normalContact = normal;
@@ -146,18 +161,17 @@ int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const Pla
 }
 
 int CollisionsSystem::generateContactsBoxSphere(const BoxCollider* Box, const SphereCollider* Sphere, std::vector<CollisionData>* data) {
-	// Transform the center of the sphere into box coordinates. 
+	// Transforme le centre de la sphere dans les coordonnées de la boite 
 	Vecteur3D center = Sphere->getPosition();
-	Matrix34 mat = std::vector<double>{ 1,0,0,0,0,1,0,0,0,0,1,0};
-	mat.setOrientationAndPosition(Quaternion(), Box->getPosition());
-	mat = mat.inverse();
-	Vecteur3D relCenter = mat * center;
+	Matrix34 boxToWorld = Box->getWorldPositionOrientation();
+	Vecteur3D relCenter = boxToWorld.inverse() * center;
 
 	
-	// Early out check to see if we can exclude the contact. 
+	// On regarde si on peut exclure le contact
 	if (abs(relCenter.get_x()) - Sphere->radius > Box->halfsize.get_x() || abs(relCenter.get_y()) - Sphere->radius > Box->halfsize.get_y() || abs(relCenter.get_z()) - Sphere->radius > Box->halfsize.get_z()) {
 		return 0;
 	}  
+
 	Vecteur3D closestPt(0,0,0); 
 	float dist; 
 	// Clamp each coordinate to the box. 
@@ -168,7 +182,7 @@ int CollisionsSystem::generateContactsBoxSphere(const BoxCollider* Box, const Sp
 
 	dist = relCenter.get_y();
 	if (dist > Box->halfsize.get_y()) dist = Box->halfsize.get_y();
-	if (dist < Box->halfsize.get_y()) dist = -Box->halfsize.get_y();
+	if (dist < -Box->halfsize.get_y()) dist = -Box->halfsize.get_y();
 	closestPt = Vecteur3D(closestPt.get_x(), dist, closestPt.get_z());
 
 	dist = relCenter.get_z();
@@ -176,15 +190,13 @@ int CollisionsSystem::generateContactsBoxSphere(const BoxCollider* Box, const Sp
 	if (dist < -Box->halfsize.get_z()) dist = -Box->halfsize.get_z();
 	closestPt = Vecteur3D(closestPt.get_x(), closestPt.get_y(), dist);
 
-	// Check to see if we�re in contact. 
+	// Check to see if were in contact. 
 	dist = (closestPt - relCenter).norm_squared(); 
 	if (dist > Sphere->radius * Sphere->radius) {
 		return 0;
 	}
 	// Compile the contact. 
-	mat = Matrix34(std::vector<double>{ 1,0,0,0,0,1,0,0,0,0,1,0 });
-	mat.setOrientationAndPosition(Quaternion(), Box->getPosition());
-	Vecteur3D closestPtWorld = mat * closestPt;
+	Vecteur3D closestPtWorld = boxToWorld * closestPt;
 
 	CollisionData newData;
 	newData.normalContact = (closestPtWorld - center);

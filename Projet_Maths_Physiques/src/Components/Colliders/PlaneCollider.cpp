@@ -1,6 +1,6 @@
 #include "Components/Colliders/PlaneCollider.h"
 
-PlaneCollider::PlaneCollider(Entity entity, float halfSX, float halfSY, Vecteur3D position, Vecteur3D orientation, Rigidbody* rigidbody) : Collider(entity, position, orientation, rigidbody), halfSizeX(halfSX), halfSizeY(halfSY)
+PlaneCollider::PlaneCollider(Entity entity, float halfSX, float halfSZ, Vecteur3D position, Vecteur3D orientation, Rigidbody* rigidbody) : Collider(entity, position, orientation, rigidbody), halfSizeX(halfSX), halfSizeZ(halfSZ)
 {
 	type_ = PlanC;
 }
@@ -8,6 +8,6 @@ PlaneCollider::PlaneCollider(Entity entity, float halfSX, float halfSY, Vecteur3
 
 float PlaneCollider::getMaxSize() const 
 {
-	if (halfSizeX > halfSizeY) return halfSizeX;
-	return halfSizeY;
+	if (halfSizeX > halfSizeZ) return halfSizeX;
+	return halfSizeZ;
 }

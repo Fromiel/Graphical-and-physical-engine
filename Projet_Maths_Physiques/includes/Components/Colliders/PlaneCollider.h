@@ -10,9 +10,9 @@ class PlaneCollider : public Collider
 
 	public:
 		float halfSizeX;
-		float halfSizeY;
+		float halfSizeZ;
 
-		PlaneCollider(Entity entity, float halfSX = 1.0f, float halfSY = 1.0f, Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
+		PlaneCollider(Entity entity, float halfSX = 1.0f, float halfSZ = 1.0f, Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
 
 		float getMaxSize() const override;
 };
