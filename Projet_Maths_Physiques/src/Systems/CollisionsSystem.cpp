@@ -58,10 +58,10 @@ void CollisionsSystem::update(float dt)
 		bvh.insert(&element.second.element, BoundingSphere(element.second.transform.getPosition(), element.second.transform.maxScale()));
 
 		// Determiner la possibilite de collision
-		PotentialContact<Collider> potentialContact[1];
-		int nbpc = bvh.getPotentialContacts(potentialContact, 1);
+		PotentialContact<Collider> potentialContact[10];
+		int nbpc = bvh.getPotentialContacts(potentialContact, 10);
 
-		// Afiner le calcul pour valider la collision
+		// Affiner le calcul pour valider la collision
 		if (!nbpc) continue;
 
 		CollisionData datas[10000];
@@ -79,48 +79,7 @@ void CollisionsSystem::update(float dt)
 		Time::setTimeScale(0.0f);
 	}
 
-	/*
-	// 1) Construire BVH
-	BVHNode<BoundingSphere, Collider> bvh;
-	for (int i = 0; i < colliders.size(); i++)
-	{
-		//On insere les colliders dans le bvh
-		Transform t = transforms[i];
-		BoundingSphere bs(t.getPosition(), t.maxScale());
-		bvh.insert(&elements[i], bs);
-	}
-
-	// 2) Detecter les collisions possibles
-	PotentialContact<Collider> potentialContacts[100];
-
-	int nbPotentialContact = bvh.getPotentialContacts(potentialContacts, 100);
-
-	// 3) Calculer vrai collisions
-	CollisionData datas[10000];
-	CollisionData* currentData = datas;
-	int nbDatas = 0;
-	for (int i = 0; i < nbPotentialContact; i++)
-	{
-		//genere tous les contacts pour tous les contacts potentiels
-		int n = generateContacts(potentialContacts[i].body[0]->rb, potentialContacts[i].body[1]->rb, currentData);
-		n += generateContacts(potentialContacts[i].body[1]->rb, potentialContacts[i].body[0]->rb, currentData);
-		nbDatas += n;
-		currentData += n;
-	}
-
-	// 4) Resoudre les collisions
-
-	if (nbDatas > 0)
-	{
-		std::cout << "Nombre de contacts : " << nbDatas << std::endl;
-		for (int i = 0; i < nbDatas; i++)
-		{
-			std::cout << datas[i] << std::endl;
-		}
-		//InputsManager::setEndGame(true);
-		Time::setTimeScale(0.0f);
-	}
-	*/
+	delete octree;
 }
 
 int CollisionsSystem::generateContactsSphereSphere(const SphereCollider* Sphere1, const SphereCollider* Sphere2, CollisionData* data) {

@@ -13,6 +13,8 @@ class KeyInput {
     private:
         // Map des touches surveillées vers leur état (pressées ou non)
         std::map<int, bool> _keys;
+        // Map des touches qui viennent d'etre pressées
+        std::map<int, bool> _keysPressed;
         // Si désactivé, KeyInput.getIsKeyDown retourne toujours false
         bool _isEnabled;
 
@@ -22,6 +24,13 @@ class KeyInput {
         /// <param name="key"></param>
         /// <param name="isDown"></param>
         void setIsKeyDown(int key, bool isDown);
+
+        /// <summary>
+        /// Utilisé pour mettre à jour les états des touches (Appelé par le callback de GLFW )
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="isPressed"></param>
+        void setIsKeyPressed(int key, bool isPressed);
 
     public:
 
@@ -36,8 +45,12 @@ class KeyInput {
         /// </summary>
         ~KeyInput();
 
-        // If this KeyInput is enabled and the given key is monitored,
-        // returns pressed state.  Else returns false.
+        /// <summary>
+        /// Si cette instance est activé (isEnabled_ vaut true) et la touche est surveillée, retourne si la touche vient d'etre activée ou non
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        bool getIsKeyPressed(int key);
 
         /// <summary>
         /// Si cette instance est activé (isEnabled_ vaut true) et la touche est surveillée, retourne l'état de la touche

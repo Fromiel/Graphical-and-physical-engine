@@ -29,7 +29,7 @@ public:
 
 	//Destructeur
 
-	//~BVHNode();
+	~BVHNode();
 
 	///--------------- Attributes ---------------///
 	//En tant que noeud de structure arborescente on peut les avoir en tant que membres public
@@ -100,34 +100,8 @@ BVHNode<T, RIGIDBODY>::BVHNode(Element<RIGIDBODY>* rb, BVHNode* fg, BVHNode* fd,
 	parent = nullptr;
 }
 
-/*template<class T, class RIGIDBODY>
+template<class T, class RIGIDBODY>
 BVHNode<T, RIGIDBODY>::~BVHNode() {
-	if (parent) {
-		//On récupère le noeud voisin
-		BVHNode<T, RIGIDBODY>* sibling;
-
-		if (parent->children[0] == this) { 
-			sibling = parent->children[1];
-		}
-		else sibling = parent->children[0];
-
-		//On mets ses infos dans le parent
-		if (sibling) {
-			parent->volume = sibling->volume;
-			parent->body = sibling->body;
-			parent->children[0] = sibling->children[0];
-			parent->children[1] = sibling->children[1];
-			//On supprime le voisin
-			//sibling->volume = NULL;
-			//sibling->body = NULL;
-			sibling->children[0] = nullptr;
-			sibling->children[1] = nullptr;
-			delete sibling;
-		}
-
-		//Puis on recalcule le volume englobant
-		parent->recalculateBoundingVolume();
-	}
 
 	//On retire nos enfants
 	if (children[0]) {
@@ -138,7 +112,7 @@ BVHNode<T, RIGIDBODY>::~BVHNode() {
 		//children[1]->parent = nullptr;
 		delete children[1];
 	}
-}*/
+}
 
 template<class T, class RIGIDBODY>
 void BVHNode<T, RIGIDBODY>::recalculateBoundingVolume() {

@@ -16,7 +16,7 @@ void UpdateC(float dt, Entity entity)
 	Coordinator* coordinator = Coordinator::getInstance();
 	KeyInput* keyInput = KeyInput::_instances[0];
 
-	if (keyInput->getIsKeyDown(GLFW_KEY_F))
+	if (keyInput->getIsKeyPressed(GLFW_KEY_F))
 	{
 		Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
 
@@ -32,6 +32,26 @@ void UpdateC(float dt, Entity entity)
 		cube.addComponent((Object3D)Cube());
 		cube.addComponent(sMaterial);
 		cube.createRigidbody(1, 1, 1, CubeMesh,randomSpeed );
+		cube.addGravityRigidbody(0);
+		cube.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
+
+	}
+	else if (keyInput->getIsKeyPressed(GLFW_KEY_W))
+	{
+		Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
+
+		Material sMaterial(materialShader, Vecteur3D(0.3f, 0.8f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
+
+		float randX = rand() % 20 - 10;
+		float randY = rand() % 20 - 10;
+		float randZ = rand() % 20 - 10;
+
+		Vecteur3D randomSpeed(randX, randY, randZ);
+
+		GameObject cube(Vecteur3D(0, 15, 0));
+		cube.addComponent((Object3D)Cube());
+		cube.addComponent(sMaterial);
+		cube.createRigidbody(1, 1, 1, CubeMesh, randomSpeed);
 		cube.addGravityRigidbody(0);
 		cube.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
 
