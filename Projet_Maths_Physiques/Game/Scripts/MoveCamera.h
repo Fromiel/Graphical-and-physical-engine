@@ -21,6 +21,11 @@ void Update(float dt, Entity entity)
 	std::vector<double> content = viewMatrixInv.getContentAsStdVector();
 	std::vector<double> matrix3dContent = { content[0], content[1], content[2], content[4], content[5], content[6], content[8], content[9], content[10] };
 	Matrix3D m3d(matrix3dContent);
+
+	/*float dt = dT;
+	if (dT == 0)
+		dt = 0.05f;*/
+
 	if (keyInput->getIsKeyDown(GLFW_KEY_W))
 	{
 		camera.move(dt * speed * Vecteur3D(0, 0, -1));

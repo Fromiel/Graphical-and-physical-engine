@@ -31,11 +31,19 @@ void Engine::loop()
 		time_.update();
 		float dt = time_.deltaTime();
 
-		//Logic
-		logicEngine_->update(dt);
+		if (dt > 0)
+		{
+			//Logic
+			logicEngine_->update(dt);
 
-		//Physical simulation
-		physicalEngine_->update(dt);
+			//Physical simulation
+			physicalEngine_->update(dt);
+
+		}
+		else
+		{
+			logicEngine_->update(time_.forcedDeltaTime());
+		}
 
 		//render
 		graphicEngine_->update(dt);

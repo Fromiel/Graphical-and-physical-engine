@@ -3,6 +3,7 @@
 #include "Bounding/BoundingSphere.h"
 #include "Components/Transform.h"
 #include "Systems/InputsManager.h"
+#include "Systems/Time.h"
 
 void CollisionsSystem::update(float dt)
 {
@@ -59,7 +60,8 @@ void CollisionsSystem::update(float dt)
 		{
 			std::cout << datas[i] << std::endl;
 		}
-		InputsManager::setEndGame(true);
+		//InputsManager::setEndGame(true);
+		Time::setTimeScale(0.0f);
 	}
 
 
