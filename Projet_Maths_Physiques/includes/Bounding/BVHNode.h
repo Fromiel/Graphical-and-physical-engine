@@ -185,26 +185,44 @@ int BVHNode<T, RIGIDBODY>::getPotentialContactsWith(BVHNode<T, RIGIDBODY>* other
 		return 1;
 	}
 
+	int count = 0;
+
 	//Boucle récursive
 	if (other->isLeaf() || (!isLeaf() && volume.getSize() >= other->volume.getSize())) {
-		int count = children[0]->getPotentialContactsWith(other, contacts, limit);
+		count += children[0]->getPotentialContactsWith(other, contacts + count, limit - count);
 
 		if (limit > count) {
-			return count + children[1]->getPotentialContactsWith(other, contacts + count, limit - count);
+			count +=  children[1]->getPotentialContactsWith(other, contacts + count, limit - count);
 		}
 		else {
 			return count;
 		}
+		if (limit > count) {
+			return count + children[0]->getPotentialContactsWith(children[1], contacts + count, limit - count);
+		}
+		else
+		{
+			return count;
+		}
+
 	}
 	else {
-		int count = getPotentialContactsWith(other->children[0], contacts, limit);
+		count += getPotentialContactsWith(other->children[0], contacts + count, limit - count);
 
 		if (limit > count) {
-			return count + getPotentialContactsWith(other->children[1], contacts + count, limit - count);
+			count += getPotentialContactsWith(other->children[1], contacts + count, limit - count);
 		}
 		else {
 			return count;
 		}
+		if (limit > count) {
+			return count + other->children[0]->getPotentialContactsWith(other->children[1], contacts + count, limit - count);
+		}
+		else
+		{
+			return count;
+		}
+
 	}
 };
 

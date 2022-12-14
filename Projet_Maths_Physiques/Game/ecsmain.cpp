@@ -41,10 +41,6 @@ int main(void)
 	light.addComponent(Light(Vecteur3D(0.8f, 0.8f, 0.8f)));
 	light.addComponent(Material(lightShader));
 
-
-
-
-
 	//Test collider
 
 	//Creation d'une boite avec 6 plans
@@ -81,41 +77,12 @@ int main(void)
 	GameObject cubeBall(Vecteur3D(0, 15, 0));
 	cubeBall.addComponent((Object3D)Cube());
 	cubeBall.addComponent(greenMaterial);
-	cubeBall.createRigidbody(1, 1 / 10.0f, 1, CubeMesh);
+	cubeBall.createRigidbody(1, 1 / 10.0f, 1, CubeMesh, Vecteur3D(0, 0, 2));
 	cubeBall.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
-	cubeBall.addGravityRigidbody(-1.0f);
+	cubeBall.addGravityRigidbody(0);
 
-	/*GameObject sphereC1;
-	sphereC1.addSphereCollider(1);
-
-	GameObject sphereC2(Vecteur3D(0, 1.2, 0));
-	sphereC2.addSphereCollider(1);
-
-	GameObject plane;
-	plane.addPlaneCollider(0.2);
-
-	GameObject cubeC(Vecteur3D(0, 0.6, 0));
-	cubeC.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));*/
-
-
-	/*CollisionsSystem s;
-	CollisionData cd[100];
-	CollisionData* t = cd;
-	int size = s.generateContacts(sphereC1.getComponent<std::shared_ptr<Collider>>().get(), sphereC2.getComponent<std::shared_ptr<Collider>>().get(), t);
-	t++;
-	int size2 = s.generateContacts(sphereC2.getComponent<std::shared_ptr<Collider>>().get(), plane.getComponent<std::shared_ptr<Collider>>().get(), t);
-	t++;
-	int size3 = s.generateContacts(cubeC.getComponent<std::shared_ptr<Collider>>().get(), sphereC2.getComponent<std::shared_ptr<Collider>>().get(), t);
-	t++;
-	int size4 = s.generateContacts(cubeC.getComponent<std::shared_ptr<Collider>>().get(), plane.getComponent<std::shared_ptr<Collider>>().get(), t);
-
-	for (int i = 0; i < 7; i++)
-	{
-		std::cout << cd[i] << std::endl;
-	}*/
 
 	//Loop
-
 	engine->loop();
 
 	

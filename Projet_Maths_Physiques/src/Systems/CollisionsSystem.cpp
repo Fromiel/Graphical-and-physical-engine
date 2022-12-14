@@ -38,7 +38,7 @@ void CollisionsSystem::update(float dt)
 	int nbPotentialContact = bvh.getPotentialContacts(potentialContacts, 100);
 
 	// 3) Calculer vrai collisions
-	CollisionData datas[100];
+	CollisionData datas[10000];
 	CollisionData* currentData = datas;
 	int nbDatas = 0;
 	for (int i = 0; i < nbPotentialContact; i++)
