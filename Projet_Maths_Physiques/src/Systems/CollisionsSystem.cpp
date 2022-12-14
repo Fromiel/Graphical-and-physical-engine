@@ -1,4 +1,5 @@
 #include "Systems/CollisionsSystem.h"
+#include "Bounding/Octree.h"
 #include "Bounding/BVHNode.h"
 #include "Bounding/BoundingSphere.h"
 #include "Components/Transform.h"
@@ -21,8 +22,64 @@ void CollisionsSystem::update(float dt)
 		transforms.push_back(coordinator->getComponent<Transform>(gameObject));
 		elements.push_back({ collider.get() });
 	}
-	
 
+	// Construire Octree
+	typedef struct Item {
+		std::shared_ptr<Collider> collider;
+		Element<Collider> element;
+		Transform transform;
+		float x;
+		float y;
+		float z;
+		float maxWidth;
+	} Item;
+	Octree<Item>* octree = new Octree<Item>(-15.0f, -15.0f, -15.0f, 30.0f, 2);
+	for (int i = 0; i < colliders.size(); i++) {
+		octree->insertItem({
+			colliders[i],
+			elements[i],
+			transforms[i],
+			transforms[i].getPosition().get_x(),
+			transforms[i].getPosition().get_y(),
+			transforms[i].getPosition().get_z(),
+			transforms[i].maxScale()
+		});
+	}
+
+	// std::cout << "=============================== CYCLE ===============================" << octree->gatherCollisions().size() << std::endl;
+	
+	// Construire BVH pour chaque paire donnÃ©e par l'octree
+	for (auto element : octree->gatherCollisions()) {
+		// std::cout << "{(" << element.first.x << ";" << element.first.y << ";" << element.first.z << "), (" << element.second.x << ";" << element.second.y << ";" << element.second.z << ")" << std::endl;
+
+		// Inserer les colliders dans le bvh
+		BVHNode<BoundingSphere, Collider> bvh;
+		bvh.insert(&element.first.element, BoundingSphere(element.first.transform.getPosition(), element.first.transform.maxScale()));
+		bvh.insert(&element.second.element, BoundingSphere(element.second.transform.getPosition(), element.second.transform.maxScale()));
+
+		// Determiner la possibilite de collision
+		PotentialContact<Collider> potentialContact[1];
+		int nbpc = bvh.getPotentialContacts(potentialContact, 1);
+
+		// Afiner le calcul pour valider la collision
+		if (!nbpc) continue;
+
+		CollisionData datas[10000];
+		CollisionData* currentData = datas;
+		int nbDatas = 0;
+		int n = generateContacts(potentialContact[0].body[0]->rb, potentialContact[0].body[1]->rb, currentData);
+		n += generateContacts(potentialContact[0].body[1]->rb, potentialContact[0].body[0]->rb, currentData);
+		nbDatas += n;
+		currentData += n;
+
+		// Resoudre la collision
+		if (nbDatas == 0)continue;
+		std::cout << "Nombre de contacts : " << nbDatas << std::endl;
+		for (int i = 0; i < nbDatas; i++)std::cout << datas[i] << std::endl;
+		Time::setTimeScale(0.0f);
+	}
+
+	/*
 	// 1) Construire BVH
 	BVHNode<BoundingSphere, Collider> bvh;
 	for (int i = 0; i < colliders.size(); i++)
@@ -63,8 +120,7 @@ void CollisionsSystem::update(float dt)
 		//InputsManager::setEndGame(true);
 		Time::setTimeScale(0.0f);
 	}
-
-
+	*/
 }
 
 int CollisionsSystem::generateContactsSphereSphere(const SphereCollider* Sphere1, const SphereCollider* Sphere2, CollisionData* data) {
@@ -128,7 +184,7 @@ int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const Pla
 
 		// Calculate the distance from the plane. 
 		float vertexDistance = scalar_product(vertexPos,Plan->normal) - Plan->offset;
-		// Compare this to the plane’s distance. 
+		// Compare this to the planeï¿½s distance. 
 		if (vertexDistance < 0) {
 			// Create the contact data. 
 			// The contact point is halfway between the vertex and the plane. We multiply the direction by half the separation distance and add the vertex location. 
@@ -173,7 +229,7 @@ int CollisionsSystem::generateContactsBoxSphere(const BoxCollider* Box, const Sp
 	if (dist < -Box->halfsize.get_z()) dist = -Box->halfsize.get_z();
 	closestPt = Vecteur3D(closestPt.get_x(), closestPt.get_y(), dist);
 
-	// Check to see if we’re in contact. 
+	// Check to see if weï¿½re in contact. 
 	dist = (closestPt - relCenter).norm_squared(); 
 	if (dist > Sphere->radius * Sphere->radius) {
 		return 0;

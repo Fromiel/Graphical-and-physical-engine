@@ -15,9 +15,9 @@ class OctreeNode {
         std::vector<T> nodeContent;
 
         bool checkIfIn(const T &item) {
-            if (x <= item.x && item.x + item.width <= x + width &&
-                y <= item.y && item.y + item.height <= y + width &&
-                z <= item.z && item.z + item.depth <= z + width
+            if (x <= item.x && item.x + item.maxWidth <= x + width &&
+                y <= item.y && item.y + item.maxWidth <= y + width &&
+                z <= item.z && item.z + item.maxWidth <= z + width
             ) return true;
             else return false;
         }
