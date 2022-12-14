@@ -22,7 +22,7 @@ Render::Render()
 		throw "Error in initialisation of glfw";
 
 	/* Create a windowed mode window and its OpenGL context */
-	window_ = glfwCreateWindow(640, 480, "Physical engine", NULL, NULL);
+	window_ = glfwCreateWindow(640, 480, "Autruche Engine", NULL, NULL);
 	if (!window_)
 	{
 		throw "Error in creating the window";
