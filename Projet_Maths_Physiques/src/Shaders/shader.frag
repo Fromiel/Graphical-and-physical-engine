@@ -5,6 +5,7 @@ uniform vec3 specLumiere;
 uniform vec3 specObjet;
 uniform float alpha;
 uniform vec3 diffuse;
+uniform float transparency;
 
 in vec3 d;
 in vec3 n;
@@ -29,6 +30,6 @@ void main()
     vec3 specular = coulLumiere * (spec * specObjet);  
         
     vec3 result = ambient + diffuse + specular;
-    gl_FragColor = vec4(result, 1.0);
+    gl_FragColor = vec4(result, transparency);
    
 };

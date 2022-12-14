@@ -39,6 +39,8 @@ Render::Render()
 	glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
@@ -54,7 +56,6 @@ Render::~Render()
 void Render::update(float dt)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	Coordinator* coordinator = Coordinator::getInstance();
 
 	float ratio;
@@ -77,9 +78,29 @@ void Render::update(float dt)
 	GLfloat viewMatrix[16];
 	view.toFloatArray(viewMatrix);
 
-
+	
+	std::vector<Entity> gameObjects;
+	std::vector<Entity> transparentGameObjects;
 
 	for (auto gameObject : entities_)
+	{
+		if (coordinator->hasComponent<Object3D>(gameObject))
+		{
+			if (coordinator->hasComponent<Material>(gameObject) && coordinator->getComponent<Material>(gameObject).getTransparency() < 1)
+			{
+				transparentGameObjects.push_back(gameObject);
+			}
+			else
+			{
+				gameObjects.push_back(gameObject);
+			}
+		}
+
+	}
+
+	gameObjects.insert(gameObjects.end(), transparentGameObjects.begin(), transparentGameObjects.end());
+
+	for (auto gameObject : gameObjects)
 	{
 
 		if (coordinator->hasComponent<Object3D>(gameObject))
@@ -94,6 +115,7 @@ void Render::update(float dt)
 			{
 				material = coordinator->getComponent<Material>(gameObject);
 			}
+
 			Shader shader_ = material.getShader();
 			shader_.use();
 
@@ -107,6 +129,7 @@ void Render::update(float dt)
 			shader_.setUniform3f("specObjet", material.getSpecular().get_x(), material.getSpecular().get_y(), material.getSpecular().get_z());
 			shader_.setUniform3f("diffuse", material.getDiffuse().get_x(), material.getDiffuse().get_y(), material.getDiffuse().get_z());
 			shader_.setUniform1f("alpha", material.getAlpha());
+			shader_.setUniform1f("transparency", material.getTransparency());
 
 
 			auto object = coordinator->getComponent<Object3D>(gameObject);

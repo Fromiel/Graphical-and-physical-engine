@@ -19,6 +19,7 @@ int main(void)
 
 	Material sMaterial(materialShader, Vecteur3D(0.8f, 0.5f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f), 200);
 	Material greenMaterial(materialShader, Vecteur3D(0.4f, 0.9f, 0.1f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
+	Material transparentMaterial(materialShader, Vecteur3D(0.8f, 0.5f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f), 200, 0.5);
 
 	//---------TODO--------------------
 	//set les inputs
@@ -71,7 +72,7 @@ int main(void)
 
 	GameObject wall6(Vecteur3D(0, 15, 15), Vecteur3D(30, 30, 0.01));
 	wall6.addComponent((Object3D)Cube());
-	wall6.addComponent(sMaterial);
+	wall6.addComponent(transparentMaterial);
 	wall6.addPlaneCollider(0, Vecteur3D(0, 0, -1));
 
 

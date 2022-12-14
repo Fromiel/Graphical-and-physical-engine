@@ -19,6 +19,8 @@ class Material
 		Vecteur3D diffuse_;
 		//Impact la taille du "rond de reflexion de la lumiere"
 		float alpha_;
+		//Transparence du material
+		float transparency_;
 		//Shader
 		Shader shader_;
 
@@ -32,7 +34,7 @@ class Material
 		/// <param name="specular"></param>
 		/// <param name="diffuse"></param>
 		/// <param name="alpha"></param>
-		Material(Shader shader, Vecteur3D ambient = Vecteur3D(1, 1, 1), Vecteur3D specular = Vecteur3D(1, 1, 1), Vecteur3D diffuse = Vecteur3D(1, 1, 1), float alpha = 32);
+		Material(Shader shader, Vecteur3D ambient = Vecteur3D(1, 1, 1), Vecteur3D specular = Vecteur3D(1, 1, 1), Vecteur3D diffuse = Vecteur3D(1, 1, 1), float alpha = 32, float transparency = 1.0f);
 
 		/// <summary>
 		/// Getter du shader
@@ -63,6 +65,12 @@ class Material
 		/// </summary>
 		/// <returns></returns>
 		float getAlpha() const { return alpha_; }
+
+		/// <summary>
+		/// Getter de transparency
+		/// </summary>
+		/// <returns></returns>
+		float getTransparency() const { return transparency_; }
 
 		/// <summary>
 		/// Setter du shader

@@ -32,7 +32,7 @@ void UpdateC(float dt, Entity entity)
 		cube.addComponent((Object3D)Cube());
 		cube.addComponent(sMaterial);
 		cube.createRigidbody(1, 1, 1, CubeMesh,randomSpeed );
-		cube.addGravityRigidbody(-5.0);
+		cube.addGravityRigidbody(0);
 		cube.addBoxCollider(Vecteur3D(0.5, 0.5, 0.5));
 
 	}
