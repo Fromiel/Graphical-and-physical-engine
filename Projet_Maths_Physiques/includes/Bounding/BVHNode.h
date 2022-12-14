@@ -186,7 +186,7 @@ int BVHNode<T, RIGIDBODY>::getPotentialContactsWith(BVHNode<T, RIGIDBODY>* other
 	}
 
 	//Boucle récursive
-	if (other->isLeaf() || !isLeaf() && volume.getSize() >= other->volume.getSize()) {
+	if (other->isLeaf() || (!isLeaf() && volume.getSize() >= other->volume.getSize())) {
 		int count = children[0]->getPotentialContactsWith(other, contacts, limit);
 
 		if (limit > count) {
