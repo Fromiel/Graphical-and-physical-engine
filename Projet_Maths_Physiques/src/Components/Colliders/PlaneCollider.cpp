@@ -8,6 +8,6 @@ PlaneCollider::PlaneCollider(Entity entity, float halfSX, float halfSY, Vecteur3
 
 float PlaneCollider::getMaxSize() const 
 {
-	if (halfSizeX > halfSizeY) return halfSizeX * 2;
-	return halfSizeY * 2;
+	if (halfSizeX > halfSizeY) return halfSizeX;
+	return halfSizeY;
 }

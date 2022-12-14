@@ -45,8 +45,16 @@ class Collider
 
 		Matrix34 getOffset() const { return offset_; }
 
-		Matrix34 getWorldPositionOrientation() const;
+		/// <summary>
+		/// Retourne la matrice permettant de passer des coordonnées du collider vers le monde
+		/// </summary>
+		/// <returns></returns>
+		Matrix34 getWorldPositionOrientation();
 
+		/// <summary>
+		/// Retourne la moitie de la taille d'un cote de la boite englobante
+		/// </summary>
+		/// <returns></returns>
 		virtual float getMaxSize() const = 0;
 
 		Vecteur3D getPosition() const;
