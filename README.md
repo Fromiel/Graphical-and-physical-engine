@@ -27,4 +27,4 @@ Le CMake va également générer des exécutables pour des tests, mais cela est 
 
 Pour déplacer la camera, utiliser wasd pour avancer et aller de gauche à droite. Pour descendre, appuyer sur q, pour monter, appuyer sur espace.
 Pour changer l'orientation de la camera, utiliser les touches directionnelles.
-Pour instantier un rigidBody en forme de cylindre avec une gravite (de couleur verte), appuyer sur F.
+Pour instantier de multiples cubes et générer une collision, appuyer sur F.
