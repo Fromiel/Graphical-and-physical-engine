@@ -46,7 +46,7 @@ public:
 	/// <param name="linearDamping"></param>
 	/// <param name="type_objet"></param>
 	/// <param name="vitesse"></param>
-	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet,Vecteur3D vitesse = Vecteur3D());
+	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet,Vecteur3D vitesse = Vecteur3D(), Vecteur3D vitesse_angu = Vecteur3D());
 
 	/// <summary>
 	/// Constructeur de copie

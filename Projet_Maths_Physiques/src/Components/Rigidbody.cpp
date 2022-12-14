@@ -1,8 +1,9 @@
 #include "Components/Rigidbody.h"
 #include "Components/Transform.h"
 
-Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D vitesse) : entity(entityparent) {
+Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D vitesse, Vecteur3D vitesse_angu) : entity(entityparent) {
 	velocity = vitesse;
+	rotation = vitesse_angu;
 	m_angularDamping = angularDamping;
 	m_linearDamping = linearDamping;
 	inverseMasse = invmasse;
