@@ -6,6 +6,17 @@
 #include "Systems/InputsManager.h"
 #include "Systems/Time.h"
 
+// Helper structure for octree
+typedef struct Item {
+	std::shared_ptr<Collider> collider;
+	Element<Collider> element;
+	Transform transform;
+	float x;
+	float y;
+	float z;
+	float maxWidth;
+} Item;
+
 void CollisionsSystem::update(float dt)
 {
 	Coordinator* coordinator = Coordinator::getInstance();
@@ -24,15 +35,6 @@ void CollisionsSystem::update(float dt)
 	}
 
 	// Construire Octree
-	typedef struct Item {
-		std::shared_ptr<Collider> collider;
-		Element<Collider> element;
-		Transform transform;
-		float x;
-		float y;
-		float z;
-		float maxWidth;
-	} Item;
 	Octree<Item>* octree = new Octree<Item>(-15.0f, -15.0f, -15.0f, 30.0f, 2);
 	for (int i = 0; i < colliders.size(); i++) {
 		octree->insertItem({
@@ -46,43 +48,24 @@ void CollisionsSystem::update(float dt)
 		});
 	}
 
-	// std::cout << "=============================== CYCLE ===============================" << octree->gatherCollisions().size() << std::endl;
-	
-	// Construire BVH pour chaque paire donnée par l'octree
+	// Affiner le calcul pour valider les collision
+	std::vector<CollisionData> datas;
 	for (auto element : octree->gatherCollisions()) {
-		// std::cout << "{(" << element.first.x << ";" << element.first.y << ";" << element.first.z << "), (" << element.second.x << ";" << element.second.y << ";" << element.second.z << ")" << std::endl;
+		generateContacts(&(*element.first.collider), &(*element.second.collider), &datas);
+		generateContacts(&(*element.second.collider), &(*element.first.collider), &datas);
+	}
 
-		// Inserer les colliders dans le bvh
-		BVHNode<BoundingSphere, Collider> bvh;
-		bvh.insert(&element.first.element, BoundingSphere(element.first.transform.getPosition(), element.first.collider->getMaxSize()));
-		bvh.insert(&element.second.element, BoundingSphere(element.second.transform.getPosition(), element.second.collider->getMaxSize()));
-
-		// Determiner la possibilite de collision
-		PotentialContact<Collider> potentialContact[100];
-		int nbpc = bvh.getPotentialContacts(potentialContact, 100);
-
-		// Affiner le calcul pour valider la collision
-		if (!nbpc) continue;
-
-		CollisionData datas[100];
-		CollisionData* currentData = datas;
-		int nbDatas = 0;
-		int n = generateContacts(potentialContact[0].body[0]->rb, potentialContact[0].body[1]->rb, currentData);
-		n += generateContacts(potentialContact[0].body[1]->rb, potentialContact[0].body[0]->rb, currentData);
-		nbDatas += n;
-		currentData += n;
-
-		// Resoudre la collision
-		if (nbDatas == 0)continue;
-		std::cout << "Nombre de contacts : " << nbDatas << std::endl;
-		for (int i = 0; i < nbDatas; i++)std::cout << datas[i] << std::endl;
+	// Resoudre les collisions
+	if (datas.size() != 0) {
+		std::cout << "Nombre de contacts : " << datas.size() << std::endl;
+		for (int i = 0; i < datas.size(); i++) std::cout << datas[i] << std::endl;
 		Time::setTimeScale(0.0f);
 	}
 
 	delete octree;
 }
 
-int CollisionsSystem::generateContactsSphereSphere(const SphereCollider* Sphere1, const SphereCollider* Sphere2, CollisionData* data) {
+int CollisionsSystem::generateContactsSphereSphere(const SphereCollider* Sphere1, const SphereCollider* Sphere2, std::vector<CollisionData>* data) {
 	Coordinator* coord = Coordinator::getInstance();
 	Vecteur3D pos1 = Sphere1->getPosition();
 	Vecteur3D pos2 = Sphere2->getPosition();
@@ -92,14 +75,17 @@ int CollisionsSystem::generateContactsSphereSphere(const SphereCollider* Sphere1
 	}
 
 	Vecteur3D normal = (pos1 - pos2).normalized();
-	data->normalContact = normal;
-	data->ptContact = pos1 - (normal * Sphere2->radius);
-	data->penetration = (Sphere1->radius + Sphere2->radius - diffPose);
-	//data->setBodyData(Sphere1.rigidbody_, Sphere2.rigidbody_, data->friction, data->restitution);
+	CollisionData newData;
+	newData.normalContact = normal;
+	newData.ptContact = pos1 - (normal * Sphere2->radius);
+	newData.penetration = (Sphere1->radius + Sphere2->radius - diffPose);
+	//newData.setBodyData(Sphere1.rigidbody_, Sphere2.rigidbody_, data->friction, data->restitution);
+	data->push_back(newData);
+
 	return 1;
 }
 
-int CollisionsSystem::generateContactsSpherePlane(const SphereCollider* Sphere, const PlaneCollider* Plan, CollisionData* data) {
+int CollisionsSystem::generateContactsSpherePlane(const SphereCollider* Sphere, const PlaneCollider* Plan, std::vector<CollisionData>* data) {
 	// Cache the sphere position. 
 	Vecteur3D position = Sphere->getPosition();
 	// Find the distance from the plane. 
@@ -108,13 +94,16 @@ int CollisionsSystem::generateContactsSpherePlane(const SphereCollider* Sphere, 
 		return 0;
 	}
 	// Create the contact; it has a normal in the plane direction. 
-	data->normalContact = Plan->normal;
-	data->penetration = -ballDistance; 
-	data->ptContact = position - Plan->normal * (ballDistance + Sphere->radius);
+	CollisionData newData;
+	newData.normalContact = Plan->normal;
+	newData.penetration = -ballDistance; 
+	newData.ptContact = position - Plan->normal * (ballDistance + Sphere->radius);
+	data->push_back(newData);
+
 	return 1;
 }
 
-int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const PlaneCollider* Plan, CollisionData* data) {
+int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const PlaneCollider* Plan, std::vector<CollisionData>* data) {
 	Vecteur3D halfSize = Box->halfsize;
 	Vecteur3D vertices[8] = { 
 		Vecteur3D(-halfSize.get_x(), - halfSize.get_y(), - halfSize.get_z()), 
@@ -147,20 +136,22 @@ int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const Pla
 		if (vertexDistance < 0) {
 			// Create the contact data. 
 			// The contact point is halfway between the vertex and the plane. We multiply the direction by half the separation distance and add the vertex location. 
-			data->ptContact = vertexPos - Plan->normal * vertexDistance;
+			CollisionData newData;
+			newData.ptContact = vertexPos - Plan->normal * vertexDistance;
 			Matrix34 mat;
 			mat.setOrientationAndPosition(Quaternion(), Plan->getPosition());
-			data->ptContact = mat * data->ptContact;
-			data->normalContact = Plan->normal;
-			data->penetration = -vertexDistance;
+			newData.ptContact = mat * newData.ptContact;
+			newData.normalContact = Plan->normal;
+			newData.penetration = -vertexDistance;
+			data->push_back(newData);
+
 			nbContact++;
-			data++;
 		}
 	}
 	return nbContact;
 }
 
-int CollisionsSystem::generateContactsBoxSphere(const BoxCollider* Box, const SphereCollider* Sphere, CollisionData* data) {
+int CollisionsSystem::generateContactsBoxSphere(const BoxCollider* Box, const SphereCollider* Sphere, std::vector<CollisionData>* data) {
 	// Transform the center of the sphere into box coordinates. 
 	Vecteur3D center = Sphere->getPosition();
 	Matrix34 mat = std::vector<double>{ 1,0,0,0,0,1,0,0,0,0,1,0};
@@ -200,14 +191,18 @@ int CollisionsSystem::generateContactsBoxSphere(const BoxCollider* Box, const Sp
 	mat = Matrix34(std::vector<double>{ 1,0,0,0,0,1,0,0,0,0,1,0 });
 	mat.setOrientationAndPosition(Quaternion(), Box->getPosition());
 	Vecteur3D closestPtWorld = mat * closestPt;
-	data->normalContact = (closestPtWorld - center);
-	data->normalContact.normalized(); 
-	data->ptContact = closestPtWorld; 
-	data->penetration = Sphere->radius - sqrt(dist);
+
+	CollisionData newData;
+	newData.normalContact = (closestPtWorld - center);
+	newData.normalContact.normalized(); 
+	newData.ptContact = closestPtWorld; 
+	newData.penetration = Sphere->radius - sqrt(dist);
+	data->push_back(newData);
+
 	return 1;
 }
 
-int CollisionsSystem::generateContacts(Collider* firstCollider,  Collider* secondCollider, CollisionData* data) {
+int CollisionsSystem::generateContacts(Collider* firstCollider,  Collider* secondCollider, std::vector<CollisionData>* data) {
 	if (firstCollider->getType() == SphereC && secondCollider->getType() == SphereC) {
 		return generateContactsSphereSphere(static_cast<SphereCollider*>(firstCollider), static_cast<SphereCollider*>(secondCollider), data);
 	}
