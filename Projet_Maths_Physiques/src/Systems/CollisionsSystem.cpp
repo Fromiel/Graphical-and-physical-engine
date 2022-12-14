@@ -89,15 +89,15 @@ int CollisionsSystem::generateContactsSpherePlane(const SphereCollider* Sphere, 
 	// Cache the sphere position. 
 	Vecteur3D position = Sphere->getPosition();
 	// Find the distance from the plane. 
-	float ballDistance = scalar_product(Plan->normal * Plan->getPosition(), position) - Sphere->radius;
+	float ballDistance = scalar_product(Vecteur3D(0, 1, 0) * Plan->getPosition(), position) - Sphere->radius;
 	if (ballDistance >= 0 || ballDistance < -Sphere->radius) {
 		return 0;
 	}
 	// Create the contact; it has a normal in the plane direction. 
 	CollisionData newData;
-	newData.normalContact = Plan->normal;
+	newData.normalContact = Vecteur3D(0, 1, 0);
 	newData.penetration = -ballDistance; 
-	newData.ptContact = position - Plan->normal * (ballDistance + Sphere->radius);
+	newData.ptContact = position - Vecteur3D(0, 1, 0) * (ballDistance + Sphere->radius);
 	data->push_back(newData);
 
 	return 1;
@@ -115,33 +115,27 @@ int CollisionsSystem::generateContactsBoxPlane(const BoxCollider* Box, const Pla
 		Vecteur3D(+halfSize.get_x(), + halfSize.get_y(), - halfSize.get_z()),
 		Vecteur3D(+halfSize.get_x(), + halfSize.get_y(), + halfSize.get_z())
 	};
-	Matrix34 toWorld, toPlane;
-	toWorld.setOrientationAndPosition(Quaternion(), Box->getPosition());
-	toPlane.setOrientationAndPosition(Quaternion(), Plan->getPosition());
-	toPlane = toPlane.inverse();
-	toPlane = toPlane * toWorld;
+	Matrix34 boxToWorld = Box->getWorldPositionOrientation();
+	Matrix34 planToWorldPosition = Plan->getWorldPositionOrientation();
+	Matrix34 boxToPlan = planToWorldPosition.inverse() * boxToWorld;
 
 	for (unsigned i = 0; i < 8; i++) { 
-		vertices[i] = toPlane * vertices[i];
-
+		vertices[i] = boxToPlan * vertices[i];
 	}
 	
 	int nbContact = 0;
+	Vecteur3D normal = planToWorldPosition.transformDirection(Vecteur3D(0, 1, 0));
 
 	for(auto vertexPos : vertices) {
-
 		// Calculate the distance from the plane. 
-		float vertexDistance = scalar_product(vertexPos,Plan->normal);
-		// Compare this to the plane�s distance. 
-		if (vertexDistance < 0) {
+		float vertexDistance = scalar_product(vertexPos,Vecteur3D(0, 1, 0));
+		// Compare this to the planes distance. 
+		if ((vertexPos.get_x() < Plan->halfSizeX && vertexPos.get_x() > -Plan->halfSizeX) && (vertexPos.get_z() < Plan->halfSizeY && vertexPos.get_z() > -Plan->halfSizeY) && vertexDistance < 0) {
 			// Create the contact data. 
 			// The contact point is halfway between the vertex and the plane. We multiply the direction by half the separation distance and add the vertex location. 
 			CollisionData newData;
-			newData.ptContact = vertexPos - Plan->normal * vertexDistance;
-			Matrix34 mat;
-			mat.setOrientationAndPosition(Quaternion(), Plan->getPosition());
-			newData.ptContact = mat * newData.ptContact;
-			newData.normalContact = Plan->normal;
+			newData.ptContact = planToWorldPosition * (vertexPos - normal * vertexDistance);
+			newData.normalContact = normal;
 			newData.penetration = -vertexDistance;
 			data->push_back(newData);
 

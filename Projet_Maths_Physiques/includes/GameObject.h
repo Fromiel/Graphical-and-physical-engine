@@ -201,7 +201,7 @@ class GameObject
 		/// <param name="offset"></param>
 		/// <param name="normal"></param>
 		/// <param name="position"></param>
-		void addPlaneCollider(float halfSizeX = 1.0f, float halfSizeY = 1.0f, Vecteur3D normal = Vecteur3D(0, 1, 0));
+		void addPlaneCollider(float halfSizeX = 1.0f, float halfSizeY = 1.0f);
 
 		/// <summary>
 		/// Methode pour ajouter un boxCollider au gameobject

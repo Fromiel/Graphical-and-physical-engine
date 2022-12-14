@@ -13,7 +13,7 @@ Vecteur3D Collider::getPosition() const {
 	return offset_ * pos;
 }
 
-Matrix34 Collider::getWorldPositionOrientation()
+Matrix34 Collider::getWorldPositionOrientation() const
 {
-	return Coordinator::getInstance()->getComponent<Transform>(entity_).getModelMatrix() * offset_;
+	return Coordinator::getInstance()->getComponent<Transform>(entity_).getWorldMatrix() * offset_;
 }

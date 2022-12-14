@@ -48,32 +48,32 @@ int main(void)
 	GameObject wall1(Vecteur3D(), Vecteur3D(30, 0.01, 30));
 	wall1.addComponent((Object3D)Cube());
 	wall1.addComponent(sMaterial);
-	wall1.addPlaneCollider(15.0, 15.0, Vecteur3D(0, 1, 0));
+	wall1.addPlaneCollider(15.0, 15.0);
 
-	GameObject wall2(Vecteur3D(0, 30, 0), Vecteur3D(30, 0.01, 30));
+	GameObject wall2(Vecteur3D(0, 30, 0), Vecteur3D(30, 0.01, 30), Vecteur3D(0, 0, 3.14));
 	wall2.addComponent((Object3D)Cube());
 	wall2.addComponent(sMaterial);
-	wall2.addPlaneCollider(15.0, 15.0, Vecteur3D(0, -1, 0));
+	wall2.addPlaneCollider(15.0, 15.0);
 
-	GameObject wall3(Vecteur3D(-15, 15, 0), Vecteur3D(0.01, 30, 30));
+	GameObject wall3(Vecteur3D(-15, 15, 0), Vecteur3D(30, 0.01, 30), Vecteur3D(0, 0, -1.57));
 	wall3.addComponent((Object3D)Cube());
 	wall3.addComponent(sMaterial);
-	wall3.addPlaneCollider(15.0, 15.0, Vecteur3D(1, 0, 0));
+	wall3.addPlaneCollider(15.0, 15.0);
 
-	GameObject wall4(Vecteur3D(15, 15, 0), Vecteur3D(0.01, 30, 30));
+	GameObject wall4(Vecteur3D(15, 15, 0), Vecteur3D(30, 0.01, 30), Vecteur3D(0, 0, 1.57));
 	wall4.addComponent((Object3D)Cube());
 	wall4.addComponent(sMaterial);
-	wall4.addPlaneCollider(15.0, 15.0, Vecteur3D(-1, 0, 0));
+	wall4.addPlaneCollider(15.0, 15.0);
 
-	GameObject wall5(Vecteur3D(0, 15, -15), Vecteur3D(30, 30, 0.01));
+	GameObject wall5(Vecteur3D(0, 15, -15), Vecteur3D(30, 0.01, 30), Vecteur3D(1.57, 0, 0));
 	wall5.addComponent((Object3D)Cube());
 	wall5.addComponent(sMaterial);
-	wall5.addPlaneCollider(15.0, 15.0, Vecteur3D(0, 0, 1));
+	wall5.addPlaneCollider(15.0, 15.0);
 
-	GameObject wall6(Vecteur3D(0, 15, 15), Vecteur3D(30, 30, 0.01));
+	GameObject wall6(Vecteur3D(0, 15, 15), Vecteur3D(30, 0.01, 30), Vecteur3D(-1.57, 0, 0));
 	wall6.addComponent((Object3D)Cube());
 	wall6.addComponent(transparentMaterial);
-	wall6.addPlaneCollider(15.0, 15.0, Vecteur3D(0, 0, -1));
+	wall6.addPlaneCollider(15.0, 15.0);
 
 
 	GameObject createCubeHolder;

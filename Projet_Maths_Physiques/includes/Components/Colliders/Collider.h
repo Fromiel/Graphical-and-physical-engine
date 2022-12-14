@@ -49,7 +49,7 @@ class Collider
 		/// Retourne la matrice permettant de passer des coordonnées du collider vers le monde
 		/// </summary>
 		/// <returns></returns>
-		Matrix34 getWorldPositionOrientation();
+		Matrix34 getWorldPositionOrientation() const;
 
 		/// <summary>
 		/// Retourne la moitie de la taille d'un cote de la boite englobante
@@ -57,8 +57,16 @@ class Collider
 		/// <returns></returns>
 		virtual float getMaxSize() const = 0;
 
+		/// <summary>
+		/// Retourne la position du centre du collider dans les coordonnees du monde
+		/// </summary>
+		/// <returns></returns>
 		Vecteur3D getPosition() const;
 
+		/// <summary>
+		/// Retourne le type du collider (Sphere, box, plan, ...)
+		/// </summary>
+		/// <returns></returns>
 		typeColliderEnum getType() const { return type_; }
 
 };
