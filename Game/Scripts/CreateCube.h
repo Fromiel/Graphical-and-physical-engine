@@ -17,7 +17,7 @@ void UpdateC(float dt, Entity entity, GameObject camera)
 
 	if (keyInput->getIsKeyPressed(GLFW_KEY_F))// || MouseInputs::IsLeftMouseDown())
 	{
-		Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
+		Shader materialShader("./Shaders/shader.vert", "./Shaders/shader.frag");
 
 		Material sMaterial(materialShader, Vecteur3D(0.3f, 0.8f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 
@@ -36,7 +36,7 @@ void UpdateC(float dt, Entity entity, GameObject camera)
 	}
 	else if (MouseInputs::IsLeftMouseDown())
 	{
-		Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
+		Shader materialShader("./Shaders/shader.vert", "./Shaders/shader.frag");
 
 		Material sMaterial(materialShader, Vecteur3D(0.3f, 0.8f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 

@@ -10,6 +10,6 @@ Material* Material::default_ = NULL;
 Material& Material::getDefault()
 {
 	if (default_ == NULL)
-		default_ = new Material(Shader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag"));
+		default_ = new Material(Shader("./Shaders/shader.vert", "./Shaders/shader.frag"));
 	return *default_;
 }

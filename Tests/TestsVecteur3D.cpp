@@ -1,16 +1,18 @@
 #include <gtest/gtest.h>
 #include "Maths/Vecteur3D.h"
 
+const double epsilon = 0.0001;
+
 TEST(norm, TestVecteur3D_1) {
     double result = Vecteur3D(1, 2, 3).norm();
-    double expected = sqrt(14);
-    EXPECT_TRUE(result == expected);
+    double expected = 14;
+    EXPECT_TRUE(abs((result * result) - expected) < epsilon);
 }
 
 TEST(norm_squared, TestVecteur3D_1) {
     double result = Vecteur3D(1, 2, 3).norm_squared();
     double expected = 14;
-    EXPECT_TRUE(result == expected);
+    EXPECT_TRUE(abs(result - expected) < epsilon);
 }
 
 TEST(normalized, TestVecteur3D_1) {

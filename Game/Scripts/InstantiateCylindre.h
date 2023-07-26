@@ -17,7 +17,7 @@ void UpdateI(float dt, Entity entity)
 
 	if (keyInput->getIsKeyDown(GLFW_KEY_F))
 	{
-		Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
+		Shader materialShader("./Shaders/shader.vert", "./Shaders/shader.frag");
 
 		Material sMaterial(materialShader, Vecteur3D(0.3f, 0.8f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
 

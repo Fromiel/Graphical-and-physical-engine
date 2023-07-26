@@ -14,8 +14,8 @@ int main(void)
 	Engine *engine = Engine::getInstance();
 
 	//set shaders
-	Shader materialShader("./src/Shaders/shader.vert", "./src/Shaders/shader.frag");
-	Shader lightShader("./src/Shaders/lightShader.vert", "./src/Shaders/lightShader.frag");
+	Shader materialShader("./Shaders/shader.vert", "./Shaders/shader.frag");
+	Shader lightShader("./Shaders/lightShader.vert", "./Shaders/lightShader.frag");
 
 	Material sMaterial(materialShader, Vecteur3D(0.8f, 0.5f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f), 200);
 	Material greenMaterial(materialShader, Vecteur3D(0.4f, 0.9f, 0.1f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
