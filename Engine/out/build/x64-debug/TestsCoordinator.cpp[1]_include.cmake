@@ -1,5 +1,0 @@
-if(EXISTS "C:/Users/arovi/Documents/github/Graphical-and-physical-engine/Engine/out/build/x64-debug/TestsCoordinator.cpp[1]_tests.cmake")
-  include("C:/Users/arovi/Documents/github/Graphical-and-physical-engine/Engine/out/build/x64-debug/TestsCoordinator.cpp[1]_tests.cmake")
-else()
-  add_test(TestsCoordinator.cpp_NOT_BUILT TestsCoordinator.cpp_NOT_BUILT)
-endif()
