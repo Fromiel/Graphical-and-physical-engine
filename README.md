@@ -1,11 +1,11 @@
 <a name="readme-top"></a>
 
-<h3 align="center">Moteur physique pour le jeu vidéo</h3>
+<h3 align="center">Moteur physique et graphique pour le jeu vidéo</h3>
 
 <!-- ABOUT THE PROJECT -->
 ## A Propos
 
-Moteur Physique simple permettant la gestion de particules en tant qu'objet mobiles et leur affichage.
+Moteur Physique et graphique permettant la gestion de particules et rigidbodies en tant qu'objet mobiles et leur affichage.
 
 <!-- GETTING STARTED -->
 ## Getting Started
