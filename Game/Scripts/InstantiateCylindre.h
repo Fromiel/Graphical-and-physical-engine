@@ -19,9 +19,9 @@ void UpdateI(float dt, Entity entity)
 	{
 		Shader materialShader("./Shaders/shader.vert", "./Shaders/shader.frag");
 
-		Material sMaterial(materialShader, Vecteur3D(0.3f, 0.8f, 0.2f), Vecteur3D(1.0f, 0.5f, 0.31f), Vecteur3D(0.5f, 0.5f, 0.5f));
+		Material sMaterial(materialShader, Vector3D(0.3f, 0.8f, 0.2f), Vector3D(1.0f, 0.5f, 0.31f), Vector3D(0.5f, 0.5f, 0.5f));
 
-		GameObject cylindre(Vecteur3D(-10, 40, -5), Vecteur3D(3, 3, 20), Vecteur3D(1.57, 0, 0));
+		GameObject cylindre(Vector3D(-10, 40, -5), Vector3D(3, 3, 20), Vector3D(1.57, 0, 0));
 		cylindre.addComponent((Object3D)Cylinder());
 		cylindre.addComponent(sMaterial);
 		cylindre.createRigidbody(1, 1, 1, CylinderMesh);

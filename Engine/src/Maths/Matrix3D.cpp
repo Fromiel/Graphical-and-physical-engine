@@ -1,23 +1,23 @@
 #include "Maths/Matrix3D.h"
 
-Matrix3D::Matrix3D() {
-    this->content = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    return;
-}
+#include <algorithm>
+#include <functional>
 
-Matrix3D::Matrix3D(const std::vector<double> &content) {
+const float epsilon = 0.0001f;
+
+Matrix3D::Matrix3D() : content_{} {}
+
+Matrix3D::Matrix3D(const std::vector<double>& content) : content_{} {
     if (content.size() != 9) throw std::invalid_argument("Matrix3D::Provide content with size 9");
-    this->content = content;
-    return;
-}
 
-Matrix3D::Matrix3D(const Matrix3D &matrix3D) {
-    this->content = matrix3D.content;
+    for (size_t i = 0; i < 9; i++)
+        content_[i] = content[i];
+
     return;
 }
 
 std::vector<double> Matrix3D::getContentAsStdVector() const {
-    return content;
+    return std::vector<double>(content_, content_ + 9);
 }
 
 void Matrix3D::toFloatArray(float arr[])
@@ -30,42 +30,48 @@ double Matrix3D::operator()(const int &line, const int &column) const {
     if (line < 0 || line > 2 || column < 0 || column > 2) {
         throw std::invalid_argument("Matrix3D::Provide line and column inferior to 3");
     }
-    return content[Matrix3D::columnCount * line + column];
+    return content_[Matrix3D::columnCount * line + column];
 }
 
 double& Matrix3D::operator()(const int line, const int column) {
     if (line < 0 || line > 2 || column < 0 || column > 2) {
         throw std::invalid_argument("Matrix3D::Provide line and column inferior to 3");
     }
-    return content[Matrix3D::columnCount * line + column];
+    return content_[Matrix3D::columnCount * line + column];
 }
 
 void Matrix3D::operator=(const Matrix3D &matrix3D) {
-    content = matrix3D.content;
+    for (size_t i = 0; i < 9; i++)
+        content_[i] = matrix3D.content_[i];;
     return;
 }
 
 Matrix3D Matrix3D::operator+=(const Matrix3D &matrix3D) {
-    std::transform(content.begin(), content.end(), matrix3D.content.begin(), content.begin(), std::plus<double>());
+    for (size_t i = 0; i < 9; i++)
+        content_[i] += matrix3D.content_[i];
+    
     return *this;
 }
 
 Matrix3D Matrix3D::operator-=(const Matrix3D &matrix3D) {
-    std::transform(content.begin(), content.end(), matrix3D.content.begin(), content.begin(), std::minus<double>());
+    for (size_t i = 0; i < 9; i++)
+        content_[i] -= matrix3D.content_[i];
+
     return *this;
 }
 
 double Matrix3D::determinant() const {
     return 
-        content[0] * (content[4]*content[8] - content[5]*content[7]) -
-        content[1] * (content[3]*content[8] - content[5]*content[6]) +
-        content[2] * (content[3]*content[7] - content[4]*content[6])
+        content_[0] * (content_[4]*content_[8] - content_[5]*content_[7]) -
+        content_[1] * (content_[3]*content_[8] - content_[5]*content_[6]) +
+        content_[2] * (content_[3]*content_[7] - content_[4]*content_[6])
     ;
 }
 
 Matrix3D Matrix3D::normalize() const {
     const double determinant = this->determinant();
     if (determinant == 0) throw(std::invalid_argument("Matrix3D::Cannot normalize, determinant is 0"));
+
     std::vector<double> content_out = getContentAsStdVector();
     std::transform(content_out.begin(), content_out.end(), content_out.begin(), [&determinant](double &nb) {
         return nb / determinant;
@@ -75,9 +81,9 @@ Matrix3D Matrix3D::normalize() const {
 
 Matrix3D Matrix3D::transpose() const {
     Matrix3D matrix_out = Matrix3D({
-        content[0], content[3], content[6],
-        content[1], content[4], content[7],
-        content[2], content[5], content[8]
+        content_[0], content_[3], content_[6],
+        content_[1], content_[4], content_[7],
+        content_[2], content_[5], content_[8]
     });
     return matrix_out;
 }
@@ -102,9 +108,8 @@ Matrix3D Matrix3D::invert() const {
     if (determinant == 0) throw std::invalid_argument("Matrix3D::Cannot invert, determinant is 0");
     Matrix3D adjugate = this->adjugate();
     Matrix3D inverse = Matrix3D(adjugate);
-    std::transform(inverse.content.begin(), inverse.content.end(), inverse.content.begin(), [&determinant](double &nb) {
-        return nb / determinant;
-    });
+    for (size_t i = 0; i < 9; i++)
+        inverse.content_[i] /= determinant;
     return inverse.transpose();
 }
 
@@ -113,27 +118,30 @@ Matrix3D Matrix3D::identity() {
 }
 
 Matrix3D operator+(const Matrix3D &matrix3D_1, const Matrix3D &matrix3D_2) {
-    std::vector<double> content1 = matrix3D_1.getContentAsStdVector();
-    std::vector<double> content2 = matrix3D_2.getContentAsStdVector();
-    std::vector<double> content_out = std::vector<double>(Matrix3D::columnCount * Matrix3D::lineCount, 0);
-    std::transform(content1.begin(), content1.end(), content2.begin(), content_out.begin(), std::plus<double>());
+    std::vector<double> content_out = std::vector<double>(9, 0);
+    for (size_t i = 0; i < 9; i++)
+    {
+        content_out[i] = matrix3D_1.content_[i] + matrix3D_2.content_[i];
+    }
     return Matrix3D(content_out);
 }
 
 Matrix3D operator-(const Matrix3D &matrix3D_1, const Matrix3D &matrix3D_2) {
-    std::vector<double> content1 = matrix3D_1.getContentAsStdVector();
-    std::vector<double> content2 = matrix3D_2.getContentAsStdVector();
-    std::vector<double> content_out = std::vector<double>(Matrix3D::columnCount * Matrix3D::lineCount, 0);
-    std::transform(content1.begin(), content1.end(), content2.begin(), content_out.begin(), std::minus<double>());
+    std::vector<double> content_out = std::vector<double>(9, 0);
+    for (size_t i = 0; i < 9; i++)
+    {
+        content_out[i] = matrix3D_1.content_[i] - matrix3D_2.content_[i];
+    }
     return Matrix3D(content_out);
 }
 
 Matrix3D operator*(const Matrix3D &matrix3D, const double &multiplier) {
-    std::vector<double> content = matrix3D.getContentAsStdVector();
-    std::transform(content.begin(), content.end(), content.begin(), [&multiplier](double &nb) {
-        return nb * multiplier;
-    });
-    return Matrix3D(content);
+    std::vector<double> content_out = matrix3D.getContentAsStdVector();
+    for (size_t i = 0; i < 9; i++)
+    {
+        content_out[i] = matrix3D.content_[i] * multiplier;
+    }
+    return Matrix3D(content_out);
 }
 
 Matrix3D operator*(const double &multiplier, const Matrix3D &matrix3D) {
@@ -161,23 +169,25 @@ Matrix3D operator*(const Matrix3D &matrix3D_1, const Matrix3D &matrix3D_2) {
 }
 
 bool operator==(const Matrix3D &matrix3D_1, const Matrix3D &matrix3D_2) {
-    return matrix3D_1.getContentAsStdVector() == matrix3D_2.getContentAsStdVector();
+    for (size_t i = 0; i < 9; i++)
+    {
+        if (abs(matrix3D_1.content_[i] - matrix3D_2.content_[i]) > epsilon) return false;
+    }
+    return true;
 }
 
-std::ostream &operator<<(std::ostream &out, const Matrix3D &matrix3D) {
-    std::vector<double> content = matrix3D.getContentAsStdVector();
-    out << content[0] << " " << content[1] << " " << content[2] << std::endl;
-    out << content[3] << " " << content[4] << " " << content[5] << std::endl;
-    out << content[6] << " " << content[7] << " " << content[8] << std::endl;
-    return out;
-}
-
-
-Vecteur3D operator*(const Matrix3D& matrix3D, const Vecteur3D& vecteur3D)
+Vector3D operator*(const Matrix3D& matrix3D, const Vector3D& vecteur3D)
 {
     float x = matrix3D(0, 0) * vecteur3D.get_x() + matrix3D(0, 1) * vecteur3D.get_y() + matrix3D(0, 2) * vecteur3D.get_z();
     float y = matrix3D(1, 0) * vecteur3D.get_x() + matrix3D(1, 1) * vecteur3D.get_y() + matrix3D(1, 2) * vecteur3D.get_z();
     float z = matrix3D(2, 0) * vecteur3D.get_x() + matrix3D(2, 1) * vecteur3D.get_y() + matrix3D(2, 2) * vecteur3D.get_z();
-    return Vecteur3D(x, y, z);
+    return Vector3D(x, y, z);
    
+}
+
+std::ostream& operator<<(std::ostream& out, const Matrix3D& matrix3D) {
+    out << matrix3D.content_[0] << " " << matrix3D.content_[1] << " " << matrix3D.content_[2] << std::endl;
+    out << matrix3D.content_[3] << " " << matrix3D.content_[4] << " " << matrix3D.content_[5] << std::endl;
+    out << matrix3D.content_[6] << " " << matrix3D.content_[7] << " " << matrix3D.content_[8] << std::endl;
+    return out;
 }

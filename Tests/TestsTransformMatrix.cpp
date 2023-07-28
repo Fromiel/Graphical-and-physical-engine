@@ -1,12 +1,9 @@
 #include <gtest/gtest.h>
 #include "Components/Camera.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include "Components/Sphere.h"
 
 
-glm::vec3 toVec3(Vecteur3D vect)
+glm::vec3 toVec3(Vector3D vect)
 {
 	return glm::vec3(vect.get_x(), vect.get_y(), vect.get_z());
 }

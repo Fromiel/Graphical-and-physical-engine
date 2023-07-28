@@ -8,20 +8,20 @@
 #include "Engine.h"
 #include "Components/Colliders.h"
 
-GameObject::GameObject(Vecteur3D position, Vecteur3D scale, Quaternion orientation) : coordinator_(Coordinator::getInstance()), entity_(coordinator_->createEntity())
+GameObject::GameObject(Vector3D position, Vector3D scale, Quaternion orientation) : coordinator_(Coordinator::getInstance()), entity_(coordinator_->createEntity())
 {
 	Transform transform(position, scale, orientation);
 	coordinator_->addComponent(entity_, transform);
 }
 
-GameObject::GameObject(Vecteur3D position, Vecteur3D scale, Vecteur3D orientation) : coordinator_(Coordinator::getInstance()), entity_(coordinator_->createEntity())
+GameObject::GameObject(Vector3D position, Vector3D scale, Vector3D orientation) : coordinator_(Coordinator::getInstance()), entity_(coordinator_->createEntity())
 {
 	Transform transform(position, scale, orientation);
 	coordinator_->addComponent(entity_, transform);
 }
 
 
-void GameObject::createParticule(Vecteur3D vel_initiale, float r, float m)
+void GameObject::createParticule(Vector3D vel_initiale, float r, float m)
 { 
 	if (hasParticule())
 		removeComponent<Particule>();
@@ -37,7 +37,7 @@ void GameObject::addGravity(float g)
 	Engine::getInstance()->getPhysicalEngine()->addForce(coordinator_->getComponentPtr<Particule>(entity_), ptr_forceGravite);
 }
 
-void GameObject::addBungee(float kElasticite, Vecteur3D attache, float l0)
+void GameObject::addBungee(float kElasticite, Vector3D attache, float l0)
 {
 	if (!hasParticule()) return;
 
@@ -46,7 +46,7 @@ void GameObject::addBungee(float kElasticite, Vecteur3D attache, float l0)
 	Engine::getInstance()->getPhysicalEngine()->addForce(particule, ptr_bungee);
 }
 
-void GameObject::addRessortPtFixe(float kElasticite, Vecteur3D attache, float l0)
+void GameObject::addRessortPtFixe(float kElasticite, Vector3D attache, float l0)
 {
 	if (!hasParticule()) return;
 
@@ -88,7 +88,7 @@ void GameObject::addRod(float l, GameObject& g)
 // -------------------------- Rigidbody -----------------------------//
 // ----------------------------------------------------------------- //
 
-void GameObject::createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D initialSpeed, Vecteur3D angularSpeed)
+void GameObject::createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vector3D initialSpeed, Vector3D angularSpeed)
 {
 	if (hasRigidbody())
 		removeComponent<Rigidbody>();
@@ -104,7 +104,7 @@ void GameObject::addGravityRigidbody(float g)
 	Engine::getInstance()->getPhysicalEngine()->addForceRigidbody(coordinator_->getComponentPtr<Rigidbody>(entity_), ptr_forceGravite);
 }
 
-void GameObject::addRessortPtPtRigidbody(const Vecteur3D& bodyAnchor, const Vecteur3D otherAnchor, float kElasticite, GameObject& g1, GameObject& g2, float l0)
+void GameObject::addRessortPtPtRigidbody(const Vector3D& bodyAnchor, const Vector3D otherAnchor, float kElasticite, GameObject& g1, GameObject& g2, float l0)
 {
 	if (!g1.hasRigidbody() || !g2.hasRigidbody()) return;
 
@@ -121,12 +121,12 @@ void GameObject::addRessortPtPtRigidbody(const Vecteur3D& bodyAnchor, const Vect
 // -------------------------- Colliders -----------------------------//
 // ----------------------------------------------------------------- //
 
-void GameObject::addSphereCollider(float radius, Vecteur3D position)
+void GameObject::addSphereCollider(float radius, Vector3D position)
 {
 	Rigidbody* r = NULL;
 	if (coordinator_->hasComponent<Rigidbody>(entity_))
 		r = coordinator_->getComponentPtr<Rigidbody>(entity_);
-	std::shared_ptr<Collider> c(new SphereCollider(entity_, radius, position, Vecteur3D(), r));
+	std::shared_ptr<Collider> c(new SphereCollider(entity_, radius, position, Vector3D(), r));
 	coordinator_->addComponent(entity_, c);
 }
 
@@ -136,11 +136,11 @@ void GameObject::addPlaneCollider(float halfSizeX, float halfSizeY)
 	Rigidbody* r = NULL;
 	if (coordinator_->hasComponent<Rigidbody>(entity_))
 		r = coordinator_->getComponentPtr<Rigidbody>(entity_);
-	std::shared_ptr<Collider> c(new PlaneCollider(entity_, halfSizeX, halfSizeY, Vecteur3D(), Vecteur3D(), r));
+	std::shared_ptr<Collider> c(new PlaneCollider(entity_, halfSizeX, halfSizeY, Vector3D(), Vector3D(), r));
 	coordinator_->addComponent(entity_, c);
 }
 
-void GameObject::addBoxCollider(Vecteur3D halfsize, Vecteur3D position, Vecteur3D orientation)
+void GameObject::addBoxCollider(Vector3D halfsize, Vector3D position, Vector3D orientation)
 {
 	Rigidbody* r = NULL;
 	if (coordinator_->hasComponent<Rigidbody>(entity_))

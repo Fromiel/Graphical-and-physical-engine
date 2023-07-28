@@ -8,13 +8,13 @@
 class SpringForceGenerator : public ForceGenerator {
 private:
 	//Anchor point in local coordinate
-	Vecteur3D m_bodyAnchor;
+	Vector3D m_bodyAnchor;
 
 	//Other Rigidbody (?)
 	Rigidbody* m_otherRigidbody = nullptr;
 
 	//Other Anchor point in local coordinate
-	Vecteur3D m_otherBodyAnchor;
+	Vector3D m_otherBodyAnchor;
 
 	//Spring parameters
 	float m_k;
@@ -22,7 +22,7 @@ private:
 public:
 	//Constructeurs
 	SpringForceGenerator();
-	SpringForceGenerator(const Vecteur3D& bodyAnchor, Rigidbody* otherRigidbody, const Vecteur3D otherAnchor, float mk, float restlength);
+	SpringForceGenerator(const Vector3D& bodyAnchor, Rigidbody* otherRigidbody, const Vector3D otherAnchor, float mk, float restlength);
 
 	//Destructeur
 	~SpringForceGenerator();

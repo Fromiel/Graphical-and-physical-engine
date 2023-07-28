@@ -8,7 +8,7 @@ void Camera::computeViewMatrix()
 
     Matrix34 tmp;
     tmp.setOrientationAndPosition(transform.getOrientation(), transform.getPosition());
-    viewMatrix_ = tmp.inverse();
+    viewMatrix_ = tmp.invert();
 }
 
 Camera::Camera(Entity entity, float near, float far, float fov, float ratio) : cameraEntity_(entity), ratio_(ratio)
@@ -60,17 +60,17 @@ Matrix4D Camera::projectionMatrix()
 }
 
 
-void Camera::movePosition(Vecteur3D move)
+void Camera::movePosition(Vector3D move)
 {
     Coordinator* coordinator = Coordinator::getInstance();
     Transform& transform =  coordinator->getComponent<Transform>(cameraEntity_);
-    Vecteur3D newPos = transform.getPosition() + move;
+    Vector3D newPos = transform.getPosition() + move;
     transform.setPosition(newPos);
     computeViewMatrix();
 }
 
 
-void Camera::move(const Vecteur3D &vect)
+void Camera::move(const Vector3D &vect)
 {
     Coordinator* coordinator = Coordinator::getInstance();
     Transform& transform = coordinator->getComponent<Transform>(cameraEntity_);
@@ -79,7 +79,7 @@ void Camera::move(const Vecteur3D &vect)
 }
 
 
-void Camera::rotate(float angle, const Vecteur3D &pivot)
+void Camera::rotate(float angle, const Vector3D &pivot)
 {
     Coordinator* coordinator = Coordinator::getInstance();
     Transform& transform = coordinator->getComponent<Transform>(cameraEntity_);
@@ -87,7 +87,7 @@ void Camera::rotate(float angle, const Vecteur3D &pivot)
     computeViewMatrix();
 }
 
-void Camera::lookAt(const Vecteur3D &eye, const Vecteur3D &center, const Vecteur3D &up)
+void Camera::lookAt(const Vector3D &eye, const Vector3D &center, const Vector3D &up)
 {
     //todo
 }

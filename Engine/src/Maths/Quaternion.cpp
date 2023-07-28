@@ -1,12 +1,14 @@
 #include "Maths/Quaternion.h"
 
-Quaternion::Quaternion(float w, float x, float y, float z, bool shouldNormalize) : w(w), x(x), y(y), z(z) {
-    if (w == x && x == y && y == z && z == 0) w = 1; 
+#include <cmath>
+
+Quaternion::Quaternion(float w, float x, float y, float z, bool shouldNormalize) : w_(w), x_(x), y_(y), z_(z) {
+    //if (w == x && x == y && y == z && z == 0) w = 1; //Don't know why someone did that before
     if (shouldNormalize) normalize();
     return;
 }
 
-Quaternion::Quaternion(const Vecteur3D &orientation)
+Quaternion::Quaternion(const Vector3D &orientation)
 {
     double cr = cos(orientation.get_x() * 0.5);
     double sr = sin(orientation.get_x() * 0.5);
@@ -15,111 +17,95 @@ Quaternion::Quaternion(const Vecteur3D &orientation)
     double cy = cos(orientation.get_z() * 0.5);
     double sy = sin(orientation.get_z() * 0.5);
 
-    w = cr * cp * cy + sr * sp * sy;
-    x = sr * cp * cy - cr * sp * sy;
-    y = cr * sp * cy + sr * cp * sy;
-    z = cr * cp * sy - sr * sp * cy;
+    w_ = cr * cp * cy + sr * sp * sy;
+    x_ = sr * cp * cy - cr * sp * sy;
+    y_ = cr * sp * cy + sr * cp * sy;
+    z_ = cr * cp * sy - sr * sp * cy;
 }
 
-Quaternion::Quaternion(const Quaternion &other) {
-    this->w = other.w;
-    this->x = other.x;
-    this->y = other.y;
-    this->z = other.z;
-    return;
-}
-
-Quaternion::~Quaternion() {
-    return;
-}
 
 void Quaternion::normalize() {
-    float magnitude = static_cast<float>(sqrt(pow(w, 2) + pow(x, 2) + pow(y, 2) + pow(z, 2)));
+    float magnitude = static_cast<float>(sqrt(pow(w_, 2) + pow(x_, 2) + pow(y_, 2) + pow(z_, 2)));
     if (magnitude != 0) {
-        w /= magnitude;
-        x /= magnitude;
-        y /= magnitude;
-        z /= magnitude;
+        w_ /= magnitude;
+        x_ /= magnitude;
+        y_ /= magnitude;
+        z_ /= magnitude;
     }
     else {
-        w = 0;
-        x = 0;
-        y = 0;
-        z = 0;
+        w_ = 0;
+        x_ = 0;
+        y_ = 0;
+        z_ = 0;
     }
     
     return;
 }
 
-void Quaternion::rotateByVector(const Vecteur3D &vector) {
+void Quaternion::rotateByVector(const Vector3D &vector) {
     Quaternion rotation = Quaternion(0, vector.get_x(), vector.get_y(), vector.get_z(), false);
     Quaternion result = (*this) * rotation;
-    w = result.w;
-    x = result.x;
-    y = result.y;
-    z = result.z;
+    w_ = result.w_;
+    x_ = result.x_;
+    y_ = result.y_;
+    z_ = result.z_;
     normalize();
     return;
 }
 
-void Quaternion::updateByAngularVelocity(const Vecteur3D &vector, float duration) {
+void Quaternion::updateByAngularVelocity(const Vector3D &vector, float duration) {
     Quaternion rotation = Quaternion(0, vector.get_x() * duration, vector.get_y() * duration, vector.get_z() * duration, false);
-    //std::cout << "\nQuaternion new rotation = " << rotation << std::endl;
     Quaternion result = rotation * (*this);
-    //std::cout << "Quaternion result = " << result << std::endl;
-    w += result.w * 0.5f;
-    x += result.x * 0.5f;
-    y += result.y * 0.5f;
-    z += result.z * 0.5f;
 
-    //std::cout << "Quaternion nouvelle valeur = " << (*this) << std::endl;
+    w_ += result.w_ * 0.5f;
+    x_ += result.x_ * 0.5f;
+    y_ += result.y_ * 0.5f;
+    z_ += result.z_ * 0.5f;
 
     normalize();
-
-    //std::cout << "Quaternion nouvelle valeur2 = " << (*this) << std::endl << std::endl;
     return;
 }
 
 std::vector<float> Quaternion::getContentAsStdVector() const {
-    return std::vector<float>({w, x, y, z});
+    return std::vector<float>({w_, x_, y_, z_});
 }
 
 void Quaternion::operator=(const Quaternion &other) {
-    w = other.w;
-    x = other.x;
-    y = other.y;
-    z = other.z;
+    w_ = other.w_;
+    x_ = other.x_;
+    y_ = other.y_;
+    z_ = other.z_;
     return;
 }
 
-void Quaternion::operator*=(const Quaternion &other) {
+Quaternion Quaternion::operator*=(const Quaternion &other) {
     Quaternion result = (*this) * other;
-    w = result.w;
-    x = result.x;
-    y = result.y;
-    z = result.z;
-    return;
+    w_ = result.w_;
+    x_ = result.x_;
+    y_ = result.y_;
+    z_ = result.z_;
+    return *this;
 }
 
 Quaternion operator*(const Quaternion &q1, const Quaternion &q2) {
-    float a1 = q1.w;
-    float b1 = q1.x;
-    float c1 = q1.y;
-    float d1 = q1.z;
+    float a1 = q1.w_;
+    float b1 = q1.x_;
+    float c1 = q1.y_;
+    float d1 = q1.z_;
 
-    float a2 = q2.w;
-    float b2 = q2.x;
-    float c2 = q2.y;
-    float d2 = q2.z;
+    float a2 = q2.w_;
+    float b2 = q2.x_;
+    float c2 = q2.y_;
+    float d2 = q2.z_;
 
     //std::cout << "\n q1*q2" << std::endl;
     //std::cout << "q1 = " << q1 << " q2 = " << q2 << std::endl;
 
     Quaternion result;
-    result.w = a1*a2 - b1*b2 - c1*c2 - d1*d2;
-    result.x = a1*b2 + b1*a2 + c1*d2 - d1*c2;
-    result.y = a1*c2 - b1*d2 + c1*a2 + d1*b2;
-    result.z = a1*d2 + b1*c2 - c1*b2 + d1*a2;
+    result.w_ = a1*a2 - b1*b2 - c1*c2 - d1*d2;
+    result.x_ = a1*b2 + b1*a2 + c1*d2 - d1*c2;
+    result.y_ = a1*c2 - b1*d2 + c1*a2 + d1*b2;
+    result.z_ = a1*d2 + b1*c2 - c1*b2 + d1*a2;
     //std::cout << "result = " << result << std::endl;
     //result.normalize();
     //std::cout << "result normalize = " << result << std::endl;
@@ -128,5 +114,5 @@ Quaternion operator*(const Quaternion &q1, const Quaternion &q2) {
 }
 
 std::ostream &operator<<(std::ostream &out, const Quaternion &quaternion) {
-    return out << "(" << quaternion.w << ", " << quaternion.x << ", " << quaternion.y << ", " << quaternion.z << ")";
+    return out << "(" << quaternion.w_ << ", " << quaternion.x_ << ", " << quaternion.y_ << ", " << quaternion.z_ << ")";
 }

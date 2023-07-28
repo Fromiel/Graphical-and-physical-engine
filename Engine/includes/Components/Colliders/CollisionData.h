@@ -6,9 +6,9 @@
 struct CollisionData
 {
 	//Normale au contact
-	Vecteur3D normalContact;
+	Vector3D normalContact;
 	//Point du contact dans les coordonnées du monde
-	Vecteur3D ptContact;
+	Vector3D ptContact;
 	//Penetration
 	float penetration;
 	//Rigidbody *rb1;

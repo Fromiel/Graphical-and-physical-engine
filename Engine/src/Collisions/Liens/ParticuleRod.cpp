@@ -19,7 +19,7 @@ unsigned int ParticuleRod::addContact(ParticuleContact* contact, unsigned int li
 
 	//On calcule la normale
 
-	Vecteur3D normal = particules[0]->getPos() - particules[1]->getPos();
+	Vector3D normal = particules[0]->getPos() - particules[1]->getPos();
 	normal.normalized();
 
 	if (current_length > length) { //Cas longueur plus élevée

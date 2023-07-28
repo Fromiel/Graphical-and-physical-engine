@@ -3,7 +3,7 @@
 
 #include "CoreECS/Coordinator.h"
 #include "Shader.h"
-#include "Maths/Vecteur3D.h"
+#include "Maths/Vector3D.h"
 
 /// <summary>
 /// Component représentant le matériaux d'un objet
@@ -12,11 +12,11 @@ class Material
 {
 	private:
 		//Couleur du materiaux sous lumiere ambiante
-		Vecteur3D ambient_;
+		Vector3D ambient_;
 		//Couleur de la réflexion de la lumiere à la surface
-		Vecteur3D specular_;
+		Vector3D specular_;
 		//Couleur du matériaux avec la lumiere diffuse
-		Vecteur3D diffuse_;
+		Vector3D diffuse_;
 		//Impact la taille du "rond de reflexion de la lumiere"
 		float alpha_;
 		//Transparence du material
@@ -34,7 +34,7 @@ class Material
 		/// <param name="specular"></param>
 		/// <param name="diffuse"></param>
 		/// <param name="alpha"></param>
-		Material(Shader shader, Vecteur3D ambient = Vecteur3D(1, 1, 1), Vecteur3D specular = Vecteur3D(1, 1, 1), Vecteur3D diffuse = Vecteur3D(1, 1, 1), float alpha = 32, float transparency = 1.0f);
+		Material(Shader shader, Vector3D ambient = Vector3D(1, 1, 1), Vector3D specular = Vector3D(1, 1, 1), Vector3D diffuse = Vector3D(1, 1, 1), float alpha = 32, float transparency = 1.0f);
 
 		/// <summary>
 		/// Getter du shader
@@ -46,19 +46,19 @@ class Material
 		/// Getter de ambient
 		/// </summary>
 		/// <returns></returns>
-		Vecteur3D getAmbient() const { return ambient_; }
+		Vector3D getAmbient() const { return ambient_; }
 
 		/// <summary>
 		/// Getter de specular
 		/// </summary>
 		/// <returns></returns>
-		Vecteur3D getSpecular() const { return specular_; }
+		Vector3D getSpecular() const { return specular_; }
 
 		/// <summary>
 		/// Getter de diffuse
 		/// </summary>
 		/// <returns></returns>
-		Vecteur3D getDiffuse() const { return diffuse_; }
+		Vector3D getDiffuse() const { return diffuse_; }
 
 		/// <summary>
 		/// Getter de alpha
@@ -82,19 +82,19 @@ class Material
 		/// Set ambient (chaque valeur du vecteur3D doit être entre 0 et 1)
 		/// </summary>
 		/// <param name="ambient"></param>
-		void setAmbient(Vecteur3D ambient) { ambient = ambient_; }
+		void setAmbient(Vector3D ambient) { ambient = ambient_; }
 
 		/// <summary>
 		/// Set specular (chaque valeur du vecteur3D doit être entre 0 et 1)
 		/// </summary>
 		/// <param name="specular"></param>
-		void setSpecular(Vecteur3D specular) { specular_ = specular; }
+		void setSpecular(Vector3D specular) { specular_ = specular; }
 
 		/// <summary>
 		/// Set diffuse (chaque valeur du vecteur3D doit être entre 0 et 1)
 		/// </summary>
 		/// <param name="diffuse"></param>
-		void setDiffuse(Vecteur3D diffuse) { diffuse_ = diffuse; }
+		void setDiffuse(Vector3D diffuse) { diffuse_ = diffuse; }
 
 		/// <summary>
 		/// 

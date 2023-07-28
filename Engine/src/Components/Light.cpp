@@ -1,11 +1,11 @@
 #include "Components/Light.h"
 
-Light::Light(Vecteur3D color, Vecteur3D specular) : color_(color), specular_(specular)
+Light::Light(Vector3D color, Vector3D specular) : color_(color), specular_(specular)
 {
 
 }
 
-void Light::setColor(const Vecteur3D& color, bool IsBetweenOAnd1)
+void Light::setColor(const Vector3D& color, bool IsBetweenOAnd1)
 { 
 	if (IsBetweenOAnd1)
 	{
@@ -18,6 +18,6 @@ void Light::setColor(const Vecteur3D& color, bool IsBetweenOAnd1)
 		if (color.get_x() > 255 || color.get_x() < 0.0f || color.get_y() > 255 || color.get_y() < 0.0f || color.get_z() > 255 || color.get_z() < 0.0f)
 			throw "Color not in the good format";
 
-		color_ = Vecteur3D(color.get_x() / 255.0f, color.get_y() / 255.0f, color.get_z() / 255.0f);
+		color_ = Vector3D(color.get_x() / 255.0f, color.get_y() / 255.0f, color.get_z() / 255.0f);
 	}
 }

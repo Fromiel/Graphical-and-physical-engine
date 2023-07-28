@@ -18,7 +18,7 @@ public:
 	float penetration;
 
 	//normale du contact
-	Vecteur3D contactNormal;
+	Vector3D contactNormal;
 
 	//Résolveur de la vélocité et interpénétration
 	//NOTE : Implémentation des résolutions différente du livre (plus proche du cours ?); possibilité de changer en cas de dysfonctionnement

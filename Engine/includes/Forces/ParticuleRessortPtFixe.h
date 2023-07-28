@@ -8,14 +8,14 @@ class ParticuleRessortPtFixe : public ParticuleForceGenerator {
 	
 private:
 	float _kElasticite;
-	Vecteur3D _attache;
+	Vector3D _attache;
 	float _l0;
 
 public:
-	ParticuleRessortPtFixe(float kElasticite, Vecteur3D attache, const Particule& particule, float l0);
+	ParticuleRessortPtFixe(float kElasticite, Vector3D attache, const Particule& particule, float l0);
 	~ParticuleRessortPtFixe();
 	float getkElasticite() { return _kElasticite; };
-	Vecteur3D getAttache() { return _attache; };
+	Vector3D getAttache() { return _attache; };
 	virtual void updateForce(Particule*, float duration);
 };
 

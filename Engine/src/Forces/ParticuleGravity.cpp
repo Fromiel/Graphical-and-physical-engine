@@ -8,12 +8,12 @@ void ParticuleGravity::updateForce(Particule* particule, float duration) {
 	}
 }
 
-ParticuleGravity::ParticuleGravity(const Vecteur3D& g = Vecteur3D(0.0f, -9.81f, 0.0f)) {
-	gravity = Vecteur3D(g);
+ParticuleGravity::ParticuleGravity(const Vector3D& g = Vector3D(0.0f, -9.81f, 0.0f)) {
+	gravity = Vector3D(g);
 }
 
 ParticuleGravity::ParticuleGravity(float g) {
-	gravity = Vecteur3D(0, g, 0);
+	gravity = Vector3D(0, g, 0);
 }
 
 ParticuleGravity::~ParticuleGravity(){}

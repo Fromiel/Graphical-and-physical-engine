@@ -62,11 +62,11 @@ void Render::update(float dt)
 	int width, height;
 	Camera& camera = coordinator->getComponent<Camera>(camera_);
 	Light light = coordinator->getComponent<Light>(light_);
-	Vecteur3D lightPosition = coordinator->getComponent<Transform>(light_).getPosition();
-	Vecteur3D lightColor = light.getColor();
+	Vector3D lightPosition = coordinator->getComponent<Transform>(light_).getPosition();
+	Vector3D lightColor = light.getColor();
 	Matrix34 view = camera.getViewMatrix();
 	Matrix4D projection = camera.projectionMatrix();
-	Vecteur3D posCamera = coordinator->getComponent<Transform>(camera_).getPosition();
+	Vector3D posCamera = coordinator->getComponent<Transform>(camera_).getPosition();
 
 	glfwGetFramebufferSize(window_, &width, &height);
 	ratio = width / (float)height;

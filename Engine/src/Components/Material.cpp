@@ -1,6 +1,6 @@
 #include "Components/Material.h" 
 
-Material::Material(Shader shader, Vecteur3D ambient, Vecteur3D specular, Vecteur3D diffuse, float alpha, float transparency) : shader_(shader), ambient_(ambient), specular_(specular), diffuse_(diffuse), alpha_(alpha), transparency_(transparency)
+Material::Material(Shader shader, Vector3D ambient, Vector3D specular, Vector3D diffuse, float alpha, float transparency) : shader_(shader), ambient_(ambient), specular_(specular), diffuse_(diffuse), alpha_(alpha), transparency_(transparency)
 {
 
 }

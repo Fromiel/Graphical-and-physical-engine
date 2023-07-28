@@ -1,7 +1,7 @@
 #include "Collisions/WallContactGenerator.h"
 
 unsigned int WallContactGenerator::addContact(ParticuleContact* contact, unsigned int limit) const {
-	float distance = (scalar_product(normale, particule->getPos() - center));
+	float distance = (Vector3D::scalar_product(normale, particule->getPos() - center));
 
 	if (abs(distance) > (thickness / 2)) return 0; //On est pas dans le mur : on quitte
 
@@ -20,7 +20,7 @@ unsigned int WallContactGenerator::addContact(ParticuleContact* contact, unsigne
 
 }
 
-WallContactGenerator::WallContactGenerator(Particule* ptr, Vecteur3D cen = Vecteur3D(0,0,0), Vecteur3D nor = Vecteur3D(0,0,0), float thick = 0) {
+WallContactGenerator::WallContactGenerator(Particule* ptr, Vector3D cen = Vector3D(0,0,0), Vector3D nor = Vector3D(0,0,0), float thick = 0) {
 	particule = ptr;
 	center = cen;
 	normale = nor;

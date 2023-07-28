@@ -19,7 +19,7 @@ class GameObject
 		/// <param name="position"></param>
 		/// <param name="scale"></param>
 		/// <param name="orientation"></param>
-		GameObject(Vecteur3D position = Vecteur3D(), Vecteur3D scale = Vecteur3D(1, 1, 1), Quaternion orientation = Quaternion());
+		GameObject(Vector3D position = Vector3D(), Vector3D scale = Vector3D(1, 1, 1), Quaternion orientation = Quaternion());
 
 
 		/// <summary>
@@ -28,7 +28,7 @@ class GameObject
 		/// <param name="position"></param>
 		/// <param name="scale"></param>
 		/// <param name="orientation"></param>
-		GameObject(Vecteur3D position, Vecteur3D scale, Vecteur3D orientation);
+		GameObject(Vector3D position, Vector3D scale, Vector3D orientation);
 
 		/// <summary>
 		/// Detruit le gameobject
@@ -94,7 +94,7 @@ class GameObject
 		/// <param name="vel_initiale"></param>
 		/// <param name="r"></param>
 		/// <param name="m"></param>
-		void createParticule(Vecteur3D vel_initiale, float r, float m);
+		void createParticule(Vector3D vel_initiale, float r, float m);
 
 		/// <summary>
 		/// Methode pour savoir si le gameobject est une particule
@@ -114,7 +114,7 @@ class GameObject
 		/// <param name="kElasticite"></param>
 		/// <param name="attache"></param>
 		/// <param name="l0"></param>
-		void addBungee(float kElasticite, Vecteur3D attache, float l0);
+		void addBungee(float kElasticite, Vector3D attache, float l0);
 
 		/// <summary>
 		/// Methode pour ajouter une force de ressort avec un point fixe à la particule
@@ -122,7 +122,7 @@ class GameObject
 		/// <param name="kElasticite"></param>
 		/// <param name="attache"></param>
 		/// <param name="l0"></param>
-		void addRessortPtFixe(float kElasticite, Vecteur3D attache, float l0);
+		void addRessortPtFixe(float kElasticite, Vector3D attache, float l0);
 
 		/// <summary>
 		/// Methode pour ajouter une force de ressort entre deux particules
@@ -160,7 +160,7 @@ class GameObject
 		/// <param name="vel_initiale"></param>
 		/// <param name="r"></param>
 		/// <param name="m"></param>
-		void createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D initialSpeed = Vecteur3D(), Vecteur3D angularSpeed = Vecteur3D());
+		void createRigidbody(float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vector3D initialSpeed = Vector3D(), Vector3D angularSpeed = Vector3D());
 
 		/// <summary>
 		/// Methode pour savoir si le gameobject est un rb
@@ -180,7 +180,7 @@ class GameObject
 		/// <param name="kElasticite"></param>
 		/// <param name="attache"></param>
 		/// <param name="l0"></param>
-		void addRessortPtPtRigidbody(const Vecteur3D& bodyAnchor, const Vecteur3D otherAnchor, float kElasticite, GameObject& g1, GameObject& g2, float l0);
+		void addRessortPtPtRigidbody(const Vector3D& bodyAnchor, const Vector3D otherAnchor, float kElasticite, GameObject& g1, GameObject& g2, float l0);
 
 
 		// ------------------------------------------------------------------------------------//
@@ -193,7 +193,7 @@ class GameObject
 		/// </summary>
 		/// <param name="radius">rayon du collider</param>
 		/// <param name="position">Position par rapport au gameobject du centre du collider</param>
-		void addSphereCollider(float radius, Vecteur3D position = Vecteur3D());
+		void addSphereCollider(float radius, Vector3D position = Vector3D());
 
 		/// <summary>
 		/// Methode pour ajouter un planeCollider au gameobject
@@ -208,7 +208,7 @@ class GameObject
 		/// </summary>
 		/// <param name="halfsize"></param>
 		/// <param name="position"></param>
-		void addBoxCollider(Vecteur3D halfsize = Vecteur3D(1, 1, 1), Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D());
+		void addBoxCollider(Vector3D halfsize = Vector3D(1, 1, 1), Vector3D position = Vector3D(), Vector3D orientation = Vector3D());
 };
 
 

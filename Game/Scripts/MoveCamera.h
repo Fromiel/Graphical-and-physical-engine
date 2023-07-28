@@ -28,43 +28,43 @@ void Update(float dt, Entity entity)
 
 	if (keyInput->getIsKeyDown(GLFW_KEY_W))
 	{
-		camera.move(dt * speed * Vecteur3D(0, 0, -1));
+		camera.move(dt * speed * Vector3D(0, 0, -1));
 	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_S))
 	{
-		camera.move(dt * speed * Vecteur3D(0, 0, 1));
+		camera.move(dt * speed * Vector3D(0, 0, 1));
 	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_A))
 	{
-		camera.move(dt * speed * Vecteur3D(-1, 0, 0));
+		camera.move(dt * speed * Vector3D(-1, 0, 0));
 	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_D))
 	{
-		camera.move(dt * speed * Vecteur3D(1, 0, 0));
+		camera.move(dt * speed * Vector3D(1, 0, 0));
 	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_SPACE))
 	{
-		camera.move(dt * speed * Vecteur3D(0, 1, 0));
+		camera.move(dt * speed * Vector3D(0, 1, 0));
 	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_Q))
 	{
-		camera.move(dt * speed * Vecteur3D(0, -1, 0));
+		camera.move(dt * speed * Vector3D(0, -1, 0));
 	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_UP))
 	{
-		camera.rotate(rotationSpeed * dt, Vecteur3D(1, 0, 0));
+		camera.rotate(rotationSpeed * dt, Vector3D(1, 0, 0));
 	}
 	else if (keyInput->getIsKeyDown(GLFW_KEY_LEFT))
 	{
-		camera.rotate(rotationSpeed * dt, Vecteur3D(0, 1, 0));
+		camera.rotate(rotationSpeed * dt, Vector3D(0, 1, 0));
 	}
 	else if (keyInput->getIsKeyDown(GLFW_KEY_DOWN))
 	{
-		camera.rotate(rotationSpeed * dt, Vecteur3D(-1, 0, 0));
+		camera.rotate(rotationSpeed * dt, Vector3D(-1, 0, 0));
 	}
 	else if (keyInput->getIsKeyDown(GLFW_KEY_RIGHT))
 	{
-		camera.rotate(rotationSpeed * dt, Vecteur3D(0, -1, 0));
+		camera.rotate(rotationSpeed * dt, Vector3D(0, -1, 0));
 	}
 	if (keyInput->getIsKeyDown(GLFW_KEY_ESCAPE))
 	{

@@ -1,85 +1,87 @@
 #include "Maths/Matrix34.h"
 
-Matrix34::Matrix34() {
-    this->content = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    return;
-}
+#include <algorithm>
+#include <functional>
+
+const float epsilon = 0.00001f;
+
+Matrix34::Matrix34() : content_{} {}
 
 Matrix34::Matrix34(const std::vector<double> &content) {
     if (content.size() != 12) throw std::invalid_argument("Matrix34::Provide content with size 12");
-    this->content = content;
-    return;
-}
 
-Matrix34::Matrix34(const Matrix34 &other) {
-    this->content = other.content;
-    return;
-}
+    for (size_t i = 0; i < 12; i++)
+        content_[i] = content[i];
 
-Matrix34::~Matrix34() {
     return;
 }
 
 std::vector<double> Matrix34::getContentAsStdVector() const {
-    return content;
+    return std::vector<double>(content_, content_ + 12);
 }
 
-Matrix34 Matrix34::inverse() {
-    std::vector<double> contentPadded = content;
-    contentPadded.push_back(0);
-    contentPadded.push_back(0);
-    contentPadded.push_back(0);
-    contentPadded.push_back(1);
-    std::vector<double> inverseContent = Matrix4D(contentPadded).invert().getContentAsStdVector();
-    std::vector<double> resultContent = {};
-    for (std::vector<double>::iterator it=inverseContent.begin(); it!=inverseContent.begin()+12; ++it) {
-        resultContent.push_back(*it);
-    }
-    return Matrix34(resultContent);
+
+// inv( M v )  = ( inv(M) -v )
+//    ( 0 1 )    (	 0    1  )
+Matrix34 Matrix34::invert() {
+    Matrix3D M = Matrix3D({
+        content_[0], content_[1], content_[2],
+        content_[4], content_[5], content_[6],
+        content_[8], content_[9], content_[10]
+    });
+
+    const double determinant = M.determinant();
+    if (determinant == 0) throw std::invalid_argument("Matrix34::Cannot invert, determinant is 0");
+
+    Matrix3D invM = M.invert();
+
+    Matrix34 inverse({invM(0, 0), invM(0, 1), invM(0, 2), -content_[3],
+					  invM(1, 0), invM(1, 1), invM(1, 2), -content_[7],
+					  invM(2, 0), invM(2, 1), invM(2, 2), -content_[11]
+    });
+
+    return inverse;
 }
 
-void Matrix34::setOrientationAndPosition(const Quaternion &orientation, const Vecteur3D &position) {
+void Matrix34::setOrientationAndPosition(const Quaternion &orientation, const Vector3D &position) {
     std::vector<float> q = orientation.getContentAsStdVector();
-    content = {
-        1 - (2*q[2]*q[2] + 2*q[3]*q[3]),
-        2*q[1]*q[2] - 2*q[3]*q[0],
-        2*q[1]*q[3] + 2*q[2]*q[0],
-        position.get_x(),
+    content_[0] = 1 - (2 * q[2] * q[2] + 2 * q[3] * q[3]);
+    content_[1] = 2 * q[1] * q[2] - 2 * q[3] * q[0];
+    content_[2] = 2 * q[1] * q[3] + 2 * q[2] * q[0];
+    content_[3] = position.get_x();
 
-        2*q[1]*q[2] + 2*q[3]*q[0],
-        1 - (2*q[1]*q[1] + 2*q[3]*q[3]),
-        2*q[2]*q[3] - 2*q[1]*q[0],
-        position.get_y(),
-        
-        2*q[1]*q[3] - 2*q[2]*q[0],
-        2*q[2]*q[3] + 2*q[1]*q[0],
-        1 - (2*q[1]*q[1] + 2*q[2]*q[2]),
-        position.get_z()
-    };
+    content_[4] = 2 * q[1] * q[2] + 2 * q[3] * q[0];
+    content_[5] = 1 - (2 * q[1] * q[1] + 2 * q[3] * q[3]);
+    content_[6] = 2 * q[2] * q[3] - 2 * q[1] * q[0];
+    content_[7] = position.get_y();
+
+    content_[8] = 2 * q[1] * q[3] - 2 * q[2] * q[0];
+    content_[9] = 2 * q[2] * q[3] + 2 * q[1] * q[0];
+    content_[10] = 1 - (2 * q[1] * q[1] + 2 * q[2] * q[2]);
+    content_[11] = position.get_z();
+    
     return;    
 }
 
-Vecteur3D Matrix34::transformPosition(const Vecteur3D &position) {
+Vector3D Matrix34::transformPosition(const Vector3D &position) {
     return *(this) * position;
 }
 
-Vecteur3D Matrix34::transformDirection(const Vecteur3D &direction) {
+Vector3D Matrix34::transformDirection(const Vector3D &direction) {
     std::vector<float> floatContent;
-    /*std::transform(content.begin(), content.end(), floatContent.begin(), [](const double& element) {  //Ca fait des erreurs
-        return static_cast<float>(element);
-    });*/
-    return Vecteur3D(
-        direction.get_x() * (float)content[0] +
-        direction.get_y() * (float)content[1] +
-        direction.get_z() * (float)content[2],
 
-        direction.get_x() * (float)content[4] +
-        direction.get_y() * (float)content[5] +
-        direction.get_z() * (float)content[6],
+    return Vector3D(
+        direction.get_x() * (float)content_[0] +
+        direction.get_y() * (float)content_[1] +
+        direction.get_z() * (float)content_[2],
 
-        direction.get_x() * (float)content[8] +
-        direction.get_y() * (float)content[9] +
-        direction.get_z() * (float)content[10]
+        direction.get_x() * (float)content_[4] +
+        direction.get_y() * (float)content_[5] +
+        direction.get_z() * (float)content_[6],
+
+        direction.get_x() * (float)content_[8] +
+        direction.get_y() * (float)content_[9] +
+        direction.get_z() * (float)content_[10]
     );
 }
 
@@ -87,28 +89,33 @@ double Matrix34::operator()(const int &line, const int &column) const {
     if (line < 0 || line > 2 || column < 0 || column > 3) {
         throw std::invalid_argument("Matrix3D::Provide line in range 0-2 and column in range 0-3");
     }
-    return content[Matrix34::columnCount * line + column];
+    return content_[Matrix34::columnCount * line + column];
 }
 
 double& Matrix34::operator()(const int line, const int column) {
     if (line < 0 || line > 2 || column < 0 || column > 3) {
         throw std::invalid_argument("Matrix3D::Provide line in range 0-2 and column in range 0-3");
     }
-    return content[Matrix34::columnCount * line + column];
+    return content_[Matrix34::columnCount * line + column];
 }
 
 void Matrix34::operator=(const Matrix34 &matrix) {
-    content = matrix.content;
-    return;
+    for (size_t i = 0; i < 12; i++)
+        content_[i] = matrix.content_[i];;
+    return;;
 }
 
 Matrix34 Matrix34::operator+=(const Matrix34 &matrix) {
-    std::transform(content.begin(), content.end(), matrix.content.begin(), content.begin(), std::plus<double>());
+    for (size_t i = 0; i < 12; i++)
+        content_[i] += matrix.content_[i];
+
     return *this;
 }
 
 Matrix34 Matrix34::operator-=(const Matrix34 &matrix) {
-    std::transform(content.begin(), content.end(), matrix.content.begin(), content.begin(), std::minus<double>());
+    for (size_t i = 0; i < 12; i++)
+        content_[i] -= matrix.content_[i];
+
     return *this;
 }
 
@@ -141,49 +148,46 @@ Matrix34 operator*(const double &multiplier, const Matrix34 &matrix) {
 }
 
 Matrix34 operator*(const Matrix34 &matrix_1, const Matrix34 &matrix_2) {
-    std::vector<double> contentPadded_1 = matrix_1.content;
-    contentPadded_1.push_back(0);
-    contentPadded_1.push_back(0);
-    contentPadded_1.push_back(0);
-    contentPadded_1.push_back(1);
-    std::vector<double> contentPadded_2 = matrix_2.content;
-    contentPadded_2.push_back(0);
-    contentPadded_2.push_back(0);
-    contentPadded_2.push_back(0);
-    contentPadded_2.push_back(1);
-    std::vector<double> prodContent = (Matrix4D(contentPadded_1) * Matrix4D(contentPadded_2)).getContentAsStdVector();
-    std::vector<double> resultContent = {};
-    for (std::vector<double>::iterator it=prodContent.begin(); it!=prodContent.begin()+12; ++it) {
-        resultContent.push_back(*it);
-    }
-    return Matrix34(resultContent);
+    std::vector<double> content;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++)
+        {
+            int b = 0; //if we are at the last column, b equal 1 else b equal 0
+            if(j == 3)
+			    b = 1;
+            content.push_back(matrix_1(i, 0) * matrix_2(0, j) + matrix_1(i, 1) * matrix_2(1, j) + matrix_1(i, 2) * matrix_2(2, j) + matrix_1(i, 3) * b);
+        }
+	}
+
+    return Matrix34(content);
 }
 
-Vecteur3D operator*(const Matrix34 &matrix, const Vecteur3D &vector) {
-    std::vector<double> contentAsFloatVector = matrix.getContentAsStdVector();
-    /*std::transform(matrix.content.begin(), matrix.content.end(), contentAsFloatVector.begin(), [](const double& nb) { ca fait crasher
-        return static_cast<float>(nb);
-    });*/
+Vector3D operator*(const Matrix34 &matrix, const Vector3D &vector) {
+    std::vector<double> contentAsVector = matrix.getContentAsStdVector();
 
-    return Vecteur3D(
-        contentAsFloatVector[0] * vector.get_x() + contentAsFloatVector[1] * vector.get_y() + contentAsFloatVector[2] * vector.get_z() + contentAsFloatVector[3],
-        contentAsFloatVector[4] * vector.get_x() + contentAsFloatVector[5] * vector.get_y() + contentAsFloatVector[6] * vector.get_z() + contentAsFloatVector[7],
-        contentAsFloatVector[8] * vector.get_x() + contentAsFloatVector[9] * vector.get_y() + contentAsFloatVector[10] * vector.get_z() + contentAsFloatVector[11]
+    return Vector3D(
+        contentAsVector[0] * vector.get_x() + contentAsVector[1] * vector.get_y() + contentAsVector[2] * vector.get_z() + contentAsVector[3],
+        contentAsVector[4] * vector.get_x() + contentAsVector[5] * vector.get_y() + contentAsVector[6] * vector.get_z() + contentAsVector[7],
+        contentAsVector[8] * vector.get_x() + contentAsVector[9] * vector.get_y() + contentAsVector[10] * vector.get_z() + contentAsVector[11]
     );
 }
 
 bool operator==(const Matrix34 &matrix_1, const Matrix34 &matrix_2) {
-    return matrix_1.getContentAsStdVector() == matrix_2.getContentAsStdVector();
+    for (size_t i = 0; i < 12; i++)
+    {
+        if (abs(matrix_1.content_[i] - matrix_2.content_[i]) > epsilon) return false;
+    }
+    return true;
 }
 
 std::ostream &operator<<(std::ostream &out, const Matrix34 &matrix) {
-    for (int i=0; i<matrix.content.size()-1; ++i) out << matrix.content[i] << ", ";
-    out << matrix.content[matrix.content.size()-1];
+    for (int i=0; i < 11; ++i) out << matrix.content_[i] << ", ";
+    out << matrix.content_[11] << std::endl;
     return out;
 }
 
 
-Matrix34 Matrix34::scaling(const Vecteur3D &scale)
+Matrix34 Matrix34::scaling(const Vector3D &scale)
 {
     std::vector<double> elements = { scale.get_x(), 0, 0, 0, 0, scale.get_y(), 0, 0, 0, 0, scale.get_z(), 0};
     Matrix34 res(elements);
@@ -207,6 +211,16 @@ Matrix4D operator*(const Matrix4D& matrix4D, const Matrix34& matrix34)
     content.push_back(0);
     content.push_back(1);
     return matrix4D * Matrix4D(content);
+}
+
+Matrix4D operator*(const Matrix34& matrix34, const Matrix4D& matrix4D)
+{
+    std::vector<double> content = matrix34.getContentAsStdVector();
+    content.push_back(0);
+    content.push_back(0);
+    content.push_back(0);
+    content.push_back(1);
+    return Matrix4D(content) * matrix4D;
 }
 
 Matrix3D operator*(const Matrix34& matrix34, const Matrix3D& matrix3) {

@@ -10,7 +10,7 @@ public:
 	BoundingSphere() : Bounding(), radius(0) {}
 
 	//Constructeur par valeurs
-	BoundingSphere(const Vecteur3D& cent, float r) : Bounding(cent), radius(r) {};
+	BoundingSphere(const Vector3D& cent, float r) : Bounding(cent), radius(r) {};
 
 	//Constructeur englobant 2 sphères
 	BoundingSphere(const BoundingSphere&, const BoundingSphere&);

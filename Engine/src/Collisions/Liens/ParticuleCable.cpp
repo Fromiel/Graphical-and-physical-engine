@@ -18,7 +18,7 @@ unsigned int ParticuleCable::addContact(ParticuleContact* contact, unsigned int 
 
 	//On calcule la normale
 
-	Vecteur3D normal = particules[0]->getPos() - (particules[1] ? particules[1]->getPos() : 0);
+	Vector3D normal = particules[0]->getPos() - (particules[1] ? particules[1]->getPos() : 0);
 	normal.normalized();
 	contact->contactNormal = normal;
 

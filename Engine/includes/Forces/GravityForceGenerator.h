@@ -6,7 +6,7 @@
 
 class GravityForceGenerator : public ForceGenerator {
 private:
-	Vecteur3D gravity;
+	Vector3D gravity;
 public:
 	//Constructeur(s)
 

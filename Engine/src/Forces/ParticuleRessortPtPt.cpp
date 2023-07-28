@@ -11,8 +11,8 @@ ParticuleRessortPtPt::~ParticuleRessortPtPt() {
 }
 
 void ParticuleRessortPtPt::updateForce(Particule* particule, float duration) {
-	Vecteur3D direction = particule->getPos() - _particuleExt->getPos();
+	Vector3D direction = particule->getPos() - _particuleExt->getPos();
 	direction = direction.normalized();
-	float l = distance(particule->getPos(), _particuleExt->getPos());
+	float l = Vector3D::distance(particule->getPos(), _particuleExt->getPos());
 	particule->addForce((-_kElasticite * (l - _l0))*direction);
 }

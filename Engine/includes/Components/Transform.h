@@ -1,7 +1,7 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "Maths/Vecteur3D.h"
+#include "Maths/Vector3D.h"
 #include "Maths/Matrix34.h"
 #include "Maths/Quaternion.h"
 
@@ -11,8 +11,8 @@
 class Transform
 {
 	private:
-		Vecteur3D position_;
-		Vecteur3D scale_;
+		Vector3D position_;
+		Vector3D scale_;
 		Quaternion orientation_;
 
 		Matrix34 modelMatrix_;
@@ -40,7 +40,7 @@ class Transform
 		/// <param name="position"></param>
 		/// <param name="scaling"></param>
 		/// <param name="rotation"></param>
-		Transform(Vecteur3D position = Vecteur3D(0, 0, 0), Vecteur3D scaling = Vecteur3D(1, 1, 1), Quaternion orientation = Quaternion());
+		Transform(Vector3D position = Vector3D(0, 0, 0), Vector3D scaling = Vector3D(1, 1, 1), Quaternion orientation = Quaternion());
 
 		/// <summary>
 		/// Constructeur placant l'entité à la position mise en argument et mettant le scale au scale mis en argument et une rotation au vecteur3d passé en argument
@@ -48,19 +48,19 @@ class Transform
 		/// <param name="position"></param>
 		/// <param name="scaling"></param>
 		/// <param name="orientation"></param>
-		Transform(Vecteur3D position, Vecteur3D scaling, Vecteur3D orientation);
+		Transform(Vector3D position, Vector3D scaling, Vector3D orientation);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns>La position de l'objet</returns>
-		Vecteur3D getPosition() const { return position_; }
+		Vector3D getPosition() const { return position_; }
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns>L'aggrandissement de l'objet</returns>
-		Vecteur3D getScaling() const { return scale_; }
+		Vector3D getScaling() const { return scale_; }
 
 		/// <summary>
 		/// 
@@ -85,13 +85,13 @@ class Transform
 		/// Permet de changer la position de l'objet (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="Position">nouvelle position</param>
-		void setPosition(const Vecteur3D& position);
+		void setPosition(const Vector3D& position);
 
 		/// <summary>
 		/// Permet de changer l'aggrandissement de l'objet (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="position">position nouvelle position</param>
-		void setScaling(const Vecteur3D& scale);
+		void setScaling(const Vector3D& scale);
 
 		/// <summary>
 		/// Permet de changer l'orientation de l'objet (on modifie la modelMatrix)
@@ -103,14 +103,14 @@ class Transform
 		/// Bouge l'objet du vecteur mis en argument dans ses coordonnées (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="vect"></param>
-		void move(const Vecteur3D& vect);
+		void move(const Vector3D& vect);
 
 		/// <summary>
 		/// Effectue la rotation de l'objet dans ses coordonnées (on modifie la modelMatrix)
 		/// </summary>
 		/// <param name="angle"></param>
 		/// <param name="pivot"></param>
-		void rotate(float angle, const Vecteur3D& pivot);
+		void rotate(float angle, const Vector3D& pivot);
 
 };
 

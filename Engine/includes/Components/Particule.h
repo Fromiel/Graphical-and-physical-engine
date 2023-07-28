@@ -1,7 +1,7 @@
 #ifndef PARTICULE_H
 #define PARTICULE_H
 
-#include "Maths/Vecteur3D.h"
+#include "Maths/Vector3D.h"
 #include "CoreECS/Coordinator.h"
 
 class Particule 
@@ -9,21 +9,21 @@ class Particule
 	public:
 		//Constructeurs//
 		Particule() {}
-		Particule(Entity entityParent, Vecteur3D vel_initiale, float r, float m);
+		Particule(Entity entityParent, Vector3D vel_initiale, float r, float m);
 		Particule(const Particule &p);
 
 		//Getters//
 
 		float getInverseMasse() const { return InverseMasse; }
 		float getRayon() const { return rayon; }
-		Vecteur3D getPos() const;
-		Vecteur3D getVelocity() const { return velocity; }
-		Vecteur3D getAcc() const { return acceleration; }
+		Vector3D getPos() const;
+		Vector3D getVelocity() const { return velocity; }
+		Vector3D getAcc() const { return acceleration; }
 	
 		//Setters//
-		void setPos(const Vecteur3D);
-		void setVelocity(const Vecteur3D);
-		void setAcceleration(const Vecteur3D);
+		void setPos(const Vector3D);
+		void setVelocity(const Vector3D);
+		void setAcceleration(const Vector3D);
 
 		/**
 		* Fonction qui mets à jour la position de la particule en fonction du temps
@@ -33,7 +33,7 @@ class Particule
 		/*
 		* Fonction d'ajout de force à la particule
 		*/
-		void addForce(const Vecteur3D&);
+		void addForce(const Vector3D&);
 
 		/*
 		* Fonction de nettoyage de l'accumulateur
@@ -42,13 +42,13 @@ class Particule
 
 	private:
 		Entity entity;
-		Vecteur3D velocity;
-		Vecteur3D acceleration;
+		Vector3D velocity;
+		Vector3D acceleration;
 		float rayon;
 		float InverseMasse;
 
 		//Accumulateur de forces
-		Vecteur3D AccumForce;
+		Vector3D AccumForce;
 
 		//Constante de gravité
 		static float g;

@@ -3,7 +3,7 @@
 #ifndef RIGIDBODY_H
 #define RIGIDBODY_H
 
-#include "Maths/Vecteur3D.h"
+#include "Maths/Vector3D.h"
 #include "CoreECS/Coordinator.h"
 #include "Object3D.h"
 #include "Maths/Matrix34.h"
@@ -17,12 +17,12 @@ private:
 	float inverseMasse;
 	float m_linearDamping;
 	float m_angularDamping;
-	Vecteur3D m_forceAccum;
-	Vecteur3D m_torqueAccum;
-	Vecteur3D velocity;
-	Vecteur3D rotation;
-	Vecteur3D accel_lineaire;
-	Vecteur3D accel_rotation;
+	Vector3D m_forceAccum;
+	Vector3D m_torqueAccum;
+	Vector3D velocity;
+	Vector3D rotation;
+	Vector3D accel_lineaire;
+	Vector3D accel_rotation;
 	Matrix3D inertie;
 	Matrix3D inertie_transfo;
 
@@ -46,7 +46,7 @@ public:
 	/// <param name="linearDamping"></param>
 	/// <param name="type_objet"></param>
 	/// <param name="vitesse"></param>
-	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet,Vecteur3D vitesse = Vecteur3D(), Vecteur3D vitesse_angu = Vecteur3D());
+	Rigidbody(Entity entityParent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet,Vector3D vitesse = Vector3D(), Vector3D vitesse_angu = Vector3D());
 
 	/// <summary>
 	/// Constructeur de copie
@@ -76,31 +76,31 @@ public:
 	/// Getter m_forceAccum
 	/// </summary>
 	/// <returns> m_forceAccum </returns>
-	Vecteur3D getForceAccum() const { return m_forceAccum; };
+	Vector3D getForceAccum() const { return m_forceAccum; };
 
 	/// <summary>
 	/// Getter m_torqueAccum
 	/// </summary>
 	/// <returns> m_torqueAccum </returns>
-	Vecteur3D getTorqueAccum() const { return m_torqueAccum; };
+	Vector3D getTorqueAccum() const { return m_torqueAccum; };
 
 	/// <summary>
 	/// Getter velocity
 	/// </summary>
 	/// <returns> velocity </returns>
-	Vecteur3D getVelocity() const { return velocity; };
+	Vector3D getVelocity() const { return velocity; };
 
 	/// <summary>
 	/// Getter rotation
 	/// </summary>
 	/// <returns> Le vecteur 3D représentant la vitesse angulaire suivant les 3 axes </returns>
-	Vecteur3D getRotation() const { return rotation; };
+	Vector3D getRotation() const { return rotation; };
 
 	/// <summary>
 	/// Getter position
 	/// </summary>
 	/// <returns> Un vecteur 3D représentation la position du rb dans la scène </returns>
-	Vecteur3D getPos() const;
+	Vector3D getPos() const;
 
 	/// <summary>
 	/// Getter orientation
@@ -118,26 +118,26 @@ public:
 	/// Setter velocity
 	/// </summary>
 	/// <param name="velocity"> Un vecteur 3D de la vitesse à set au rb </param>
-	void setVelocity(const Vecteur3D Velocity);
+	void setVelocity(const Vector3D Velocity);
 
 	/// <summary>
 	/// Setter rotation
 	/// </summary>
 	/// <param name="Rotation"> Un vecteur3D de la vitesse angulaire à set au rb </param>
-	void setRotation(const Vecteur3D Rotation);
+	void setRotation(const Vector3D Rotation);
 
 	/// <summary>
 	/// Add force on the Center of mass but no torque is generated
 	/// </summary>
 	/// <param name="force"> Vecteur3D de la force </param>
-	void addForce(const Vecteur3D& force);
+	void addForce(const Vector3D& force);
 
 	/// <summary>
 	/// Add force at a point in world coordinate, generate force and torque 
 	/// </summary>
 	/// <param name="force"> La force que l'on souhaite add </param>
 	/// <param name="worldPoint"> Le point du monde sur lequel s'exerce la force ? </param>
-	void addForceAtPoint(const Vecteur3D& force, const Vecteur3D& worldPoint);
+	void addForceAtPoint(const Vector3D& force, const Vector3D& worldPoint);
 
 	/// <summary>
 	/// Add force at a point in local coordinate 
@@ -146,7 +146,7 @@ public:
 	/// </summary>
 	/// <param name="force"> La force que l'on souhaite add </param>
 	/// <param name="LocalPoint"> </param>
-	void addForceAtBodyPoint(const Vecteur3D& force, const Vecteur3D& LocalPoint);
+	void addForceAtBodyPoint(const Vector3D& force, const Vector3D& LocalPoint);
 
 	/// <summary>
 	/// Called each frame to reset m_forceAccum & m_torqueAccum
@@ -164,7 +164,7 @@ public:
 	/// </summary>
 	/// <param name="localPoint"> La position du point à convertir </param>
 	/// <returns> La position du point en coordonnées globales </returns>
-	Vecteur3D convertToWorld(const Vecteur3D& localPoint);
+	Vector3D convertToWorld(const Vector3D& localPoint);
 };
 
 #endif

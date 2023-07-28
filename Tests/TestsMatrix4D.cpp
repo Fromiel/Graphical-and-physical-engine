@@ -1,67 +1,135 @@
 #include <gtest/gtest.h>
 #include "Maths/Matrix4D.h"
 
-TEST(test, testtest)
+const float epsilon = 0.0001f;
+
+TEST(defaultConstructor, TestMatrix4D_1)
 {
-    EXPECT_TRUE(true);
+	Matrix4D matrix = Matrix4D();
+	for (size_t i = 0; i < 4; i++)
+	{
+		for (size_t j = 0; j < 4; j++) {
+			ASSERT_EQ(matrix(i, j), 0) << "Test failed at index (" << i << "," << j << "), value : " << matrix(i, j) << " expected : " << 0;
+		}
+	}
+}
+
+TEST(constructorWithVector, TestMatrix4D_1)
+{
+	std::vector<double> content = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+	Matrix4D matrix = Matrix4D(content);
+	for (size_t i = 0; i < 4; i++)
+	{
+		for (size_t j = 0; j < 4; j++) {
+			ASSERT_EQ(matrix(i, j), content[i * 4 + j]) << "Test failed at index (" << i << "," << j << "), value : " << matrix(i, j) << " expected : " << i * 3 + j + 1;
+		}
+	}
+}
+
+TEST(getter, TestMatrix4D_1)
+{
+	std::vector<double> content = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+	Matrix4D matrix = Matrix4D(content);
+	for (size_t i = 0; i < 4; i++)
+	{
+		for (size_t j = 0; j < 4; j++) {
+			ASSERT_EQ(matrix(i, j), content[i * 4 + j]) << "Test failed at index (" << i << "," << j << "), value : " << matrix(i, j) << " expected : " << content[i * 3 + j];
+		}
+	}
+}
+
+TEST(setter, TestMatrix4D_1)
+{
+	Matrix4D matrix = Matrix4D();
+	matrix(0, 0) = 1;
+	matrix(0, 1) = 2;
+	matrix(0, 2) = 3;
+	matrix(1, 0) = 4;
+
+	ASSERT_EQ(matrix(0, 0), 1) << "Test failed at index (0,0), value : " << matrix(0, 0) << " expected : " << 1;
+	ASSERT_EQ(matrix(0, 1), 2) << "Test failed at index (0,1), value : " << matrix(0, 1) << " expected : " << 2;
+	ASSERT_EQ(matrix(0, 2), 3) << "Test failed at index (0,2), value : " << matrix(0, 2) << " expected : " << 3;
+	ASSERT_EQ(matrix(1, 0), 4) << "Test failed at index (1,0), value : " << matrix(1, 0) << " expected : " << 4;
+}
+
+TEST(getContentAsStdVector, TestMatrix4D_1)
+{
+	std::vector<double> content = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+	Matrix4D matrix = Matrix4D(content);
+	std::vector<double> result = matrix.getContentAsStdVector();
+	for (size_t i = 0; i < 16; i++)
+	{
+		ASSERT_EQ(content[i], result[i]) << "Test failed at index " << i << ", value : " << result[i] << " expected : " << content[i];
+	}
+}
+TEST(toFloatArray, TestMatrix4D_1)
+{
+	std::vector<double> content = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+	Matrix4D matrix = Matrix4D(content);
+	float result[16];
+	matrix.toFloatArray(result);
+
+	auto expected = matrix.transpose().getContentAsStdVector();
+	for (size_t i = 0; i < 16; i++)
+	{
+		ASSERT_FLOAT_EQ(expected[i], result[i], epsilon) << "Test failed at index " << i << ", value : " << result[i] << " expected : " << content[i];
+	}
+}
+
+TEST(operatorAssign, TestMatrix4D_1)
+{
+	Matrix4D matrix = Matrix4D();
+	Matrix4D matrix2 = Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
+	matrix = matrix2;
+	for (size_t i = 0; i < 16; i++)
+	{
+		ASSERT_EQ(matrix(i / 4, i % 4), matrix2(i / 4, i % 4)) << "Test failed at index (" << i / 4 << "," << i % 4 << "), value : " << matrix(i / 4, i % 4) << " expected : " << matrix2(i / 4, i % 4);
+	}
+}
+
+TEST(addition, TestMatrix4D_1)
+{
+	Matrix4D result = Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }) + Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
+	Matrix4D expected = Matrix4D({ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 });
+	EXPECT_TRUE(result == expected);
 }
 
 
-/*Test Matrix4D :
+TEST(substraction, TestMatrix4D_1)
+{
+	Matrix4D result = Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }) - Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
+	Matrix4D expected = Matrix4D();
+	EXPECT_TRUE(result == expected);
+}
 
-    Matrix4D test_mat_0;
-    std::vector<double> content = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 };
-    Matrix4D test_mat_1(content);
-    content = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
-    Matrix4D test_mat_2(content);
-    Matrix4D test_mat_copie(test_mat_1);
+TEST(multiplicationScalar, TestMatrix4D_1)
+{
+	Matrix4D result = Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }) * 2;
+	Matrix4D expected = Matrix4D({ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 });
+	EXPECT_TRUE(result == expected);
+}
 
-    std::cout << test_mat_0 << std::endl;
-    std::cout << test_mat_1 << std::endl;
-    std::cout << test_mat_2 << std::endl;
-    std::cout << test_mat_copie << std::endl;
+TEST(multiplicationMatrix, TestMatrix4D_1)
+{
+	Matrix4D result = Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }) * Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
+	Matrix4D expected = Matrix4D({ 90, 100, 110, 120, 202, 228, 254, 280, 314, 356, 398, 440, 426, 484, 542, 600 });
+	EXPECT_TRUE(result == expected);
+}
 
-    std::vector<double> test_getter = test_mat_copie.getContentAsStdVector();
-    for (double i : test_getter) {
-        std::cout << i << std::endl;
-    }
-    std::cout << test_mat_1(1, 1) << std::endl;
-    double test_get_elt = test_mat_1(2, 3);
-    std::cout << test_get_elt << std::endl;
-    Matrix4D test_mat_copie_2 = test_mat_copie;
-    std::cout << test_mat_copie << std::endl;
-    std::vector<double> test_1 = { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 };
-    Matrix4D test_mat_plus(test_1);
-    test_mat_plus += test_mat_plus;
-    Matrix4D test_mat_moins(test_1);
-    test_mat_moins -= test_mat_moins;
-    std::cout << test_mat_plus << std::endl;
-    std::cout << test_mat_moins << std::endl;
+TEST(transpose, TestMatrix4D_1)
+{
+	Matrix4D result = Matrix4D({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }).transpose();
+	Matrix4D expected = Matrix4D({ 1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16 });
+	EXPECT_TRUE(result == expected);
+}
 
-    Matrix4D test_transpose = test_mat_1.transpose();
-    Matrix4D test_identity = Matrix4D::identity();
-    Matrix4D test_invert = test_identity.invert();
-    Vecteur3D vect_3(1, 2, 3);
-    Matrix4D test_translate = Matrix4D::translation(vect_3);
-    Matrix4D test_scaling = Matrix4D::scaling(vect_3);
-    Matrix4D test_projection = Matrix4D::projectionMatrix(M_PI, 1, 1, 500);
-    std::cout << test_transpose << std::endl;
-    std::cout << test_invert << std::endl;
-    std::cout << test_identity << std::endl;
-    std::cout << test_translate << std::endl;
-    std::cout << test_scaling << std::endl;
-    std::cout << test_projection << std::endl;
-
-    Matrix4D test_plus = test_mat_1 + test_mat_2;
-    Matrix4D test_moins = test_mat_1 - test_mat_2;
-    Matrix4D test_fois_1 = test_mat_1 * 4;
-    Matrix4D test_fois_2 = 4 * test_mat_1;
-    Matrix4D test_fois_3 = test_mat_1 * test_mat_2;
-
-    bool test_egalite = (test_fois_1 == test_fois_2);
-    std::cout << test_plus << std::endl;
-    std::cout << test_moins << std::endl;
-    std::cout << test_fois_1 << std::endl;
-    std::cout << test_fois_2 << std::endl;
-    std::cout << test_fois_3 << std::endl;
-    std::cout << test_egalite << std::endl; */
+TEST(invert, TestMatrix4D_1)
+{
+	Matrix4D result = Matrix4D({ 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 3, 1, 1, 1, 1, 4 }).invert();
+	Matrix4D expected = Matrix4D({ (double)17 / 6, -1, (double) -1 / 2, (double)-1 / 3,
+									-1, 1, 0, 0, 
+								(double)-1 / 2, 0, (double) 1 / 2, 0,
+								(double)-1 / 3, 0, 0, (double)1 / 3 }
+								);
+	EXPECT_TRUE(result == expected) << "Value of the invert : \n" << result << "Value expected : \n" << expected << std::endl;
+}

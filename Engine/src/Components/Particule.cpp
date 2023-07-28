@@ -11,10 +11,10 @@ float Particule::g = 9.81f;
 float Particule::d = 0.7f;
 float Particule::sol = 0.0f;
 
-Particule::Particule(Entity entityParent, Vecteur3D v_initiale, float r, float m) : entity(entityParent) {
+Particule::Particule(Entity entityParent, Vector3D v_initiale, float r, float m) : entity(entityParent) {
 	velocity = v_initiale;
 	//acceleration = Vecteur3D(0,-g,0);
-	acceleration = Vecteur3D(0.0f, 0.0f, 0.0f);
+	acceleration = Vector3D(0.0f, 0.0f, 0.0f);
 	rayon = r;
 	InverseMasse = m;
 	clearAccum();
@@ -29,21 +29,21 @@ Particule::Particule(const Particule &p) : entity(p.entity) {
 	clearAccum();
 }
 
-Vecteur3D Particule::getPos() const
+Vector3D Particule::getPos() const
 { 
 	return Coordinator::getInstance()->getComponent<Transform>(entity).getPosition();
 }
 
-void Particule::setPos(const Vecteur3D pos) {
+void Particule::setPos(const Vector3D pos) {
 	Coordinator* coordinator = Coordinator::getInstance();
 	coordinator->getComponent<Transform>(entity).setPosition(pos);
 }
 
-void Particule::setVelocity(const Vecteur3D s) {
+void Particule::setVelocity(const Vector3D s) {
 	velocity = s;
 }
 
-void Particule::setAcceleration(const Vecteur3D a) {
+void Particule::setAcceleration(const Vector3D a) {
 	acceleration = a;
 }
 
@@ -61,7 +61,7 @@ void Particule::update(float h) {
 
 void Particule::updatePosition(float frameRate) {
 	Coordinator* coordinator = Coordinator::getInstance();
-	Vecteur3D pos = coordinator->getComponent<Transform>(entity).getPosition();
+	Vector3D pos = coordinator->getComponent<Transform>(entity).getPosition();
 	coordinator->getComponent<Transform>(entity).setPosition(pos + (frameRate * velocity));
 }
 
@@ -70,10 +70,10 @@ void Particule::updateVelocity(float frameRate) {
 	velocity = pow(d, frameRate) * velocity + frameRate * acceleration;
 }
 
-void Particule::addForce(const Vecteur3D& Force) {
+void Particule::addForce(const Vector3D& Force) {
 	AccumForce = AccumForce + Force;
 }
 
 void Particule::clearAccum() {
-	AccumForce = Vecteur3D(0, 0, 0);
+	AccumForce = Vector3D(0, 0, 0);
 }

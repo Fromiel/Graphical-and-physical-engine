@@ -35,7 +35,7 @@ class Collider
 		/// <param name="position"></param>
 		/// <param name="orientation"></param>
 		/// <param name="rigidbody"></param>
-		Collider(Entity entity, Vecteur3D position = Vecteur3D(), Vecteur3D orientation = Vecteur3D(), Rigidbody* rigidbody = NULL);
+		Collider(Entity entity, Vector3D position = Vector3D(), Vector3D orientation = Vector3D(), Rigidbody* rigidbody = NULL);
 
 		void onCollision(const CollisionData& data) const;
 
@@ -61,7 +61,7 @@ class Collider
 		/// Retourne la position du centre du collider dans les coordonnees du monde
 		/// </summary>
 		/// <returns></returns>
-		Vecteur3D getPosition() const;
+		Vector3D getPosition() const;
 
 		/// <summary>
 		/// Retourne le type du collider (Sphere, box, plan, ...)

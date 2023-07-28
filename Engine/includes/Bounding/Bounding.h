@@ -2,7 +2,7 @@
 #ifndef BOUNDING_H
 #define BOUNDING_H
 
-#include "Maths/Vecteur3D.h"
+#include "Maths/Vector3D.h"
 
 class Bounding {
 public:
@@ -10,10 +10,10 @@ public:
 	Bounding() = default;
 
 	//Constructeur par valeur
-	Bounding(const Vecteur3D& c) :center(c) {};
+	Bounding(const Vector3D& c) :center(c) {};
 
 	//Getter du centre
-	Vecteur3D getCenter() const { return center; }
+	Vector3D getCenter() const { return center; }
 
 	//Renvoie la taille du bounding
 	float virtual getSize() const = 0;
@@ -21,7 +21,7 @@ public:
 	//Indique si on se superpose à un autre Bounding
 	//bool virtual overlaps(const Bounding* other) const = 0; //DEPRECIATED BECAUSE OF CAST COMPILE ERRORS
 protected:
-	Vecteur3D center;
+	Vector3D center;
 };
 
 #endif

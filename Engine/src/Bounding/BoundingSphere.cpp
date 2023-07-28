@@ -3,7 +3,7 @@
 
 BoundingSphere::BoundingSphere(const BoundingSphere& bs1, const BoundingSphere& bs2) {
 
-	Vecteur3D center_offset = bs2.center - bs1.center;
+	Vector3D center_offset = bs2.center - bs1.center;
 	float distance = center_offset.norm_squared();
 	float radiusDiff = bs2.radius - bs1.radius;
 

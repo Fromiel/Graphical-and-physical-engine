@@ -14,16 +14,16 @@ void ParticuleContact::resolve(float duration) {
 
 float ParticuleContact::calculateSeparatingVelocity() const {
 	//Différence des 2 vitesses
-	Vecteur3D diffVelocity = (particules[0] ? particules[0]->getVelocity() : 0) - (particules[1] ? particules[1]->getVelocity() : 0);
+	Vector3D diffVelocity = (particules[0] ? particules[0]->getVelocity() : 0) - (particules[1] ? particules[1]->getVelocity() : 0);
 	//On projette sur la normale
-	float projVec = scalar_product(diffVelocity,contactNormal);
+	float projVec = Vector3D::scalar_product(diffVelocity,contactNormal);
 	//On renvoie la norme
 	return projVec;
 }
 
 void ParticuleContact::resolveVelocity(float duration) {
 	float k = calculateK(duration);
-	Vecteur3D vp1, vp2;
+	Vector3D vp1, vp2;
 	if (particules[0]) vp1 = particules[0]->getVelocity() - (k * particules[0]->getInverseMasse() * contactNormal);
 	if (particules[1]) vp2 = particules[1]->getVelocity() + (k * particules[1]->getInverseMasse() * contactNormal);
 
@@ -37,10 +37,10 @@ void ParticuleContact::resolveInterpenetration() {
 
 	float ma = 1 / particules[0]->getInverseMasse();
 	float mb = (particules[1] ? 1 / particules[1]->getInverseMasse() : 0);
-	Vecteur3D pos1 = particules[0]->getPos() - ((mb / (ma + mb) ) * penetration * contactNormal) ;
+	Vector3D pos1 = particules[0]->getPos() - ((mb / (ma + mb) ) * penetration * contactNormal) ;
 
 	if (particules[1]) {
-		Vecteur3D pos2 = particules[1]->getPos() + ((ma / (ma + mb)) * penetration * contactNormal);
+		Vector3D pos2 = particules[1]->getPos() + ((ma / (ma + mb)) * penetration * contactNormal);
 		particules[1]->setPos(pos2);
 	}
 	particules[0]->setPos(pos1);
@@ -52,9 +52,9 @@ float ParticuleContact::calculateK(float duration) const {
 
 	//resting contacts handling//
 
-	Vecteur3D accCausedVelocity = particules[0]->getAcc();
+	Vector3D accCausedVelocity = particules[0]->getAcc();
 	if (particules[1]) accCausedVelocity = accCausedVelocity - particules[1]->getAcc();
-	float accCausedSepVelocity = scalar_product(accCausedVelocity,contactNormal) * duration;
+	float accCausedSepVelocity = Vector3D::scalar_product(accCausedVelocity,contactNormal) * duration;
 	if (accCausedSepVelocity < 0) {
 		vreel += accCausedSepVelocity * duration;
 
@@ -71,7 +71,7 @@ void ParticuleContact::clear() {
 	particules[1] = nullptr;
 	restitution = 0;
 	penetration = 0;
-	contactNormal = Vecteur3D();
+	contactNormal = Vector3D();
 }
 
 bool operator<(const ParticuleContact& p1, const ParticuleContact& p2) {

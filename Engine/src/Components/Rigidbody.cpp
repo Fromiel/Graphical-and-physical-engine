@@ -1,14 +1,14 @@
 #include "Components/Rigidbody.h"
 #include "Components/Transform.h"
 
-Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vecteur3D vitesse, Vecteur3D vitesse_angu) : entity(entityparent) {
+Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, float linearDamping, ObjectTypeEnum type_objet, Vector3D vitesse, Vector3D vitesse_angu) : entity(entityparent) {
 	velocity = vitesse;
 	rotation = vitesse_angu;
 	m_angularDamping = angularDamping;
 	m_linearDamping = linearDamping;
 	inverseMasse = invmasse;
-	accel_lineaire = Vecteur3D(0, 0, 0);
-	accel_rotation = Vecteur3D(0, 0, 0);
+	accel_lineaire = Vector3D(0, 0, 0);
+	accel_rotation = Vector3D(0, 0, 0);
 	std::vector<double> content = {};
 	float scale_x,scale_y,scale_z = 0;
 	switch (type_objet) {
@@ -39,7 +39,7 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 	//Matrix34 newinertie(newcontent);
 	Matrix34 transfo = Coordinator::getInstance()->getComponent<Transform>(entity).getWorldMatrix();
 	
-	inertie_transfo = transfo * inertie.invert() * transfo.inverse();
+	inertie_transfo = transfo * inertie.invert() * transfo.invert();
 	
 	clearAccumulator();
 }
@@ -56,7 +56,7 @@ Rigidbody::Rigidbody(Entity entityparent, float angularDamping, float invmasse, 
 	inertie_transfo = rb.inertie_transfo;
 }*/
 
-Vecteur3D Rigidbody::getPos() const
+Vector3D Rigidbody::getPos() const
 {
 	return Coordinator::getInstance()->getComponent<Transform>(entity).getPosition();
 }
@@ -72,38 +72,38 @@ Matrix34 Rigidbody::getModelMatrix() const
 }
 
 
-void Rigidbody::setVelocity(const Vecteur3D Velocity) {
+void Rigidbody::setVelocity(const Vector3D Velocity) {
 	velocity = Velocity;
 }
 
-void Rigidbody::setRotation(const Vecteur3D Rotation)
+void Rigidbody::setRotation(const Vector3D Rotation)
 {
 	rotation = Rotation;
 }
 
-void Rigidbody::addForce(const Vecteur3D& force) {
+void Rigidbody::addForce(const Vector3D& force) {
 
 	m_forceAccum = m_forceAccum + force;
 
 }
 
-void Rigidbody::addForceAtPoint(const Vecteur3D& force, const Vecteur3D& worldpoint) {
+void Rigidbody::addForceAtPoint(const Vector3D& force, const Vector3D& worldpoint) {
 	m_forceAccum = m_forceAccum + force;
 
-	Vecteur3D newPoint = worldpoint;
+	Vector3D newPoint = worldpoint;
 	newPoint = newPoint - getPos();
 
-	m_torqueAccum = m_torqueAccum + vectorial_product(newPoint,force);
+	m_torqueAccum = m_torqueAccum + Vector3D::vectorial_product(newPoint,force);
 }
 
-void Rigidbody::addForceAtBodyPoint(const Vecteur3D& force, const Vecteur3D& localpoint) {
-	Vecteur3D w_point = convertToWorld(localpoint);
+void Rigidbody::addForceAtBodyPoint(const Vector3D& force, const Vector3D& localpoint) {
+	Vector3D w_point = convertToWorld(localpoint);
 	addForceAtPoint(force, w_point);
 }
 
 void Rigidbody::clearAccumulator() {
-	m_forceAccum = Vecteur3D(0, 0, 0);
-	m_torqueAccum = Vecteur3D(0, 0, 0);
+	m_forceAccum = Vector3D(0, 0, 0);
+	m_torqueAccum = Vector3D(0, 0, 0);
 }
 
 void Rigidbody::CalculateDerivatedData() {
@@ -121,7 +121,7 @@ void Rigidbody::CalculateDerivatedData() {
 	//std::cout << "Matric Inverse = " << transfo.inverse() << std::endl;
 
 	//TODO : Faire la formule
-	inertie_transfo = transfo * inertie.invert() * transfo.inverse();
+	inertie_transfo = transfo * inertie.invert() * transfo.invert();
 }
 
 void Rigidbody::Integrate(float duration) {
@@ -143,7 +143,7 @@ void Rigidbody::Integrate(float duration) {
 
 
 	// Position 
-	Vecteur3D pos_res = getPos();
+	Vector3D pos_res = getPos();
 	pos_res = pos_res + velocity * duration;
 	Coordinator::getInstance()->getComponent<Transform>(entity).setPosition(pos_res);
 
@@ -172,7 +172,7 @@ void Rigidbody::Integrate(float duration) {
 
 	}
 
-Vecteur3D Rigidbody::convertToWorld(const Vecteur3D& localPoint)
+Vector3D Rigidbody::convertToWorld(const Vector3D& localPoint)
 {
 	return Coordinator::getInstance()->getComponent<Transform>(entity).getWorldMatrix() * localPoint;
 }

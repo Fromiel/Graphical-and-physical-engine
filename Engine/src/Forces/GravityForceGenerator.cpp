@@ -1,7 +1,7 @@
 #include "Forces/GravityForceGenerator.h"
 
 GravityForceGenerator::GravityForceGenerator(float g) {
-	gravity = Vecteur3D(0, g, 0);
+	gravity = Vector3D(0, g, 0);
 }
 
 void GravityForceGenerator::UpdateForce(Rigidbody* rigidbody) {

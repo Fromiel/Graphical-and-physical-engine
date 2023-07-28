@@ -59,7 +59,7 @@ class Camera
         float getFar() const { return far_; }
 
         //Temporaire
-        void movePosition(Vecteur3D move);
+        void movePosition(Vector3D move);
 
 
         /// <summary>
@@ -103,14 +103,14 @@ class Camera
         /// Bouge la caméra du vecteur mis en argument dans les coordonnées de la caméra (on modifie la viewMatrix)
         /// </summary>
         /// <param name="vect"></param>
-        void move(const Vecteur3D &vect);
+        void move(const Vector3D &vect);
 
         /// <summary>
         /// Effectue la rotation de la caméra dans ses coordonnées (on modifie la viewMatrix)
         /// </summary>
         /// <param name="angle"></param>
         /// <param name="pivot"></param>
-        void rotate(float angle, const Vecteur3D &pivot);
+        void rotate(float angle, const Vector3D &pivot);
 
         /// <summary>
         /// Permet de placer la caméra aux coordonnées eye, qui va regarder le point center en ayant sa rotation défini par le vecteur up représentant la direction du "haut" de la caméra
@@ -118,7 +118,7 @@ class Camera
         /// <param name="eye">Position de la camera</param>
         /// <param name="center">Position que l'on souhaite observer</param>
         /// <param name="up">Le "up vector"</param>
-        void lookAt(const Vecteur3D &eye, const Vecteur3D &center, const Vecteur3D &up);
+        void lookAt(const Vector3D &eye, const Vector3D &center, const Vector3D &up);
 
 
 

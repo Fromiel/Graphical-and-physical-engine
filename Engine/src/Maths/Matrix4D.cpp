@@ -1,65 +1,73 @@
 #include "Maths/Matrix4D.h"
 
-Matrix4D::Matrix4D()
-{
-    std::vector<double> content = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-    _content = content;
-}
+#include <algorithm>
+#include <functional>
+#include <cmath>
 
+const float epsilon = 0.00001f;
 
-Matrix4D::Matrix4D(const std::vector<double>& content) : _content(content) {
-	if (_content.size() != 16) throw std::invalid_argument("Matrix3D::Provide content with size 16");
-}
+Matrix4D::Matrix4D() : content_{} {}
 
-Matrix4D::Matrix4D(const Matrix4D& matrix4D) {
-	_content = matrix4D._content;
+Matrix4D::Matrix4D(const std::vector<double>& content) : content_{} {
+	if (content.size() != 16) throw std::invalid_argument("Matrix3D::Provide content with size 16");
+
+    for (size_t i = 0; i < 16; i++)
+        content_[i] = content[i];
+
+    return;
 }
 
 std::vector<double> Matrix4D::getContentAsStdVector() const {
-	return _content;
+    return std::vector<double>(content_, content_ + 16);
 }
 
 double Matrix4D::operator() (int line, int column) const {
 	if (line < 0 || line > 3 || column < 0 || column > 3) {
 		throw std::out_of_range("Matrix4D::Provide line and column between 0 and 3 include");
 	}
-	return _content[Matrix4D::columnCount * line + column];
+	return content_[Matrix4D::columnCount * line + column];
 }
 
 double& Matrix4D::operator() (int line, int column) {
     if (line < 0 || line > 3 || column < 0 || column > 3) {
         throw std::out_of_range("Matrix4D::Provide line and column between 0 and 3 include");
     }
-    return _content[Matrix4D::columnCount * line + column];
+    return content_[Matrix4D::columnCount * line + column];
 }
 
 void Matrix4D::operator=(const Matrix4D& matrix4D) {
-	_content = matrix4D._content;
+    for (size_t i = 0; i < 16; i++)
+        content_[i] = matrix4D.content_[i];;
+    return;
 }
 
 Matrix4D Matrix4D::operator+=(const Matrix4D& matrix4D) {
-	std::transform(_content.begin(), _content.end(), matrix4D._content.begin(), _content.begin(), std::plus<double>());
+    for (size_t i = 0; i < 16; i++)
+        content_[i] += matrix4D.content_[i];
+
     return *this;
 }
 
 Matrix4D Matrix4D::operator-=(const Matrix4D& matrix4D) {
-	std::transform(_content.begin(), _content.end(), matrix4D._content.begin(), _content.begin(), std::minus<double>());
+    for (size_t i = 0; i < 16; i++)
+        content_[i] -= matrix4D.content_[i];
+
     return *this;
 }
 
 Matrix4D Matrix4D::transpose() const {
 	Matrix4D res = Matrix4D({
-		_content[0], _content[4], _content[8], _content[12],
-		_content[1], _content[5], _content[9], _content[13],
-		_content[2], _content[6], _content[10], _content[14],
-		_content[3], _content[7], _content[11], _content[15]
+		content_[0], content_[4], content_[8], content_[12],
+		content_[1], content_[5], content_[9], content_[13],
+		content_[2], content_[6], content_[10], content_[14],
+		content_[3], content_[7], content_[11], content_[15]
 	});
 	return res;
 }
 
 Matrix4D Matrix4D::invert() const
     {
-        std::vector<double> m = _content;
+        std::vector<double> m = getContentAsStdVector();
         double inv[16], det;
         int i;
 
@@ -177,13 +185,8 @@ Matrix4D Matrix4D::invert() const
 
         det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-        //std::cout << "DEBUG : det = " << det << std::endl;
-
         if (det == 0) {
-            //throw "Matrice non inversible";
-            std::cout << "Matrice non inversible" << std::endl;
-            //throw std::logic_error("Matrice non inversible");
-            return Matrix4D(); //should throw but throw not working
+            throw std::logic_error("Non-invertible matrix");
         }
             
         det = 1.0 / det;
@@ -201,25 +204,11 @@ Matrix4D Matrix4D::identity() {
     return res;
 }
 
-Matrix4D Matrix4D::translation(const Vecteur3D &vect) {
-    std::vector<double> elements = { 1, 0, 0, vect.get_x(), 0, 1, 0, vect.get_y(), 0, 0, 1, vect.get_z(), 0, 0, 0, 1 };
-    Matrix4D res(elements);
-    return res;
-}
-
-Matrix4D Matrix4D::scaling(const Vecteur3D& vect) {
-    std::vector<double> elements = { vect.get_x(), 0, 0, 0, 0, vect.get_y(), 0, 0, 0, 0, vect.get_z(), 0, 0, 0, 0, 1 };
-    Matrix4D res(elements);
-    return res;
-}
-
 void Matrix4D::toFloatArray(float arr[])
 {
     std::vector<double> content = this->transpose().getContentAsStdVector();
     std::copy(content.begin(), content.end(), arr);
 }
-
-// static Matrix4D Matrix4D::rotation(Vecteur3D &vect){}
 
 Matrix4D operator+(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {
     Matrix4D res;
@@ -281,16 +270,17 @@ Matrix4D operator*(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {
 }
 
 bool operator==(const Matrix4D& matrix4D_1, const Matrix4D& matrix4D_2) {
-    return matrix4D_1.getContentAsStdVector() == matrix4D_2.getContentAsStdVector();
+    for (size_t i = 0; i < 16; i++)
+    {
+        if (abs(matrix4D_1.content_[i] - matrix4D_2.content_[i]) > epsilon) return false;
+    }
+    return true;
 }
 
 std::ostream& operator<<(std::ostream& out, const Matrix4D& matrix4D) {
-    std::vector<double> content = matrix4D.getContentAsStdVector();
-
-    out << "[ " << content[0] << ", " << content[1] << ", " << content[2] << ", " << content[3] << " ]" << std::endl;
-    out << "[ " << content[4] << ", " << content[5] << ", " << content[6] << ", " << content[7] << " ]" << std::endl;
-    out << "[ " << content[8] << ", " << content[9] << ", " << content[10] << ", " << content[11] << " ]" << std::endl;
-    out << "[ " << content[12] << ", " << content[13] << ", " << content[14] << ", " << content[15] << " ]" << std::endl;
+    out << "[ " << matrix4D.content_[0] << ", " << matrix4D.content_[1] << ", " << matrix4D.content_[2] << ", " << matrix4D.content_[3] << " ]" << std::endl;
+    out << "[ " << matrix4D.content_[4] << ", " << matrix4D.content_[5] << ", " << matrix4D.content_[6] << ", " << matrix4D.content_[7] << " ]" << std::endl;
+    out << "[ " << matrix4D.content_[8] << ", " << matrix4D.content_[9] << ", " << matrix4D.content_[10] << ", " << matrix4D.content_[11] << " ]" << std::endl;
+    out << "[ " << matrix4D.content_[12] << ", " << matrix4D.content_[13] << ", " << matrix4D.content_[14] << ", " << matrix4D.content_[15] << " ]" << std::endl;
     return out;
 }
-
