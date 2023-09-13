@@ -25,7 +25,7 @@ class Quaternion {
         Quaternion(float w=1, float x=0, float y=0, float z=0, bool shouldNormalize=true);
 
         /// <summary>
-        /// Constructor of Quaternion by putting euler angles as arguments
+        /// Constructor of Quaternion by putting euler angles as arguments (in radians) (roll, pitch, yaw)
         /// </summary>
         /// <param name="orientation"></param>
         Quaternion(const Vector3D &orientation);
@@ -33,19 +33,22 @@ class Quaternion {
         void normalize();
 
         /// <summary>
-        /// Rotate the quaternion by the vector (Rotation the quaternion around the vector)
+        /// Angles in radians
         /// </summary>
-        /// <param name="vector"></param>
-        void rotateByVector(const Vector3D &vector);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vector"></param>
-        /// <param name="duration"></param>
+        /// <param name="vector">Angular velocity</param>
+        /// <param name="duration">Duration of the rotation</param>
         void updateByAngularVelocity(const Vector3D &vector, float duration);
 
+        /// <summary>
+        /// Return [w, x, y, z]
+        /// </summary>
+        /// <returns></returns>
         std::vector<float> getContentAsStdVector() const;
+
+        float getW() const { return w_; };
+        float getX() const { return x_; };
+        float getY() const { return y_; };
+        float getZ() const { return z_; };
 
         void operator=(const Quaternion &other);
         Quaternion operator*=(const Quaternion &other);

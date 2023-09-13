@@ -17,10 +17,10 @@ Quaternion::Quaternion(const Vector3D &orientation)
     double cy = cos(orientation.get_z() * 0.5);
     double sy = sin(orientation.get_z() * 0.5);
 
-    w_ = cr * cp * cy + sr * sp * sy;
-    x_ = sr * cp * cy - cr * sp * sy;
-    y_ = cr * sp * cy + sr * cp * sy;
-    z_ = cr * cp * sy - sr * sp * cy;
+    w_ = cr * cp * cy - sr * sp * sy;
+    x_ = sr * cp * cy + cr * sp * sy;
+    y_ = cr * sp * cy - sr * cp * sy;
+    z_ = cr * cp * sy + sr * sp * cy;
 }
 
 
@@ -39,17 +39,6 @@ void Quaternion::normalize() {
         z_ = 0;
     }
     
-    return;
-}
-
-void Quaternion::rotateByVector(const Vector3D &vector) {
-    Quaternion rotation = Quaternion(0, vector.get_x(), vector.get_y(), vector.get_z(), false);
-    Quaternion result = (*this) * rotation;
-    w_ = result.w_;
-    x_ = result.x_;
-    y_ = result.y_;
-    z_ = result.z_;
-    normalize();
     return;
 }
 
@@ -98,17 +87,11 @@ Quaternion operator*(const Quaternion &q1, const Quaternion &q2) {
     float c2 = q2.y_;
     float d2 = q2.z_;
 
-    //std::cout << "\n q1*q2" << std::endl;
-    //std::cout << "q1 = " << q1 << " q2 = " << q2 << std::endl;
-
     Quaternion result;
     result.w_ = a1*a2 - b1*b2 - c1*c2 - d1*d2;
     result.x_ = a1*b2 + b1*a2 + c1*d2 - d1*c2;
     result.y_ = a1*c2 - b1*d2 + c1*a2 + d1*b2;
     result.z_ = a1*d2 + b1*c2 - c1*b2 + d1*a2;
-    //std::cout << "result = " << result << std::endl;
-    //result.normalize();
-    //std::cout << "result normalize = " << result << std::endl;
 
     return result;
 }

@@ -3,12 +3,6 @@
 #include "Components/Sphere.h"
 
 
-glm::vec3 toVec3(Vector3D vect)
-{
-	return glm::vec3(vect.get_x(), vect.get_y(), vect.get_z());
-}
-
-
 TEST(test, TestsTransformMatrix_1)
 {
 	EXPECT_TRUE(true);
